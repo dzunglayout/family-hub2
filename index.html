@@ -579,8 +579,8 @@ html, body { height: 100%; font-family: var(--fb); background: var(--bg); color:
 // ═══════════════════════════════════════════════════════
 const APP_CONFIG = {
   // Thay đường dẫn URL Web App thật của anh sau khi deploy Apps Script vào đây:
-  GAS_URL: 'https://script.google.com/macros/s/AKfycbyJqlxVjMoTVeROkfej44C300ZdGjscfZSFId1Fm5rNzIbk_XuuylLfMAPv3VFbeGXM/exec',
-  DEMO_MODE: false // Chuyển hẳn sang Production lưu trữ Google Sheet thực tế
+  GAS_URL: 'https://script.google.com/macros/s/1h5x7c5wUZUJWmhVV_OzrL2BcThXevZU0iWMWRlP8VHg/exec',
+  DEMO_MODE: false 
 };
 
 const state = {
@@ -627,7 +627,7 @@ async function initDatabaseBackend() {
   showToast('Đang tạo các sheet chức năng...');
   try {
     const data = await api('GET', { action: 'init_database' });
-    if(data.initialized) {
+    if(data && data.initialized) {
       showToast('🎉 Thiết lập cấu trúc cơ sở dữ liệu thành công!');
       syncAll();
     }
@@ -647,27 +647,18 @@ function openPage(id) {
   state.currentPage = id;
 }
 
-function openOverlay(id) { document.getElementById('overlay-' + id).classList.add('open'); }
-.querySelectorAll('.overlay').forEach(overlayElement => {
-  overlayElement.addEventListener('click', e => { if (e.target === overlayElement) overlayElement.classList.remove('open'); });
-});
-function closeOverlay(id) { document.getElementById('overlay-' + id).classList.remove('open'); }
+function openOverlay(id) { 
+  document.getElementById('overlay-' + id)?.classList.add('open'); 
+}
 
-function openAddModal() {
-  const page = state.currentPage;
-  if (page === 'dashboard' || page === 'personal') openOverlay('add-tx');
-  else if (page === 'family') openOverlay('add-shared');
-  else if (page === 'inventory') openOverlay('add-inv');
-  else if (page === 'notes') openOverlay('add-note');
-  
-  const today = new Date().toISOString().split('T')[0];
-  if(document.getElementById('tx-date')) document.getElementById('tx-date').value = today;
-  if(document.getElementById('sh-date')) document.getElementById('sh-date').value = today;
+function closeOverlay(id) { 
+  document.getElementById('overlay-' + id)?.classList.remove('open'); 
 }
 
 let toastTimer;
 function showToast(msg) {
   const toastContainer = document.getElementById('toast');
+  if (!toastContainer) return;
   toastContainer.textContent = msg;
   toastContainer.classList.add('show');
   clearTimeout(toastTimer);
@@ -675,8 +666,10 @@ function showToast(msg) {
 }
 
 function setSyncStatus(ok, msg) {
-  document.getElementById('sync-dot').className = 'sync-dot' + (ok ? '' : ' err');
-  document.getElementById('sync-text').textContent = msg;
+  const dot = document.getElementById('sync-dot');
+  const txt = document.getElementById('sync-text');
+  if(dot) dot.className = 'sync-dot' + (ok ? '' : ' err');
+  if(txt) txt.textContent = msg;
 }
 
 async function syncAll() {
@@ -706,7 +699,9 @@ async function syncAll() {
 
     const timeString = state.lastSync.toLocaleTimeString('vi-VN', {hour: '2-digit', minute: '2-digit'});
     setSyncStatus(true, `Đã đồng bộ Google Sheets thành công (${timeString})`);
-    document.getElementById('topbar-period').textContent = 'Kỳ dữ liệu: ' + (dash?.period || 'Hiện tại');
+    
+    const periodEl = document.getElementById('topbar-period');
+    if(periodEl) periodEl.textContent = 'Kỳ dữ liệu: ' + (dash?.period || 'Hiện tại');
   } catch (e) {
     setSyncStatus(false, 'Mất kết nối Cloud: ' + e.message);
     showToast('❌ Đồng bộ thất bại: ' + e.message);
@@ -716,58 +711,74 @@ async function syncAll() {
 function renderDashboard() {
   const d = state.dashboard;
   if (!d) return;
-  document.getElementById('dash-period').textContent = 'Kỳ tháng ' + d.period;
-  document.getElementById('dash-shared').textContent = fmt(d.total_shared);
-  document.getElementById('dash-income').textContent = '+' + fmt(d.total_income);
-  document.getElementById('dash-expense').textContent = '-' + fmt(d.total_expense);
-  document.getElementById('dash-members').textContent = d.member_count + ' người';
-  document.getElementById('dash-lowstock').textContent = d.low_stock_count + ' loại hàng';
+  
+  const periodEl = document.getElementById('dash-period');
+  const sharedEl = document.getElementById('dash-shared');
+  const incomeEl = document.getElementById('dash-income');
+  const expenseEl = document.getElementById('dash-expense');
+  const membersEl = document.getElementById('dash-members');
+  const lowstockEl = document.getElementById('dash-lowstock');
+  
+  if(periodEl) periodEl.textContent = 'Kỳ tháng ' + d.period;
+  if(sharedEl) sharedEl.textContent = fmt(d.total_shared);
+  if(incomeEl) incomeEl.textContent = '+' + fmt(d.total_income);
+  if(expenseEl) expenseEl.textContent = '-' + fmt(d.total_expense);
+  if(membersEl) membersEl.textContent = d.member_count + ' người';
+  if(lowstockEl) lowstockEl.textContent = d.low_stock_count + ' loại hàng';
 
   const chart = d.chart || [];
   const maxExpense = Math.max(...chart.map(c => c.expense), 1);
   const barChartContainer = document.getElementById('bar-chart');
-  barChartContainer.innerHTML = chart.map((monthData, index) => {
-    const calculatedHeight = Math.round((monthData.expense / maxExpense) * 60);
-    const isCurrentMonth = index === chart.length - 1;
-    return `<div class="bar-col">
-      <div class="bar" style="height:${Math.max(calculatedHeight,4)}px; background:${isCurrentMonth ? '#6C63FF' : '#C4BEFE'};"></div>
-      <div class="bar-lbl">${monthData.month.split('-')[1]}</div>
-    </div>`;
-  }).join('');
+  if(barChartContainer) {
+    barChartContainer.innerHTML = chart.map((monthData, index) => {
+      const calculatedHeight = Math.round((monthData.expense / maxExpense) * 60);
+      const isCurrentMonth = index === chart.length - 1;
+      return `<div class="bar-col">
+        <div class="bar" style="height:${Math.max(calculatedHeight,4)}px; background:${isCurrentMonth ? '#6C63FF' : '#C4BEFE'};"></div>
+        <div class="bar-lbl">${monthData.month.split('-')[1]}</div>
+      </div>`;
+    }).join('');
+  }
 
   const membersRow = document.getElementById('members-row');
-  membersRow.innerHTML = state.members.map(member => `
-    <div class="member-card" onclick="openPage('personal')">
-      <div class="member-avatar" style="background:${member.color}22;">${member.emoji}</div>
-      <div class="member-name">${member.name}</div>
-      <div class="member-role">${member.role === 'parent' ? 'Bố / Mẹ' : 'Con cái'}</div>
-      <div class="member-lock"><i class="ti ti-lock"></i> Riêng tư</div>
-    </div>`).join('') + 
-    `<div class="member-card" style="border:1.5px dashed var(--muted); display:flex; flex-direction:column; align-items:center; justify-content:center;" onclick="openOverlay('add-member')">
-      <i class="ti ti-user-plus" style="font-size:22px; color:var(--muted);"></i>
-      <div style="font-size:11px; font-weight:600; margin-top:4px;">Thêm mới</div>
-    </div>`;
+  if(membersRow) {
+    membersRow.innerHTML = state.members.map(member => `
+      <div class="member-card" onclick="openPage('personal')">
+        <div class="member-avatar" style="background:${member.color}22;">${member.emoji}</div>
+        <div class="member-name">${member.name}</div>
+        <div class="member-role">${member.role === 'parent' ? 'Bố / Mẹ' : 'Con cái'}</div>
+        <div class="member-lock"><i class="ti ti-lock"></i> Riêng tư</div>
+      </div>`).join('') + 
+      `<div class="member-card" style="border:1.5px dashed var(--muted); display:flex; flex-direction:column; align-items:center; justify-content:center;" onclick="openOverlay('add-member')">
+        <i class="ti ti-user-plus" style="font-size:22px; color:var(--muted);"></i>
+        <div style="font-size:11px; font-weight:600; margin-top:4px;">Thêm mới</div>
+      </div>`;
+  }
 
   const recentSharedList = document.getElementById('recent-shared-list');
-  recentSharedList.innerHTML = d.recent_shared.map(item => `
-    <div class="tx-item">
-      <div class="tx-ico" style="background:${catBg[item.category]}; color:${catColor[item.category]};">${catIcon[item.category] || '📌'}</div>
-      <div class="tx-info">
-        <div class="tx-name">${item.description}</div>
-        <div class="tx-meta">${item.paid_by} · ${item.date}</div>
-      </div>
-      <div class="tx-amt out">-${fmt(item.amount)}</div>
-    </div>`).join('') || '<div class="empty"><i class="ti ti-receipt-off"></i><p>Chưa có chi tiêu chung phát sinh</p></div>';
+  if(recentSharedList) {
+    recentSharedList.innerHTML = d.recent_shared.map(item => `
+      <div class="tx-item">
+        <div class="tx-ico" style="background:${catBg[item.category]}; color:${catColor[item.category]};">${catIcon[item.category] || '📌'}</div>
+        <div class="tx-info">
+          <div class="tx-name">${item.description}</div>
+          <div class="tx-meta">${item.paid_by} · ${item.date}</div>
+        </div>
+        <div class="tx-amt out">-${fmt(item.amount)}</div>
+      </div>`).join('') || '<div class="empty"><i class="ti ti-receipt-off"></i><p>Chưa có chi tiêu chung phát sinh</p></div>';
+  }
 }
 
 function renderPersonalMembers() {
   const personalRow = document.getElementById('personal-members-row');
-  personalRow.innerHTML = state.members.map(member => `
-    <div class="member-card" onclick="triggerPinAuth('${member.id}','${member.name}','${member.emoji}')">
-      <div class="member-avatar" style="background:${member.color}22;">${member.emoji}</div>
-      <div class="member-name">${member.name}</div>
-      <div class="member-lock" style="color:var(--pri);"><i class="ti ti-key"></i> Xác thực</div>
-    </div>`).join('');
+  if(personalRow) {
+    personalRow.innerHTML = state.members.map(member => `
+      <div class="member-card" onclick="triggerPinAuth('${member.id}','${member.name}','${member.emoji}')">
+        <div class="member-avatar" style="background:${member.color}22;">${member.emoji}</div>
+        <div class="member-name">${member.name}</div>
+        <div class="member-lock" style="color:var(--pri);"><i class="ti ti-key"></i> Xác thực</div>
+      </div>`).join('');
+  }
 }
 
 let pinBuffer = '';
@@ -804,7 +815,7 @@ function updatePinView() {
 async function verifyPinProcess() {
   try {
     const response = await api('POST', { action: 'verify_pin', member_id: targetAuthMemberId, pin: pinBuffer });
-    if (response.valid) {
+    if (response && response.valid) {
       closeOverlay('pin');
       showToast('🔓 Xác thực thành công tài khoản riêng tư!');
       await loadPersonalWalletData(targetAuthMemberId, pinBuffer);
@@ -822,18 +833,20 @@ async function loadPersonalWalletData(id, validatedPin) {
   try {
     const data = await api('GET', { action: 'get_personal', member_id: id, pin: validatedPin });
     const member = state.members.find(m => m.id === id);
-    state.personal = { memberId: id, memberName: member.name, pin: validatedPin, accounts: data.accounts || [], transactions: data.transactions || [] };
+    state.personal = { memberId: id, memberName: member?.name || '', pin: validatedPin, accounts: data.accounts || [], transactions: data.transactions || [] };
     
-    document.getElementById('personal-member-name').textContent = 'Sổ ví điện tử: ' + member.name;
+    document.getElementById('personal-member-name').textContent = 'Sổ ví điện tử: ' + (member?.name || '');
     
     const accountsRow = document.getElementById('personal-accounts');
     const backgroundGradients = ['linear-gradient(135deg,#6C63FF,#a78bfa)', 'linear-gradient(135deg,#20BFC1,#6DECAE)'];
-    accountsRow.innerHTML = state.personal.accounts.map((acc, index) => `
-      <div class="acc-card" style="background:${backgroundGradients[index % backgroundGradients.length]};">
-        <div class="acc-type">${acc.type.toUpperCase()}</div>
-        <div class="acc-amt">${fmt(acc.balance)}</div>
-        <div class="acc-name">${acc.name}</div>
-      </div>`).join('');
+    if(accountsRow) {
+      accountsRow.innerHTML = state.personal.accounts.map((acc, index) => `
+        <div class="acc-card" style="background:${backgroundGradients[index % backgroundGradients.length]};">
+          <div class="acc-type">${acc.type.toUpperCase()}</div>
+          <div class="acc-amt">${fmt(acc.balance)}</div>
+          <div class="acc-name">${acc.name}</div>
+        </div>`).join('');
+    }
       
     renderPersonalTxList();
     document.getElementById('personal-content').style.display = 'block';
@@ -851,7 +864,7 @@ function lockPersonal() {
 function filterTx(type) {
   state.activeTxFilter = type;
   document.querySelectorAll('#page-personal .chip').forEach(c => c.classList.remove('active'));
-  document.getElementById('filter-tx-' + type).classList.add('active');
+  document.getElementById('filter-tx-' + type)?.classList.add('active');
   renderPersonalTxList();
 }
 
@@ -861,6 +874,7 @@ function renderPersonalTxList() {
   if (state.activeTxFilter === 'expense') list = list.filter(t => t.type === 'expense');
   
   const container = document.getElementById('personal-tx-list');
+  if(!container) return;
   if(!list.length) {
     container.innerHTML = '<div class="empty"><i class="ti ti-receipt-off"></i><p>Chưa ghi nhận biến động tài chính</p></div>';
     return;
@@ -882,7 +896,7 @@ async function deleteTransactionProcess(txId) {
   if(!confirm('Xác nhận xóa bỏ vĩnh viễn giao dịch này và hoàn lại số dư ví tương ứng trên Google Sheet?')) return;
   try {
     const res = await api('POST', { action: 'delete_transaction', tx_id: txId, member_id: state.personal.memberId, pin: state.personal.pin });
-    if(res.deleted) {
+    if(res && res.deleted) {
       showToast('🗑️ Đã loại bỏ giao dịch hoàn tất');
       await syncAll();
       await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
@@ -900,10 +914,15 @@ function renderFamily() {
   const total = matchedExpenses.reduce((sum, item) => sum + Number(item.amount || 0), 0);
   const paid = matchedExpenses.filter(item => item.status === 'paid').reduce((sum, item) => sum + Number(item.amount || 0), 0);
   
-  document.getElementById('family-period').textContent = 'Kỳ quỹ phát sinh ' + thisMonthString;
-  document.getElementById('family-total').textContent = fmt(total);
-  document.getElementById('family-paid').textContent = fmt(paid);
-  document.getElementById('family-unpaid').textContent = fmt(total - paid);
+  const fPeriod = document.getElementById('family-period');
+  const fTotal = document.getElementById('family-total');
+  const fPaid = document.getElementById('family-paid');
+  const fUnpaid = document.getElementById('family-unpaid');
+
+  if(fPeriod) fPeriod.textContent = 'Kỳ quỹ phát sinh ' + thisMonthString;
+  if(fTotal) fTotal.textContent = fmt(total);
+  if(fPaid) fPaid.textContent = fmt(paid);
+  if(fUnpaid) fUnpaid.textContent = fmt(total - paid);
   
   renderFamilyListUI();
 }
@@ -921,6 +940,7 @@ function renderFamilyListUI() {
   list = [...list].sort((a, b) => b.date.localeCompare(a.date));
   
   const container = document.getElementById('family-list');
+  if(!container) return;
   if(!list.length) {
     container.innerHTML = '<div class="empty"><i class="ti ti-receipt-off"></i><p>Không tìm thấy hạng mục chi tiêu chung phù hợp</p></div>';
     return;
@@ -952,10 +972,15 @@ async function toggleSharedStatus(id, currentStatus) {
 
 function renderInventory() {
   const inv = state.inventory;
-  document.getElementById('inv-total').textContent = inv.length + ' mặt hàng';
+  const iTotal = document.getElementById('inv-total');
+  const iOk = document.getElementById('inv-ok');
+  const iLow = document.getElementById('inv-low');
+
+  if(iTotal) iTotal.textContent = inv.length + ' mặt hàng';
   const lowItems = inv.filter(i => Number(i.quantity) <= Number(i.min_qty));
-  document.getElementById('inv-ok').textContent = (inv.length - lowItems.length) + ' an toàn';
-  document.getElementById('inv-low').textContent = lowItems.length + ' cần mua';
+  if(iOk) iOk.textContent = (inv.length - lowItems.length) + ' an toàn';
+  if(iLow) iLow.textContent = lowItems.length + ' cần mua';
+  
   renderInventoryGridUI();
 }
 
@@ -970,6 +995,7 @@ function renderInventoryGridUI() {
   let list = state.inventory;
   if(state.activeInvFilter !== 'all') list = list.filter(i => i.category === state.activeInvFilter);
   const grid = document.getElementById('inv-grid');
+  if(!grid) return;
   if(!list.length) {
     grid.innerHTML = '<div class="empty"><i class="ti ti-package-off"></i><p>Không có vật tư thuộc nhóm này</p></div>';
     return;
@@ -1004,6 +1030,7 @@ async function adjustInventoryQty(id, newQty) {
 
 function renderNotes() {
   const container = document.getElementById('notes-list');
+  if(!container) return;
   if(!state.notes.length) {
     container.innerHTML = '<div class="empty"><i class="ti ti-notes-off"></i><p>Bảng thông điệp trống</p></div>';
     return;
@@ -1041,6 +1068,7 @@ function onTxMemberChange() {
   const selectedMemberId = document.getElementById('tx-member').value;
   const isSharedChecked = document.getElementById('tx-shared').checked;
   const accountSelect = document.getElementById('tx-account');
+  if(!accountSelect) return;
   
   if (isSharedChecked) {
     accountSelect.innerHTML = '<option value="">-- Chi trực tiếp ngân sách chung --</option>';
@@ -1054,13 +1082,17 @@ function onTxMemberChange() {
   }
 }
 
-document.getElementById('tx-shared').addEventListener('change', onTxMemberChange);
+// Gán sự kiện an toàn chống đơ lag
+const sharedCheckbox = document.getElementById('tx-shared');
+if(sharedCheckbox) {
+  sharedCheckbox.addEventListener('change', onTxMemberChange);
+}
 
 let txType = 'expense';
 function setTxType(type) {
   txType = type;
-  document.getElementById('tx-btn-expense').classList.toggle('active', type === 'expense');
-  document.getElementById('tx-btn-income').classList.toggle('active', type === 'income');
+  document.getElementById('tx-btn-expense')?.classList.toggle('active', type === 'expense');
+  document.getElementById('tx-btn-income')?.classList.toggle('active', type === 'income');
 }
 
 async function submitTransaction() {
@@ -1079,7 +1111,7 @@ async function submitTransaction() {
   }
 
   const submitBtn = document.getElementById('tx-submit-btn');
-  submitBtn.disabled = true;
+  if(submitBtn) submitBtn.disabled = true;
   
   try {
     await api('POST', {
@@ -1093,7 +1125,7 @@ async function submitTransaction() {
     if (state.personal.memberId === memberId) await loadPersonalWalletData(memberId, state.personal.pin);
   } catch (e) {
     showToast('Lỗi: ' + e.message);
-  } finally { submitBtn.disabled = false; }
+  } finally { if(submitBtn) submitBtn.disabled = false; }
 }
 
 async function submitShared() {
@@ -1101,6 +1133,7 @@ async function submitShared() {
   const amount = parseFloat(document.getElementById('sh-amount').value);
   const category = document.getElementById('sh-category').value;
   const paidBySelect = document.getElementById('sh-paidby');
+  if(!paidBySelect) return;
   const paidByName = paidBySelect.options[paidBySelect.selectedIndex].text;
   const date = document.getElementById('sh-date').value;
   const status = document.getElementById('sh-status').value;
@@ -1165,7 +1198,16 @@ function pickNoteColor(el) {
   state.noteColor = el.dataset.color;
 }
 
-document.addEventListener('DOMContentLoaded', () => { syncAll(); });
+// Bắt đầu đồng bộ tự động khi tải trang
+document.addEventListener('DOMContentLoaded', () => { 
+  // Gán bộ lắng nghe click overlay để đóng form thông minh không gây treo app
+  document.querySelectorAll('.overlay').forEach(overlayElement => {
+    overlayElement.addEventListener('click', e => { 
+      if (e.target === overlayElement) overlayElement.classList.remove('open'); 
+    });
+  });
+  syncAll(); 
+});
 </script>
 </body>
 </html>
