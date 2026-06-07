@@ -1217,26 +1217,59 @@ function pickNoteColor(el) {
   state.noteColor = el.dataset.color;
 }
 
-// Khởi tạo các trình lắng nghe sự kiện Click công khai
+// ═══════════════════════════════════════════════════════
+// HÀM KHỞI TẠO VÀ ĐĂNG KÝ SỰ KIỆN GIAO DIỆN ( THAY THẾ ĐOẠN ĐUÔI )
+// ═══════════════════════════════════════════════════════
+async function verifyPinProcess() {
+  try {
+    const response = await api('POST', { action: 'verify_pin', member_id: targetAuthMemberId, pin: pinBuffer });
+    if (response && response.valid) {
+      closeOverlay('pin');
+      showToast('🔓 Xác thực thành công tài khoản riêng tư!');
+      
+      // 1. Tải dữ liệu ví cá nhân từ Cloud về
+      await loadPersonalWalletData(targetAuthMemberId, pinBuffer);
+      
+      // FIX CỐT LÕI: Nhập PIN đúng sẽ tự động chuyển hướng màn hình sang tab cá nhân ngay lập tức
+      openPage('personal'); 
+    } else {
+      document.getElementById('pin-error').textContent = 'Mật mã PIN nhập chưa chính xác, vui lòng thử lại';
+      pinBuffer = '';
+      updatePinView();
+    }
+  } catch(e) {
+    document.getElementById('pin-error').textContent = 'Lỗi kết nối kiểm tra: ' + e.message;
+  }
+}
+
+// Trình lắng nghe khởi chạy toàn bộ hệ thống Event trên trình duyệt
 document.addEventListener('DOMContentLoaded', () => { 
-  // Đã sửa đổi: Lắng nghe sự kiện click thông minh cho các Overlay độc lập, không gây nghẽn DOM làm đơ nút bấm
+  
+  // 1. Kích hoạt sự kiện Click cho các tab thanh menu trên (Desktop)
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', () => openPage(tab.dataset.page));
+  });
+
+  // 2. Kích hoạt sự kiện Click cho thanh điều hướng dưới đáy (Mobile)
+  document.querySelectorAll('.bnav-item').forEach(btn => {
+    btn.addEventListener('click', () => openPage(btn.dataset.page));
+  });
+
+  // 3. Kích hoạt sự kiện đóng popup thông minh khi bấm ra vùng trống bên ngoài Overlay
   document.querySelectorAll('.overlay').forEach(overlayElement => {
     overlayElement.addEventListener('click', e => { 
       if (e.target === overlayElement) overlayElement.classList.remove('open'); 
     });
   });
 
-  // Đăng ký bộ theo dõi thay đổi thành viên trong form phát sinh giao dịch
+  // 4. Kích hoạt bộ theo dõi thay đổi tự động trong form phát sinh giao dịch
   const txMemberDropdown = document.getElementById('tx-member');
-  if (txMemberDropdown) {
-    txMemberDropdown.addEventListener('change', onTxMemberChange);
-  }
+  if (txMemberDropdown) txMemberDropdown.addEventListener('change', onTxMemberChange);
   
   const txSharedCheck = document.getElementById('tx-shared');
-  if (txSharedCheck) {
-    txSharedCheck.addEventListener('change', onTxMemberChange);
-  }
+  if (txSharedCheck) txSharedCheck.addEventListener('change', onTxMemberChange);
 
+  // 5. Chạy lệnh đồng bộ dữ liệu đám mây ban đầu khi tải trang
   syncAll(); 
 });
 </script>
