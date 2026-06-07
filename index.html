@@ -937,7 +937,9 @@ function filterShared(chipElement, category) {
 function renderFamilyListUI() {
   let list = state.sharedExpenses;
   if(state.activeSharedFilter !== 'all') list = list.filter(s => s.category === state.activeSharedFilter);
-  list = [...list].sort((a, b) => b.date.localeCompare(a.date));
+  
+  // Ép kiểu String(x) một cách an toàn trước khi so sánh ngày tháng nhằm chống lỗi định dạng của Google Sheet
+  list = [...list].sort((a, b) => String(b.date).localeCompare(String(a.date)));
   
   const container = document.getElementById('family-list');
   if(!container) return;
