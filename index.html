@@ -988,102 +988,62 @@ async function toggleSharedStatus(id, currentStatus) {
   } catch (e) { showToast(e.message); }
 }
 
-// ─── INVENTORY ────────────────────────────────────────
-function renderInventory(){
-  const inv=S.inventory,low=inv.filter(i=>+i.quantity<=+i.min_qty);
-  document.getElementById('inv-total').textContent=inv.length+' mặt hàng';
-  document.getElementById('inv-ok').textContent=(inv.length-low.length)+' mặt hàng';
-  document.getElementById('inv-low').textContent=low.length+' mặt hàng';
-  renderInvGrid();
+function renderInventory() {
+  const inv = state.inventory;
+  const iTotal = document.getElementById('inv-total');
+  const iOk = document.getElementById('inv-ok');
+  const iLow = document.getElementById('inv-low');
+
+  if(iTotal) iTotal.textContent = inv.length + ' mặt hàng';
+  const lowItems = inv.filter(i => Number(i.quantity) <= Number(i.min_qty));
+  if(iOk) iOk.textContent = (inv.length - lowItems.length) + ' an toàn';
+  if(iLow) iLow.textContent = lowItems.length + ' cần mua';
+  
+  renderInventoryGridUI();
 }
-function filterInv(chip,cat){
-  document.querySelectorAll('#inv-chips .chip').forEach(c=>c.classList.remove('active'));
-  chip.classList.add('active'); S.invFilter=cat; renderInvGrid();
+
+function filterInv(chipElement, cat) {
+  document.querySelectorAll('#page-inventory .chip').forEach(c => c.classList.remove('active'));
+  chipElement.classList.add('active');
+  state.activeInvFilter = cat;
+  renderInventoryGridUI();
 }
-function renderInvGrid(){
-  let data=S.inventory; if(S.invFilter!=='all') data=data.filter(i=>i.category===S.invFilter);
-  const el=document.getElementById('inv-grid');
-  if(!data.length){el.innerHTML='<div class="empty" style="grid-column:1/-1"><i class="ti ti-package-off"></i><p>Không có mặt hàng</p></div>';return;}
-  el.innerHTML=data.map(item=>{
-    const qty=+item.quantity,mn=+item.min_qty;
-    const pct=Math.min(Math.round((qty/(mn*3))*100),100);
-    const empty=qty<=0,isLow=qty<=mn&&!empty;
-    const barC=empty?'#FF6B6B':isLow?'#FF9F43':'#00C896';
-    const bb=empty?'var(--rl)':isLow?'var(--al)':'var(--gl)';
-    const bc=empty?'var(--rd)':isLow?'var(--ad)':'var(--gd)';
-    const bt=empty?'❌ Đã hết':isLow?'⚠️ Sắp hết':'✓ Đủ';
+
+function renderInventoryGridUI() {
+  let list = state.inventory;
+  if(state.activeInvFilter !== 'all') list = list.filter(i => i.category === state.activeInvFilter);
+  const grid = document.getElementById('inv-grid');
+  if(!grid) return;
+  if(!list.length) {
+    grid.innerHTML = '<div class="empty"><i class="ti ti-package-off"></i><p>Không có vật tư thuộc nhóm này</p></div>';
+    return;
+  }
+  
+  grid.innerHTML = list.map(item => {
+    const qty = Number(item.quantity);
+    const min = Number(item.min_qty);
+    const percent = Math.min(Math.round((qty / (min * 3 || 1)) * 100), 100);
+    const isLow = qty <= min;
     return `<div class="inv-card">
-      <button class="inv-edit-btn" onclick="editInv('${item.id}')">✏️</button>
       <div class="inv-emoji">${item.emoji}</div>
       <div class="inv-name">${item.name}</div>
-      <div class="inv-qrow"><div class="inv-qty">${qty}</div><div class="inv-unit"> ${item.unit}</div></div>
-      <div class="inv-bar-wrap"><div class="inv-bar" style="width:${Math.max(pct,3)}%;background:${barC}"></div></div>
-      <div class="inv-badge" style="background:${bb};color:${bc}">${bt}</div>
-      <div class="inv-row">
-        <button class="sq-btn" onclick="adjInv('${item.id}',-1)">−</button>
-        <button class="sq-btn flex1" onclick="adjInv('${item.id}',1)">＋1</button>
-        <button class="sq-btn" onclick="delInv('${item.id}','${item.name}')">🗑️</button>
+      <div class="inv-qty-row"><div class="inv-qty">${qty}</div><div class="inv-unit">${item.unit}</div></div>
+      <div class="inv-bar-wrap"><div class="inv-bar" style="width:${percent}%; background:${isLow ? '#FF9F43':'#00C896'};"></div></div>
+      <div class="inv-badge" style="background:${isLow ? 'var(--amber-l)':'var(--green-l)'}; color:${isLow?'var(--amber-d)':'var(--green-d)'};">${isLow?'⚠️ Cần mua thêm':'✓ Đủ dùng'}</div>
+      <div class="inv-actions">
+        <button class="inv-btn" onclick="adjustInventoryQty('${item.id}', ${qty + 1})">+</button>
+        <button class="inv-btn" onclick="adjustInventoryQty('${item.id}', ${Math.max(0, qty - 1)})">-</button>
       </div>
     </div>`;
   }).join('');
 }
-async function adjInv(id,delta){
-  const it=S.inventory.find(x=>x.id===id); if(!it)return;
-  it.quantity=Math.max(0,+it.quantity+delta);
-  await api('POST',{action:'update_inventory',item_id:id,name:it.name,emoji:it.emoji,quantity:it.quantity,unit:it.unit,min_qty:it.min_qty,category:it.category});
-  renderInventory();
-  document.getElementById('d-lowstock').textContent=S.inventory.filter(i=>+i.quantity<=+i.min_qty).length+' mặt hàng';
-}
-function editInv(id){
-  const it=S.inventory.find(x=>x.id===id); if(!it)return;
-  S.editInvId=id;
-  document.getElementById('inv-sh-title').textContent='✏️ Chỉnh sửa mặt hàng';
-  document.getElementById('edit-inv-id').value=id;
-  document.getElementById('inv-emoji').value=it.emoji;
-  document.getElementById('inv-epick-btn').textContent=it.emoji||'📦';
-  document.getElementById('inv-name').value=it.name;
-  document.getElementById('inv-qty').value=it.quantity;
-  document.getElementById('inv-unit').value=it.unit;
-  document.getElementById('inv-min').value=it.min_qty;
-  document.getElementById('inv-cat').value=it.category;
-  document.getElementById('inv-sbtn').innerHTML='<i class="ti ti-device-floppy"></i> Cập nhật';
-  openOv('add-inv');
-}
-function clearInvForm(){
-  S.editInvId=null;
-  document.getElementById('inv-sh-title').textContent='📦 Thêm mặt hàng kho';
-  ['edit-inv-id','inv-emoji','inv-name','inv-qty','inv-unit','inv-min'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('inv-cat').value='hygiene';
-  document.getElementById('inv-sbtn').innerHTML='<i class="ti ti-device-floppy"></i> Lưu mặt hàng';
-  resetPicker('inv','📦');
-}
-async function submitInv(){
-  const name=document.getElementById('inv-name').value.trim();
-  const emoji=document.getElementById('inv-emoji').value.trim()||'📦';
-  const qty=parseFloat(document.getElementById('inv-qty').value)||0;
-  const unit=document.getElementById('inv-unit').value.trim();
-  const min=parseFloat(document.getElementById('inv-min').value)||1;
-  const cat=document.getElementById('inv-cat').value;
-  if(!name||!unit){showToast('❗ Nhập tên và đơn vị');return;}
-  try{
-    if(S.editInvId){
-      await api('POST',{action:'update_inventory',item_id:S.editInvId,name,emoji,quantity:qty,unit,min_qty:min,category:cat});
-      const it=S.inventory.find(x=>x.id===S.editInvId);
-      if(it){it.name=name;it.emoji=emoji;it.quantity=qty;it.unit=unit;it.min_qty=min;it.category=cat;}
-      showToast('✅ Đã cập nhật '+name);
-    } else {
-      const r=await api('POST',{action:'add_inventory_item',name,emoji,quantity:qty,unit,min_qty:min,category:cat});
-      S.inventory.unshift({id:r.id,name,emoji,quantity:qty,unit,min_qty:min,category:cat});
-      showToast('✅ Đã thêm '+name);
-    }
-    renderInventory(); closeOv('add-inv'); clearInvForm();
-  }catch(e){showToast('❌ '+e.message);}
-}
-async function delInv(id,name){
-  if(!confirm(`Xoá "${name}"?`))return;
-  await api('POST',{action:'delete_inventory',item_id:id});
-  S.inventory=S.inventory.filter(x=>x.id!==id);
-  renderInventory(); showToast('🗑️ Đã xoá');
+
+async function adjustInventoryQty(id, newQty) {
+  try {
+    await api('POST', { action: 'update_inventory', item_id: id, quantity: newQty });
+    showToast('Số lượng vật tư đã thay đổi');
+    await syncAll();
+  } catch (e) { showToast(e.message); }
 }
 
 function renderNotes() {
