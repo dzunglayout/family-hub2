@@ -1217,6 +1217,116 @@ function pickNoteColor(el) {
   state.noteColor = el.dataset.color;
 }
 
+// ─── EMOJI PICKERS ────────────────────────────────────
+const EMOJIS_MEMBER = [
+  '👨','👩','👦','👧','🧑','👴','👵','👶','🧒','🧔','🧕','👲',
+  '🙋','🙎','💁','🧑‍💼','👨‍💼','👩‍💼','🧑‍🍳','👨‍🍳','👩‍🍳','🧑‍🎓','👨‍🎓','👩‍🎓',
+  '🧑‍🔬','👨‍⚕️','👩‍⚕️','🧑‍🌾','🦸','🦹','🧛','🧜','🧝','🧙',
+  '😊','😄','😎','🥰','🤩','😇','🤓','😴','🙃','🥳',
+  '🐱','🐶','🦊','🐻','🐼','🦁','🐯','🐧','🦄','🐸',
+];
+const EMOJIS_INV = [
+  '🧻','🧴','🧼','🪥','🧽','🧹','🧺','🧷','🪣','🪤',
+  '🛁','🚿','🪒','💊','🩺','🩹','🌡️','🩼','🧬','💉',
+  '🍽️','🥄','🍴','🫙','🍶','🥢','🧂','🫒','🧃','🥛',
+  '☕','🫖','🥤','🍵','🧋','🫗','🍺','🧊','🥚','🫓',
+  '🛒','🛍️','📦','🎁','🔋','💡','🔦','🕯️','🔌','🖇️',
+  '🔧','🔨','🪛','🧰','🪜','🗑️','🪟','🚪','🛏️','🪑',
+  '🛋️','🪴','🌿','🍃','🌱','🌻','🌸','❄️','🔑','🗝️',
+];
+
+function buildPickerGrid(scope) {
+  const emojis = scope === 'mem' ? EMOJIS_MEMBER : EMOJIS_INV;
+  const grid = document.getElementById(scope + '-epick-grid');
+  if (grid.dataset.built) return;
+  grid.dataset.built = '1';
+  grid.innerHTML = emojis.map(e =>
+    `<button class="eg-btn" onclick="pickEmoji('${scope}','${e}')">${e}</button>`
+  ).join('');
+}
+
+function togglePicker(scope) {
+  buildPickerGrid(scope);
+  const grid = document.getElementById(scope + '-epick-grid');
+  grid.style.display = grid.style.display === 'none' ? 'flex' : 'none';
+}
+
+function pickEmoji(scope, emoji) {
+  document.getElementById(scope + '-emoji').value = emoji;
+  document.getElementById(scope + '-epick-btn').textContent = emoji;
+  document.getElementById(scope + '-epick-grid').style.display = 'none';
+  // highlight selection
+  document.querySelectorAll('#' + scope + '-epick-grid .eg-btn').forEach(b =>
+    b.classList.toggle('sel', b.textContent === emoji));
+}
+
+function syncPickerBtn(scope) {
+  const v = document.getElementById(scope + '-emoji').value.trim();
+  if (v) document.getElementById(scope + '-epick-btn').textContent = v;
+}
+
+function resetPicker(scope, defaultEmoji) {
+  const grid = document.getElementById(scope + '-epick-grid');
+  if (grid) { grid.style.display = 'none'; delete grid.dataset.built; grid.innerHTML = ''; }
+  const btn = document.getElementById(scope + '-epick-btn');
+  if (btn) btn.textContent = defaultEmoji;
+}
+
+// ─── CHANGE PIN ───────────────────────────────────────
+function openChangePinOv() {
+  if (!S.personal.mid) { showToast('❗ Chưa mở ví'); return; }
+  document.getElementById('cpn-emoji').textContent = S.personal.emoji || '👤';
+  document.getElementById('cpn-name').textContent  = S.personal.name  || '—';
+  document.getElementById('cpn-old').value = '';
+  document.getElementById('cpn-new').value = '';
+  document.getElementById('cpn-confirm').value = '';
+  document.getElementById('cpn-err').textContent = '';
+  openOv('change-pin');
+}
+
+async function submitChangePin() {
+  const oldPin    = document.getElementById('cpn-old').value;
+  const newPin    = document.getElementById('cpn-new').value;
+  const confirmPin= document.getElementById('cpn-confirm').value;
+  const errEl     = document.getElementById('cpn-err');
+  errEl.textContent = '';
+  if (oldPin.length !== 4 || newPin.length !== 4 || confirmPin.length !== 4) {
+    errEl.textContent = '❗ Tất cả PIN phải đủ 4 số'; return;
+  }
+  if (newPin !== confirmPin) { errEl.textContent = '❌ PIN mới và xác nhận không khớp'; return; }
+  if (newPin === oldPin)     { errEl.textContent = '❗ PIN mới phải khác PIN cũ'; return; }
+  const btn = document.getElementById('cpn-sbtn');
+  btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Đang xử lý...';
+  try {
+    // 1. Xác minh PIN cũ
+    const vr = await api('GET', { action:'verify_pin', member_id: S.personal.mid, pin: oldPin });
+    if (!vr.valid) { errEl.textContent = '❌ PIN hiện tại không đúng'; return; }
+    // 2. Đổi PIN
+    await api('POST', { action:'change_pin', member_id: S.personal.mid, pin: oldPin, new_pin: newPin });
+    S.personal.pin = newPin;
+    closeOv('change-pin');
+    showToast('✅ Đổi PIN thành công!');
+  } catch(e) { errEl.textContent = '❌ ' + e.message; }
+  finally { btn.disabled = false; btn.innerHTML = '<i class="ti ti-key"></i> Xác nhận đổi PIN'; }
+}
+
+async function submitMember(){
+  const name=document.getElementById('mem-name').value.trim();
+  const emoji=document.getElementById('mem-emoji').value.trim()||'👤';
+  const role=document.getElementById('mem-role').value;
+  const pin=document.getElementById('mem-pin').value;
+  const color=document.getElementById('mem-color').value;
+  if(!name||pin.length!==4){showToast('❗ Nhập tên và PIN 4 số');return;}
+  const r=await api('POST',{action:'add_member',name,emoji,role,pin,color});
+  S.members.push({id:r.id,name,emoji,color,role});
+  renderPersonalMembers(); renderOverview();
+  closeOv('add-member'); showToast('✅ Đã thêm '+name);
+  document.getElementById('mem-name').value='';
+  document.getElementById('mem-emoji').value='';
+  document.getElementById('mem-pin').value='';
+  resetPicker('mem','👤');
+}
+   
 // ═══════════════════════════════════════════════════════
 // HÀM KHỞI TẠO VÀ ĐĂNG KÝ SỰ KIỆN GIAO DIỆN ( THAY THẾ ĐOẠN ĐUÔI )
 // ═══════════════════════════════════════════════════════
