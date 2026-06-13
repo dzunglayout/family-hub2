@@ -176,6 +176,27 @@ html, body { height: 100%; font-family: var(--fb); background: var(--bg); color:
 .lock-notice { background: var(--pri-light); border: 1px solid rgba(108,99,255,.2); border-radius: 13px; padding: 14px 16px; margin-bottom: 13px; display: flex; align-items: center; gap: 11px; }
 .lock-notice i { font-size: 22px; color: var(--pri); }
 .lock-notice-text { font-size: 13px; color: var(--pri-dark); font-weight: 600; line-height: 1.4; }
+
+/* ── Emoji Picker ── */
+.epick-row { display: flex; gap: 8px; align-items: center; margin-bottom: 5px; }
+.epick-btn { font-size: 22px; padding: 6px 10px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--bg); cursor: pointer; line-height: 1; }
+.epick-toggle { font-size: 11px; font-weight: 700; color: var(--pri); cursor: pointer; background: var(--pri-light); border: 1px solid rgba(108,99,255,.2); border-radius: 8px; padding: 4px 10px; }
+.epick-grid { display: none; flex-wrap: wrap; gap: 4px; padding: 10px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-top: 6px; max-height: 170px; overflow-y: auto; }
+.eg-btn { font-size: 20px; width: 36px; height: 36px; border: 1.5px solid transparent; border-radius: 8px; background: var(--bg); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.eg-btn.sel { border-color: var(--pri); background: var(--pri-light); }
+
+/* ── Account Card Add button ── */
+.acc-add-card { flex: 0 0 auto; width: 145px; border-radius: 18px; padding: 15px 14px; border: 2px dashed var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; color: var(--muted); }
+.acc-add-card:hover { border-color: var(--pri); color: var(--pri); }
+
+/* ── Change PIN overlay ── */
+.cpn-avatar { font-size: 40px; text-align: center; margin-bottom: 6px; }
+.cpn-name { font-size: 15px; font-weight: 700; text-align: center; margin-bottom: 14px; color: var(--text); }
+.pin-err { color: var(--red); font-size: 12px; font-weight: 600; min-height: 16px; margin-top: 4px; }
+
+/* ── Account type badge ── */
+.acc-type-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin-bottom: 4px; }
+.spin { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
 </style>
 </head>
 <body>
@@ -260,9 +281,15 @@ html, body { height: 100%; font-family: var(--fb); background: var(--bg); color:
       <div id="personal-content" style="display:none; margin-top: 15px;">
         <div class="sec-title">
           <span id="personal-member-name">—</span>
-          <span class="see-all" onclick="lockPersonal()" style="color:var(--red);"><i class="ti ti-lock"></i> Khoá ví</span>
+          <span style="display:flex;gap:8px;align-items:center;">
+            <span class="see-all" onclick="openChangePinOv()" style="color:var(--amber);"><i class="ti ti-key"></i> Đổi PIN</span>
+            <span class="see-all" onclick="lockPersonal()" style="color:var(--red);"><i class="ti ti-lock"></i> Khoá ví</span>
+          </span>
         </div>
-        <div class="sec-title" style="font-size:13px; margin-top:10px;">Tài khoản khả dụng & Số dư</div>
+        <div class="sec-title" style="font-size:13px; margin-top:10px;">
+          Tài khoản / Ví / Thẻ
+          <span class="see-all" onclick="openAddAccountModal()">➕ Thêm tài khoản</span>
+        </div>
         <div class="acc-row" id="personal-accounts"></div>
         
         <div style="display:flex; align-items:center; justify-content:space-between; margin:15px 0 10px;">
@@ -346,6 +373,75 @@ html, body { height: 100%; font-family: var(--fb); background: var(--bg); color:
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- ── CHANGE PIN OVERLAY ── -->
+<div class="overlay" id="overlay-change-pin">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">🔑 Đổi mã PIN cá nhân</div>
+    <div class="cpn-avatar" id="cpn-emoji">👤</div>
+    <div class="cpn-name" id="cpn-name">—</div>
+    <div class="form-group">
+      <label class="form-lbl">PIN hiện tại</label>
+      <input class="form-input" id="cpn-old" type="password" placeholder="••••" maxlength="4" inputmode="numeric">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">PIN mới</label>
+      <input class="form-input" id="cpn-new" type="password" placeholder="••••" maxlength="4" inputmode="numeric">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Xác nhận PIN mới</label>
+      <input class="form-input" id="cpn-confirm" type="password" placeholder="••••" maxlength="4" inputmode="numeric">
+    </div>
+    <div class="pin-err" id="cpn-err"></div>
+    <button class="submit-btn" id="cpn-sbtn" onclick="submitChangePin()">
+      <i class="ti ti-key"></i> Xác nhận đổi PIN
+    </button>
+    <button class="cancel-btn" onclick="closeOverlay('change-pin')">Huỷ</button>
+  </div>
+</div>
+
+<!-- ── ADD ACCOUNT OVERLAY ── -->
+<div class="overlay" id="overlay-add-account">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">💳 Thêm Tài khoản / Ví / Thẻ</div>
+    <div id="add-acc-member-info" style="display:flex;align-items:center;gap:10px;background:var(--pri-light);border-radius:12px;padding:10px 13px;margin-bottom:14px;">
+      <span id="add-acc-emoji" style="font-size:26px;">👤</span>
+      <div>
+        <div style="font-size:13px;font-weight:700;" id="add-acc-name">—</div>
+        <div style="font-size:11px;color:var(--muted);">Tài khoản mới sẽ gán cho thành viên này</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Tên tài khoản / Ví</label>
+      <input class="form-input" id="acc-name" type="text" placeholder="Ví dụ: Ví tiền mặt, Thẻ ACB...">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Loại tài khoản</label>
+      <select class="form-input" id="acc-type">
+        <option value="cash">💵 Tiền mặt (Ví)</option>
+        <option value="bank">🏦 Tài khoản ngân hàng</option>
+        <option value="credit">💳 Thẻ tín dụng (Credit Card)</option>
+        <option value="ewallet">📱 Ví điện tử (MoMo, ZaloPay...)</option>
+        <option value="saving">🏧 Tài khoản tiết kiệm</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Số dư / Hạn mức ban đầu (VNĐ)</label>
+      <input class="form-input" id="acc-balance" type="number" placeholder="0" min="0">
+    </div>
+    <div class="form-group" id="acc-bank-group" style="display:none;">
+      <label class="form-lbl">Tên ngân hàng / Nhà phát hành</label>
+      <input class="form-input" id="acc-bank" type="text" placeholder="Ví dụ: ACB, VIB, Techcombank...">
+    </div>
+    <div class="pin-err" id="acc-err"></div>
+    <button class="submit-btn" id="acc-sbtn" onclick="submitAddAccount()">
+      <i class="ti ti-credit-card"></i> Tạo tài khoản
+    </button>
+    <button class="cancel-btn" onclick="closeOverlay('add-account')">Huỷ</button>
+  </div>
+</div>
 
 <div class="overlay" id="overlay-pin">
   <div class="sheet">
@@ -475,7 +571,12 @@ html, body { height: 100%; font-family: var(--fb); background: var(--bg); color:
     <div class="sheet-title">📦 Thêm mới mặt hàng kiểm kho</div>
     <div class="form-group">
       <label class="form-lbl">Emoji minh họa</label>
-      <input class="form-input" id="inv-emoji" type="text" placeholder="🧴" maxlength="2">
+      <div class="epick-row">
+        <button class="epick-btn" id="inv-epick-btn" onclick="togglePicker('inv')">📦</button>
+        <input class="form-input" id="inv-emoji" type="text" placeholder="Nhập hoặc chọn emoji" maxlength="2" oninput="syncPickerBtn('inv')" style="flex:1;">
+        <span class="epick-toggle" onclick="togglePicker('inv')">🎭 Chọn</span>
+      </div>
+      <div class="epick-grid" id="inv-epick-grid" style="display:none;"></div>
     </div>
     <div class="form-group">
       <label class="form-lbl">Tên mặt hàng</label>
@@ -548,14 +649,19 @@ html, body { height: 100%; font-family: var(--fb); background: var(--bg); color:
     </div>
     <div class="form-group">
       <label class="form-lbl">Emoji đại diện</label>
-      <input class="form-input" id="mem-emoji" type="text" placeholder="👨" maxlength="2">
+      <div class="epick-row">
+        <button class="epick-btn" id="mem-epick-btn" onclick="togglePicker('mem')">👤</button>
+        <input class="form-input" id="mem-emoji" type="text" placeholder="Nhập hoặc chọn emoji" maxlength="2" oninput="syncPickerBtn('mem')" style="flex:1;">
+        <span class="epick-toggle" onclick="togglePicker('mem')">🎭 Chọn</span>
+      </div>
+      <div class="epick-grid" id="mem-epick-grid" style="display:none;"></div>
     </div>
     <div class="form-group">
       <label class="form-lbl">Vai trò thành viên</label>
       <select class="form-input" id="mem-role">
-        <option value="parent">Bố / Mẹ</option>
-        <option value="child">Con cái</option>
-        <option value="member">Thành viên khác</option>
+        <option value="parent">👨‍👩‍👧 Bố / Mẹ</option>
+        <option value="child">👦 Con cái</option>
+        <option value="member">🧑 Thành viên khác</option>
       </select>
     </div>
     <div class="form-group">
@@ -563,11 +669,11 @@ html, body { height: 100%; font-family: var(--fb); background: var(--bg); color:
       <input class="form-input" id="mem-pin" type="password" placeholder="••••" maxlength="4" inputmode="numeric">
     </div>
     <div class="form-group">
-      <label class="form-lbl">Màu sắc định danh thương hiệu</label>
+      <label class="form-lbl">Màu sắc định danh</label>
       <input class="form-input" id="mem-color" type="color" value="#6C63FF" style="height:40px; padding:2px;">
     </div>
     <button class="submit-btn" onclick="submitMember()">
-      <i class="ti ti-user-plus"></i> Khởi tạo cấu trúc tài khoản
+      <i class="ti ti-user-plus"></i> Khởi tạo thành viên
     </button>
     <button class="cancel-btn" onclick="closeOverlay('add-member')">Đóng</button>
   </div>
@@ -733,11 +839,33 @@ function renderDashboard() {
   const lowstockEl = document.getElementById('dash-lowstock');
   
   if(periodEl) periodEl.textContent = 'Kỳ tháng ' + d.period;
-  if(sharedEl) sharedEl.textContent = fmt(d.total_shared);
-  if(incomeEl) incomeEl.textContent = '+' + fmt(d.total_income);
-  if(expenseEl) expenseEl.textContent = '-' + fmt(d.total_expense);
   if(membersEl) membersEl.textContent = d.member_count + ' người';
   if(lowstockEl) lowstockEl.textContent = d.low_stock_count + ' loại hàng';
+
+  // ── TÍNH TỔNG CHI PHÍ CHUNG THÁNG NÀY ──────────────────────────────────
+  // Gồm: tất cả sharedExpenses + giao dịch cá nhân có is_shared=TRUE
+  const thisMonth = new Date().toISOString().substring(0, 7);
+  
+  // 1. Từ bảng SharedExpenses (chi tiêu chung trực tiếp)
+  const sharedDirectExpense = (state.sharedExpenses || [])
+    .filter(s => String(s.date).startsWith(thisMonth))
+    .reduce((sum, s) => sum + Number(s.amount || 0), 0);
+
+  // 2. Từ giao dịch cá nhân có đánh dấu is_shared (nếu dashboard trả về recent_shared có đủ dữ liệu)
+  // Dùng d.total_shared_income / d.total_shared_expense nếu backend hỗ trợ, ngược lại dùng sharedExpenses
+  let totalSharedIncome  = Number(d.total_shared_income  || 0);
+  let totalSharedExpense = Number(d.total_shared_expense || 0);
+
+  // Nếu backend chưa trả về breakdown income/expense riêng, fallback về sharedDirectExpense
+  if (!totalSharedIncome && !totalSharedExpense) {
+    totalSharedExpense = sharedDirectExpense;
+  }
+
+  const netShared = totalSharedIncome - totalSharedExpense;
+
+  if(sharedEl)  sharedEl.textContent  = fmt(Math.abs(netShared));
+  if(incomeEl)  incomeEl.textContent  = '+' + fmt(totalSharedIncome  || Number(d.total_income  || 0));
+  if(expenseEl) expenseEl.textContent = '-' + fmt(totalSharedExpense || Number(d.total_expense || 0));
 
   const chart = d.chart || [];
   const maxExpense = Math.max(...chart.map(c => c.expense), 1);
@@ -759,7 +887,7 @@ function renderDashboard() {
       <div class="member-card" onclick="openPage('personal')">
         <div class="member-avatar" style="background:${member.color}22;">${member.emoji}</div>
         <div class="member-name">${member.name}</div>
-        <div class="member-role">${member.role === 'parent' ? 'Bố / Mẹ' : 'Con cái'}</div>
+        <div class="member-role">${member.role === 'parent' ? '👨‍👩‍👧 Bố / Mẹ' : '👦 Con cái'}</div>
         <div class="member-lock"><i class="ti ti-lock"></i> Riêng tư</div>
       </div>`).join('') + 
       `<div class="member-card" style="border:1.5px dashed var(--muted); display:flex; flex-direction:column; align-items:center; justify-content:center;" onclick="openOverlay('add-member')">
@@ -770,7 +898,8 @@ function renderDashboard() {
 
   const recentSharedList = document.getElementById('recent-shared-list');
   if(recentSharedList) {
-    recentSharedList.innerHTML = d.recent_shared.map(item => `
+    const items = d.recent_shared || [];
+    recentSharedList.innerHTML = items.length ? items.map(item => `
       <div class="tx-item">
         <div class="tx-ico" style="background:${catBg[item.category]}; color:${catColor[item.category]};">${catIcon[item.category] || '📌'}</div>
         <div class="tx-info">
@@ -778,7 +907,7 @@ function renderDashboard() {
           <div class="tx-meta">${item.paid_by} · ${item.date}</div>
         </div>
         <div class="tx-amt out">-${fmt(item.amount)}</div>
-      </div>`).join('') || '<div class="empty"><i class="ti ti-receipt-off"></i><p>Chưa có chi tiêu chung phát sinh</p></div>';
+      </div>`).join('') : '<div class="empty"><i class="ti ti-receipt-off"></i><p>Chưa có chi tiêu chung phát sinh</p></div>';
   }
 }
 
@@ -848,25 +977,35 @@ async function loadPersonalWalletData(id, validatedPin) {
     const member = state.members.find(m => m.id === id);
     state.personal = { memberId: id, memberName: member?.name || '', pin: validatedPin, accounts: data.accounts || [], transactions: data.transactions || [] };
     
-    document.getElementById('personal-member-name').textContent = 'Sổ ví điện tử: ' + (member?.name || '');
+    document.getElementById('personal-member-name').textContent = 'Sổ ví: ' + (member?.name || '');
     
+    const accTypeIcon = { cash:'💵', bank:'🏦', credit:'💳', ewallet:'📱', saving:'🏧' };
+    const accTypeLabel = { cash:'Tiền mặt', bank:'Ngân hàng', credit:'Credit Card', ewallet:'Ví điện tử', saving:'Tiết kiệm' };
+    const accGradients = [
+      'linear-gradient(135deg,#6C63FF,#a78bfa)',
+      'linear-gradient(135deg,#20BFC1,#6DECAE)',
+      'linear-gradient(135deg,#FF9F43,#FF6B6B)',
+      'linear-gradient(135deg,#4FACFE,#185FA5)',
+      'linear-gradient(135deg,#00C896,#085450)',
+    ];
+
     const accountsRow = document.getElementById('personal-accounts');
-    const backgroundGradients = ['linear-gradient(135deg,#6C63FF,#a78bfa)', 'linear-gradient(135deg,#20BFC1,#6DECAE)'];
     if(accountsRow) {
-      accountsRow.innerHTML = state.personal.accounts.map((acc, index) => `
-        <div class="acc-card" style="background:${backgroundGradients[index % backgroundGradients.length]};">
-          <div class="acc-type">${acc.type.toUpperCase()}</div>
+      const accCards = state.personal.accounts.map((acc, index) => `
+        <div class="acc-card" style="background:${accGradients[index % accGradients.length]};">
+          <div class="acc-type">${(accTypeIcon[acc.type] || '💰')} ${(accTypeLabel[acc.type] || acc.type).toUpperCase()}</div>
           <div class="acc-amt">${fmt(acc.balance)}</div>
           <div class="acc-name">${acc.name}</div>
         </div>`).join('');
+      const addCard = `<div class="acc-add-card" onclick="openAddAccountModal()">
+        <i class="ti ti-plus" style="font-size:22px;"></i>
+        <div style="font-size:11px;font-weight:600;">Thêm tài khoản</div>
+      </div>`;
+      accountsRow.innerHTML = accCards + addCard;
     }
       
     renderPersonalTxList();
-    
-    // ĐÃ SỬA: Tự động cuộn mở vùng giao diện tài chính cá nhân ra ngay lập tức
     document.getElementById('personal-content').style.display = 'block';
-    
-    // Tự động cuộn màn hình xuống vùng thông tin ví cho tiện theo dõi
     document.getElementById('personal-content').scrollIntoView({ behavior: 'smooth' });
   } catch (e) {
     showToast('Lỗi truy xuất ví: ' + e.message);
@@ -1092,16 +1231,21 @@ function onTxMemberChange() {
   const accountSelect = document.getElementById('tx-account');
   if(!accountSelect) return;
   
+  // FIX: Khi tick shared=true, KHÔNG thay đổi danh sách ví – giữ nguyên tên ví đã chọn
+  // Chỉ rebuild danh sách ví khi thay đổi thành viên hoặc khi bỏ tick shared
   if (isSharedChecked) {
-    accountSelect.innerHTML = '<option value="">-- Chi trực tiếp ngân sách chung --</option>';
+    // Nếu ví đang trống (chưa chọn thành viên/chưa có ví) thì để trống, không điền gì
+    // Nếu đã có ví được chọn rồi thì giữ nguyên -> không làm gì cả
     return;
   }
   
-  // SỬA LỖI ĐỒNG BỘ: Đảm bảo khi chọn thành viên trong Popup, danh sách Ví của đúng người đó sẽ hiện ra
+  // Rebuild ví theo thành viên được chọn (chỉ khi shared=false)
   if (state.personal.memberId === selectedMemberId && state.personal.accounts.length > 0) {
+    const prevVal = accountSelect.value;
     accountSelect.innerHTML = state.personal.accounts.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+    // Khôi phục lựa chọn trước nếu còn tồn tại
+    if (prevVal) accountSelect.value = prevVal;
   } else {
-    // Nếu chọn người khác mà chưa đăng nhập PIN ở ngoài tab Cá nhân
     const targetMember = state.members.find(m => m.id === selectedMemberId);
     accountSelect.innerHTML = `<option value="">-- Cần mở khóa ví ${targetMember ? targetMember.name : ''} trước --</option>`;
   }
@@ -1274,21 +1418,22 @@ function resetPicker(scope, defaultEmoji) {
 
 // ─── CHANGE PIN ───────────────────────────────────────
 function openChangePinOv() {
-  if (!S.personal.mid) { showToast('❗ Chưa mở ví'); return; }
-  document.getElementById('cpn-emoji').textContent = S.personal.emoji || '👤';
-  document.getElementById('cpn-name').textContent  = S.personal.name  || '—';
+  if (!state.personal.memberId) { showToast('❗ Chưa mở ví thành viên nào'); return; }
+  const member = state.members.find(m => m.id === state.personal.memberId);
+  document.getElementById('cpn-emoji').textContent = member?.emoji || '👤';
+  document.getElementById('cpn-name').textContent  = member?.name  || '—';
   document.getElementById('cpn-old').value = '';
   document.getElementById('cpn-new').value = '';
   document.getElementById('cpn-confirm').value = '';
   document.getElementById('cpn-err').textContent = '';
-  openOv('change-pin');
+  openOverlay('change-pin');
 }
 
 async function submitChangePin() {
-  const oldPin    = document.getElementById('cpn-old').value;
-  const newPin    = document.getElementById('cpn-new').value;
-  const confirmPin= document.getElementById('cpn-confirm').value;
-  const errEl     = document.getElementById('cpn-err');
+  const oldPin     = document.getElementById('cpn-old').value;
+  const newPin     = document.getElementById('cpn-new').value;
+  const confirmPin = document.getElementById('cpn-confirm').value;
+  const errEl      = document.getElementById('cpn-err');
   errEl.textContent = '';
   if (oldPin.length !== 4 || newPin.length !== 4 || confirmPin.length !== 4) {
     errEl.textContent = '❗ Tất cả PIN phải đủ 4 số'; return;
@@ -1298,61 +1443,68 @@ async function submitChangePin() {
   const btn = document.getElementById('cpn-sbtn');
   btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Đang xử lý...';
   try {
-    // 1. Xác minh PIN cũ
-    const vr = await api('GET', { action:'verify_pin', member_id: S.personal.mid, pin: oldPin });
+    const vr = await api('GET', { action:'verify_pin', member_id: state.personal.memberId, pin: oldPin });
     if (!vr.valid) { errEl.textContent = '❌ PIN hiện tại không đúng'; return; }
-    // 2. Đổi PIN
-    await api('POST', { action:'change_pin', member_id: S.personal.mid, pin: oldPin, new_pin: newPin });
-    S.personal.pin = newPin;
-    closeOv('change-pin');
+    await api('POST', { action:'change_pin', member_id: state.personal.memberId, pin: oldPin, new_pin: newPin });
+    state.personal.pin = newPin;
+    closeOverlay('change-pin');
     showToast('✅ Đổi PIN thành công!');
   } catch(e) { errEl.textContent = '❌ ' + e.message; }
   finally { btn.disabled = false; btn.innerHTML = '<i class="ti ti-key"></i> Xác nhận đổi PIN'; }
 }
 
-async function submitMember(){
-  const name=document.getElementById('mem-name').value.trim();
-  const emoji=document.getElementById('mem-emoji').value.trim()||'👤';
-  const role=document.getElementById('mem-role').value;
-  const pin=document.getElementById('mem-pin').value;
-  const color=document.getElementById('mem-color').value;
-  if(!name||pin.length!==4){showToast('❗ Nhập tên và PIN 4 số');return;}
-  const r=await api('POST',{action:'add_member',name,emoji,role,pin,color});
-  S.members.push({id:r.id,name,emoji,color,role});
-  renderPersonalMembers(); renderOverview();
-  closeOv('add-member'); showToast('✅ Đã thêm '+name);
-  document.getElementById('mem-name').value='';
-  document.getElementById('mem-emoji').value='';
-  document.getElementById('mem-pin').value='';
-  resetPicker('mem','👤');
-}
-   
-// ═══════════════════════════════════════════════════════
-// HÀM KHỞI TẠO VÀ ĐĂNG KÝ SỰ KIỆN GIAO DIỆN ( THAY THẾ ĐOẠN ĐUÔI )
-// ═══════════════════════════════════════════════════════
-async function verifyPinProcess() {
-  try {
-    const response = await api('POST', { action: 'verify_pin', member_id: targetAuthMemberId, pin: pinBuffer });
-    if (response && response.valid) {
-      closeOverlay('pin');
-      showToast('🔓 Xác thực thành công tài khoản riêng tư!');
-      
-      // 1. Tải dữ liệu ví cá nhân từ Cloud về
-      await loadPersonalWalletData(targetAuthMemberId, pinBuffer);
-      
-      // FIX CỐT LÕI: Nhập PIN đúng sẽ tự động chuyển hướng màn hình sang tab cá nhân ngay lập tức
-      openPage('personal'); 
-    } else {
-      document.getElementById('pin-error').textContent = 'Mật mã PIN nhập chưa chính xác, vui lòng thử lại';
-      pinBuffer = '';
-      updatePinView();
-    }
-  } catch(e) {
-    document.getElementById('pin-error').textContent = 'Lỗi kết nối kiểm tra: ' + e.message;
-  }
+// ─── ADD ACCOUNT ──────────────────────────────────────
+function openAddAccountModal() {
+  if (!state.personal.memberId) { showToast('❗ Vui lòng mở ví thành viên trước'); return; }
+  const member = state.members.find(m => m.id === state.personal.memberId);
+  document.getElementById('add-acc-emoji').textContent = member?.emoji || '👤';
+  document.getElementById('add-acc-name').textContent  = member?.name  || '—';
+  document.getElementById('acc-name').value    = '';
+  document.getElementById('acc-balance').value = '';
+  document.getElementById('acc-bank').value    = '';
+  document.getElementById('acc-err').textContent = '';
+  document.getElementById('acc-type').value = 'cash';
+  toggleAccBankField();
+  openOverlay('add-account');
 }
 
-// Trình lắng nghe khởi chạy toàn bộ hệ thống Event trên trình duyệt
+function toggleAccBankField() {
+  const type = document.getElementById('acc-type')?.value;
+  const bankGroup = document.getElementById('acc-bank-group');
+  if(bankGroup) bankGroup.style.display = (type === 'bank' || type === 'credit') ? 'block' : 'none';
+}
+
+async function submitAddAccount() {
+  const name    = document.getElementById('acc-name').value.trim();
+  const type    = document.getElementById('acc-type').value;
+  const balance = parseFloat(document.getElementById('acc-balance').value) || 0;
+  const bank    = document.getElementById('acc-bank').value.trim();
+  const errEl   = document.getElementById('acc-err');
+  errEl.textContent = '';
+
+  if (!name) { errEl.textContent = '❗ Vui lòng nhập tên tài khoản'; return; }
+  const btn = document.getElementById('acc-sbtn');
+  btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Đang tạo...';
+  try {
+    await api('POST', {
+      action: 'add_account',
+      member_id: state.personal.memberId,
+      pin: state.personal.pin,
+      name, type, balance,
+      bank_name: bank
+    });
+    closeOverlay('add-account');
+    showToast('✅ Tạo tài khoản thành công!');
+    await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
+    onTxMemberChange(); // refresh ví dropdown
+  } catch(e) { errEl.textContent = '❌ ' + e.message; }
+  finally { btn.disabled = false; btn.innerHTML = '<i class="ti ti-credit-card"></i> Tạo tài khoản'; }
+}
+
+
+// ═══════════════════════════════════════════════════════
+// ĐĂNG KÝ SỰ KIỆN GIAO DIỆN
+// ═══════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => { 
   
   // 1. Kích hoạt sự kiện Click cho các tab thanh menu trên (Desktop)
@@ -1376,8 +1528,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const txMemberDropdown = document.getElementById('tx-member');
   if (txMemberDropdown) txMemberDropdown.addEventListener('change', onTxMemberChange);
   
+  // FIX: khi tick/untick shared -> rebuild ví chỉ khi bỏ tick (untick)
   const txSharedCheck = document.getElementById('tx-shared');
-  if (txSharedCheck) txSharedCheck.addEventListener('change', onTxMemberChange);
+  if (txSharedCheck) txSharedCheck.addEventListener('change', () => {
+    if (!txSharedCheck.checked) onTxMemberChange(); // bỏ tick mới rebuild ví
+    // tick -> không thay đổi ví đang chọn
+  });
+
+  // Kích hoạt chuyển đổi hiện/ẩn trường ngân hàng khi tạo tài khoản mới
+  const accTypeSelect = document.getElementById('acc-type');
+  if (accTypeSelect) accTypeSelect.addEventListener('change', toggleAccBankField);
 
   // 5. Chạy lệnh đồng bộ dữ liệu đám mây ban đầu khi tải trang
   syncAll(); 
