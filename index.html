@@ -289,6 +289,92 @@ body {
 .acc-act-btn.edit  { background: var(--pri-light); color: var(--pri); }
 .acc-act-btn.del   { background: var(--red-l);     color: var(--red); }
 
+/* ── Swipe TX item ── */
+.tx-swipe-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  margin-bottom: 7px;
+  /* Quan trọng: contain giúp Safari không scroll trang khi vuốt ngang */
+  touch-action: pan-y;
+}
+.tx-swipe-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  border-radius: var(--radius);
+  pointer-events: none;
+}
+.tx-swipe-left-reveal {  /* vuốt trái → xoá (đỏ, phải) */
+  position: absolute; right: 0; top: 0; bottom: 0;
+  width: 100px;
+  background: var(--red);
+  display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 3px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: #fff; font-size: 11px; font-weight: 700;
+  opacity: 0; transition: opacity .15s;
+}
+.tx-swipe-right-reveal { /* vuốt phải → sửa (xanh, trái) */
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 100px;
+  background: var(--pri);
+  display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 3px;
+  border-radius: var(--radius) 0 0 var(--radius);
+  color: #fff; font-size: 11px; font-weight: 700;
+  opacity: 0; transition: opacity .15s;
+}
+.tx-swipe-left-reveal i, .tx-swipe-right-reveal i { font-size: 20px; }
+.tx-card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 11px 13px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  will-change: transform;
+  /* Transition chỉ khi snap về, không khi đang kéo */
+  transition: none;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.tx-card.snapping { transition: transform .25s cubic-bezier(.25,.46,.45,.94); }
+
+/* ── Custom confirm dialog (thay thế window.confirm cho Safari iOS) ── */
+.confirm-dialog {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.confirm-dialog.open { display: flex; }
+.confirm-box {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 24px 20px 16px;
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+}
+.confirm-icon { font-size: 36px; margin-bottom: 10px; }
+.confirm-title { font-family: var(--fh); font-size: 16px; font-weight: 800; margin-bottom: 7px; }
+.confirm-msg { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 20px; }
+.confirm-btns { display: flex; gap: 8px; }
+.confirm-ok  { flex: 1; padding: 12px; border-radius: 12px; border: none; font-size: 14px; font-weight: 700; font-family: var(--fh); cursor: pointer; background: var(--red); color: #fff; }
+.confirm-cancel { flex: 1; padding: 12px; border-radius: 12px; border: 1.5px solid var(--border); font-size: 14px; font-weight: 700; font-family: var(--fh); cursor: pointer; background: transparent; color: var(--muted); }
+
+/* ── Edit TX overlay specific ── */
+.edit-tx-header { display: flex; align-items: center; gap: 10px; background: var(--pri-light); border-radius: 12px; padding: 10px 13px; margin-bottom: 14px; }
+.edit-tx-badge { font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 99px; }
+
 /* ── Credit repay button in TX list ── */
 .tx-repay-btn { color: var(--green-d); background: var(--green-l); border: 1px solid rgba(0,200,150,.3); border-radius: 7px; padding: 3px 8px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 3px; }
 .tx-repay-btn:hover { background: var(--green); color: #fff; }
@@ -970,7 +1056,8 @@ async function api(method, params) {
 }
 
 async function initDatabaseBackend() {
-  if(!confirm('Hệ thống sẽ dọn dẹp và cấu trúc lại toàn bộ đầu bảng trên file Google Sheet hiện tại?')) return;
+  const ok = await showConfirm({ icon:'⚙️', title:'Khởi tạo Database?', msg:'Hệ thống sẽ dọn dẹp và cấu trúc lại toàn bộ đầu bảng trên file Google Sheet hiện tại.', okLabel:'Xác nhận khởi tạo' });
+  if(!ok) return;
   showToast('Đang tạo các sheet chức năng...');
   try {
     const data = await api('GET', { action: 'init_database' });
@@ -1385,13 +1472,10 @@ function filterTx(type) {
 
 function renderPersonalTxList() {
   let list = [...state.personal.transactions];
-
-  // ── Sắp xếp gần nhất trên cùng (theo date desc, nếu same date giữ thứ tự gốc)
   list.sort((a, b) => String(b.date).localeCompare(String(a.date)));
-
   if (state.activeTxFilter === 'income')  list = list.filter(t => t.type === 'income');
   if (state.activeTxFilter === 'expense') list = list.filter(t => t.type === 'expense');
-  
+
   const container = document.getElementById('personal-tx-list');
   if(!container) return;
   if(!list.length) {
@@ -1399,57 +1483,294 @@ function renderPersonalTxList() {
     return;
   }
 
-  // Tạo map account_id -> account để tra loại tài khoản
   const accMap = {};
   (state.personal.accounts || []).forEach(a => { accMap[a.id] = a; });
 
+  // Render HTML — mỗi item dùng cấu trúc swipe-wrap
   container.innerHTML = list.map(item => {
     const acc = accMap[item.account_id] || {};
     const isCreditExpense = acc.type === 'credit' && item.type === 'expense';
-
-    // Nút trả nợ chỉ hiện cho giao dịch chi của tài khoản credit
     const repayBtn = isCreditExpense
-      ? `<button class="tx-repay-btn" onclick="openRepayCredit('${item.id}','${item.account_id}','${(item.description||'').replace(/'/g,"\\'")}',${item.amount})">
+      ? `<button class="tx-repay-btn" onclick="openRepayCredit('${item.id}','${item.account_id}','${(item.description||'').replace(/'/g,"\\'").replace(/"/g,'&quot;')}',${item.amount})">
            <i class="ti ti-cash"></i> Trả nợ
          </button>`
       : '';
 
-    return `<div class="tx-item">
-      <div class="tx-ico" style="background:${catBg[item.category]}; color:${catColor[item.category]};">${catIcon[item.category] || '📌'}</div>
-      <div class="tx-info">
-        <div class="tx-name">${item.description}</div>
-        <div class="tx-meta">
-          ${item.date}
-          ${acc.name ? `· <span style="font-size:10px;background:var(--border);padding:1px 6px;border-radius:99px;">${acc.name}</span>` : ''}
-          ${item.is_shared === 'TRUE' ? '<span class="tag shared">👥 Chung</span>' : ''}
-        </div>
+    // data-id dùng để swipe handlers tìm lại item
+    return `
+    <div class="tx-swipe-wrap" data-txid="${item.id}">
+      <!-- Panel lộ ra khi vuốt PHẢI (edit - xanh bên trái) -->
+      <div class="tx-swipe-right-reveal">
+        <i class="ti ti-pencil"></i>
+        <span>Sửa</span>
       </div>
-      <div class="tx-actions-col">
-        <div class="tx-amt ${item.type === 'income' ? 'in' : 'out'}">${item.type === 'income' ? '+' : '-'}${fmt(item.amount)}</div>
-        <div style="display:flex;gap:4px;align-items:center;">
+      <!-- Panel lộ ra khi vuốt TRÁI (xoá - đỏ bên phải) -->
+      <div class="tx-swipe-left-reveal">
+        <i class="ti ti-trash"></i>
+        <span>Xoá</span>
+      </div>
+      <!-- Card chính -->
+      <div class="tx-card" data-txid="${item.id}">
+        <div class="tx-ico" style="background:${catBg[item.category]};color:${catColor[item.category]};">${catIcon[item.category]||'📌'}</div>
+        <div class="tx-info">
+          <div class="tx-name">${item.description}</div>
+          <div class="tx-meta">
+            ${item.date}
+            ${acc.name ? `· <span style="font-size:10px;background:var(--border);padding:1px 6px;border-radius:99px;">${acc.name}</span>` : ''}
+            ${item.is_shared==='TRUE' ? '<span class="tag shared">👥 Chung</span>' : ''}
+          </div>
+        </div>
+        <div class="tx-actions-col">
+          <div class="tx-amt ${item.type==='income'?'in':'out'}">${item.type==='income'?'+':'-'}${fmt(item.amount)}</div>
           ${repayBtn}
-          <div class="tx-del-btn" onclick="deleteTransactionProcess('${item.id}')"><i class="ti ti-trash"></i></div>
         </div>
       </div>
     </div>`;
   }).join('');
+
+  // Gắn swipe handlers sau khi render xong
+  attachSwipeHandlers(container, list, accMap);
+}
+
+// ─── SWIPE GESTURE ENGINE (Safari iOS compatible) ────────────────────────────
+function attachSwipeHandlers(container, txList, accMap) {
+  const THRESHOLD  = 72;   // px vuốt tối thiểu để trigger action
+  const PEEK       = 90;   // px card dịch tối đa để lộ panel
+  const SNAP_VEL   = 0.4;  // velocity tối thiểu (px/ms) để trigger kể cả chưa đủ THRESHOLD
+
+  container.querySelectorAll('.tx-swipe-wrap').forEach(wrap => {
+    const card      = wrap.querySelector('.tx-card');
+    const leftReveal  = wrap.querySelector('.tx-swipe-right-reveal'); // vuốt phải → lộ bên trái
+    const rightReveal = wrap.querySelector('.tx-swipe-left-reveal');  // vuốt trái → lộ bên phải
+    const txId      = wrap.dataset.txid;
+
+    let startX = 0, startY = 0, curX = 0, startTime = 0;
+    let tracking = false, axis = null; // axis: 'x' | 'y' | null
+
+    function setTranslate(dx) {
+      // Clamp trong [-PEEK, PEEK]
+      dx = Math.max(-PEEK, Math.min(PEEK, dx));
+      card.style.transform = `translateX(${dx}px)`;
+      // Fade panel theo tỉ lệ kéo
+      const ratio = Math.abs(dx) / PEEK;
+      if (dx > 0)       { leftReveal.style.opacity = ratio; rightReveal.style.opacity = 0; }
+      else if (dx < 0)  { rightReveal.style.opacity = ratio; leftReveal.style.opacity = 0; }
+      else              { leftReveal.style.opacity = 0; rightReveal.style.opacity = 0; }
+    }
+
+    function snapBack() {
+      card.classList.add('snapping');
+      setTranslate(0);
+      setTimeout(() => card.classList.remove('snapping'), 280);
+    }
+
+    // ── Pointer Events (hỗ trợ cả touch và mouse, kể cả Safari iOS 13+) ──
+    card.addEventListener('pointerdown', e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      startX = e.clientX; startY = e.clientY;
+      startTime = Date.now(); curX = 0; tracking = true; axis = null;
+      card.setPointerCapture(e.pointerId);
+      card.style.transition = 'none';
+    }, { passive: true });
+
+    card.addEventListener('pointermove', e => {
+      if (!tracking) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+
+      // Xác định trục di chuyển ở lần move đầu tiên
+      if (!axis) {
+        if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
+          axis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
+        }
+        return;
+      }
+      if (axis === 'y') return; // scroll dọc → không làm gì
+
+      curX = dx;
+      setTranslate(dx);
+    }, { passive: true });
+
+    card.addEventListener('pointerup', e => {
+      if (!tracking) return;
+      tracking = false;
+      if (axis !== 'x') { snapBack(); return; }
+
+      const elapsed  = Date.now() - startTime;
+      const velocity = Math.abs(curX) / Math.max(elapsed, 1);
+      const triggered = Math.abs(curX) >= THRESHOLD || velocity >= SNAP_VEL;
+
+      if (triggered) {
+        if (curX > 0) {
+          // Vuốt phải → EDIT
+          snapBack();
+          const tx = txList.find(t => t.id === txId);
+          if (tx) setTimeout(() => openEditTxOverlay(tx, accMap), 80);
+        } else {
+          // Vuốt trái → XOÁ
+          snapBack();
+          setTimeout(() => deleteTransactionProcess(txId), 80);
+        }
+      } else {
+        snapBack();
+      }
+    }, { passive: true });
+
+    card.addEventListener('pointercancel', () => { tracking = false; snapBack(); }, { passive: true });
+  });
+}
+
+// ─── CUSTOM CONFIRM (thay window.confirm — không bị Safari iOS block) ────────
+function showConfirm({ icon = '⚠️', title = 'Xác nhận', msg = '', okLabel = 'Xác nhận', okClass = 'confirm-ok' } = {}) {
+  return new Promise(resolve => {
+    const dialog   = document.getElementById('confirm-dialog');
+    const iconEl   = document.getElementById('confirm-icon');
+    const titleEl  = document.getElementById('confirm-title');
+    const msgEl    = document.getElementById('confirm-msg');
+    const okBtn    = document.getElementById('confirm-ok-btn');
+    const cancelBtn= document.getElementById('confirm-cancel-btn');
+
+    iconEl.textContent  = icon;
+    titleEl.textContent = title;
+    msgEl.textContent   = msg;
+    okBtn.textContent   = okLabel;
+    okBtn.className     = okClass;
+
+    dialog.classList.add('open');
+
+    function cleanup(result) {
+      dialog.classList.remove('open');
+      okBtn.removeEventListener('click', onOk);
+      cancelBtn.removeEventListener('click', onCancel);
+      resolve(result);
+    }
+    const onOk     = () => cleanup(true);
+    const onCancel = () => cleanup(false);
+    okBtn.addEventListener('click', onOk);
+    cancelBtn.addEventListener('click', onCancel);
+  });
 }
 
 async function deleteTransactionProcess(txId) {
-  if(!confirm('Xác nhận xóa bỏ vĩnh viễn giao dịch này và hoàn lại số dư ví tương ứng trên Google Sheet?')) return;
+  // Dùng custom confirm thay window.confirm — Safari iOS không block async
+  const ok = await showConfirm({
+    icon: '🗑️',
+    title: 'Xoá giao dịch?',
+    msg: 'Giao dịch sẽ bị xoá vĩnh viễn và số dư ví sẽ được hoàn lại trên Google Sheet.',
+    okLabel: 'Xoá ngay',
+    okClass: 'confirm-ok'
+  });
+  if (!ok) return;
+
   try {
-    const res = await api('POST', { action: 'delete_transaction', tx_id: txId, member_id: state.personal.memberId, pin: state.personal.pin });
-    if(res && res.deleted) {
-      showToast('🗑️ Đã loại bỏ giao dịch hoàn tất');
-      await syncAll();
-      await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
+    const res = await api('POST', {
+      action: 'delete_transaction',
+      tx_id: txId,
+      member_id: state.personal.memberId,
+      pin: state.personal.pin
+    });
+    if (res && res.deleted) {
+      // Cập nhật state local ngay (không chờ syncAll) để UI phản hồi tức thì
+      state.personal.transactions = state.personal.transactions.filter(t => t.id !== txId);
+      renderPersonalTxList();
+      showToast('🗑️ Đã xoá giao dịch');
+      // Sync ngầm để cập nhật số dư
+      syncAll().then(() => loadPersonalWalletData(state.personal.memberId, state.personal.pin));
     }
   } catch(e) {
-    showToast('Lỗi xóa giao dịch: ' + e.message);
+    showToast('❌ Lỗi xoá: ' + e.message);
   }
 }
 
-function renderFamily() {
+// ─── EDIT TRANSACTION ────────────────────────────────────────────────────────
+let editTxType = 'expense';
+
+function openEditTxOverlay(tx, accMap) {
+  editTxType = tx.type || 'expense';
+  document.getElementById('edit-tx-id').value       = tx.id;
+  document.getElementById('edit-tx-desc').value     = tx.description || '';
+  document.getElementById('edit-tx-amount').value   = tx.amount || '';
+  document.getElementById('edit-tx-date').value     = tx.date || '';
+  document.getElementById('edit-tx-category').value = tx.category || 'other';
+  document.getElementById('edit-tx-shared').checked = tx.is_shared === 'TRUE';
+  document.getElementById('edit-tx-err').textContent = '';
+
+  // Populate account dropdown
+  const sel = document.getElementById('edit-tx-account');
+  sel.innerHTML = (state.personal.accounts || [])
+    .map(a => `<option value="${a.id}" ${a.id === tx.account_id ? 'selected' : ''}>${a.name}</option>`)
+    .join('');
+
+  // Highlight type buttons
+  setEditTxType(editTxType);
+  openOverlay('edit-tx');
+}
+
+function setEditTxType(type) {
+  editTxType = type;
+  const btnE = document.getElementById('edit-tx-btn-expense');
+  const btnI = document.getElementById('edit-tx-btn-income');
+  if(btnE) { btnE.classList.toggle('active', type === 'expense'); }
+  if(btnI) { btnI.classList.toggle('active', type === 'income'); }
+}
+
+async function submitEditTx() {
+  const txId    = document.getElementById('edit-tx-id').value;
+  const desc    = document.getElementById('edit-tx-desc').value.trim();
+  const amount  = parseFloat(document.getElementById('edit-tx-amount').value) || 0;
+  const date    = document.getElementById('edit-tx-date').value;
+  const cat     = document.getElementById('edit-tx-category').value;
+  const accId   = document.getElementById('edit-tx-account').value;
+  const shared  = document.getElementById('edit-tx-shared').checked;
+  const errEl   = document.getElementById('edit-tx-err');
+  errEl.textContent = '';
+
+  if (!desc)    { errEl.textContent = '❗ Vui lòng nhập mô tả'; return; }
+  if (amount <= 0) { errEl.textContent = '❗ Số tiền phải lớn hơn 0'; return; }
+  if (!date)    { errEl.textContent = '❗ Vui lòng chọn ngày'; return; }
+
+  const btn = document.getElementById('edit-tx-sbtn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spin"></div> Đang lưu...';
+
+  try {
+    await api('POST', {
+      action:      'update_transaction',
+      tx_id:       txId,
+      member_id:   state.personal.memberId,
+      pin:         state.personal.pin,
+      description: desc,
+      amount,
+      date,
+      category:    cat,
+      account_id:  accId,
+      type:        editTxType,
+      is_shared:   shared ? 'TRUE' : 'FALSE'
+    });
+
+    // Cập nhật state local ngay lập tức
+    const idx = state.personal.transactions.findIndex(t => t.id === txId);
+    if (idx !== -1) {
+      state.personal.transactions[idx] = {
+        ...state.personal.transactions[idx],
+        description: desc, amount, date, category: cat,
+        account_id: accId, type: editTxType,
+        is_shared: shared ? 'TRUE' : 'FALSE'
+      };
+    }
+
+    closeOverlay('edit-tx');
+    showToast('✅ Đã cập nhật giao dịch');
+    renderPersonalTxList();
+    // Sync ngầm để cập nhật số dư
+    syncAll().then(() => loadPersonalWalletData(state.personal.memberId, state.personal.pin));
+  } catch(e) {
+    errEl.textContent = '❌ ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ti ti-device-floppy"></i> Lưu thay đổi';
+  }
+}
   const shared = state.sharedExpenses;
   const thisMonthString = new Date().toISOString().substring(0, 7);
   const matchedExpenses = shared.filter(s => String(s.date).startsWith(thisMonthString));
@@ -1590,7 +1911,8 @@ function renderNotes() {
 }
 
 async function deleteNoteProcess(id) {
-  if(!confirm('Gỡ bỏ ghi chú này khỏi bảng tin chung?')) return;
+  const ok = await showConfirm({ icon:'🗑️', title:'Xoá ghi chú?', msg:'Ghi chú này sẽ bị gỡ bỏ khỏi bảng tin chung.', okLabel:'Xoá' });
+  if(!ok) return;
   try {
     await api('POST', { action: 'delete_note', note_id: id });
     showToast('🗑️ Đã xóa ghi chú');
@@ -1932,7 +2254,8 @@ async function submitEditAccount() {
 async function confirmDeleteAccount() {
   const id   = document.getElementById('edit-acc-id').value;
   const name = document.getElementById('edit-acc-name').value;
-  if (!confirm(`Xác nhận xoá tài khoản "${name}"?\n⚠️ Toàn bộ lịch sử giao dịch liên quan cũng sẽ bị xoá.`)) return;
+  const ok = await showConfirm({ icon:'🗑️', title:`Xoá tài khoản?`, msg:`Xoá "${name}"?\n⚠️ Toàn bộ lịch sử giao dịch liên quan cũng sẽ bị xoá vĩnh viễn.`, okLabel:'Xoá tài khoản' });
+  if (!ok) return;
   try {
     await api('POST', {
       action: 'delete_account',
@@ -2091,3 +2414,73 @@ document.addEventListener('DOMContentLoaded', () => {
   syncAll(); 
 });
 </script>
+
+<!-- ── CUSTOM CONFIRM DIALOG (thay window.confirm — Safari iOS friendly) ── -->
+<div class="confirm-dialog" id="confirm-dialog">
+  <div class="confirm-box">
+    <div class="confirm-icon" id="confirm-icon">⚠️</div>
+    <div class="confirm-title" id="confirm-title">Xác nhận</div>
+    <div class="confirm-msg" id="confirm-msg">Bạn có chắc muốn thực hiện hành động này?</div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" id="confirm-cancel-btn">Huỷ</button>
+      <button class="confirm-ok" id="confirm-ok-btn">Xác nhận</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── EDIT TRANSACTION OVERLAY ── -->
+<div class="overlay" id="overlay-edit-tx">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">✏️ Chỉnh sửa giao dịch</div>
+    <input type="hidden" id="edit-tx-id">
+    <div class="edit-tx-header">
+      <div class="type-toggle" style="margin:0;flex:1;">
+        <button class="type-btn expense" id="edit-tx-btn-expense" onclick="setEditTxType('expense')">💸 Chi tiêu</button>
+        <button class="type-btn income" id="edit-tx-btn-income" onclick="setEditTxType('income')">💰 Thu nhập</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Mô tả / Nội dung</label>
+      <input class="form-input" id="edit-tx-desc" type="text" placeholder="Mô tả giao dịch...">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Số tiền (VNĐ)</label>
+      <input class="form-input" id="edit-tx-amount" type="number" placeholder="0" min="0" style="font-size:18px;font-weight:700;">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Ngày giao dịch</label>
+      <input class="form-input" id="edit-tx-date" type="date">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Tài khoản / Ví</label>
+      <select class="form-input" id="edit-tx-account"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Hạng mục</label>
+      <select class="form-input" id="edit-tx-category">
+        <option value="food">🛒 Ăn uống / Đi chợ</option>
+        <option value="electric">⚡ Tiền điện</option>
+        <option value="water">💧 Tiền nước</option>
+        <option value="internet">🌐 Internet</option>
+        <option value="education">📚 Giáo dục</option>
+        <option value="transport">🚗 Đi lại</option>
+        <option value="health">🏥 Y tế</option>
+        <option value="shopping">🛍️ Mua sắm</option>
+        <option value="salary">💼 Thu nhập / Lương</option>
+        <option value="other">📌 Khác</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl" style="display:flex;align-items:center;gap:7px;cursor:pointer;">
+        <input type="checkbox" id="edit-tx-shared" style="width:16px;height:16px;accent-color:var(--pri);">
+        <span>Đồng bộ vào <strong>Chi tiêu chung</strong></span>
+      </label>
+    </div>
+    <div class="pin-err" id="edit-tx-err"></div>
+    <button class="submit-btn" id="edit-tx-sbtn" onclick="submitEditTx()">
+      <i class="ti ti-device-floppy"></i> Lưu thay đổi
+    </button>
+    <button class="cancel-btn" onclick="closeOverlay('edit-tx')">Huỷ</button>
+  </div>
+</div>
