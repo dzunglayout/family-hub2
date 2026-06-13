@@ -11,52 +11,52 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
 /* ═══════════════════════════════════════════
-   PRODUCTION CLASS-LEVEL BRAND STYLING
+   PRODUCTION CLASS-LEVEL BRAND STYLING
 ═══════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 :root {
-  --pri:       #6C63FF; --pri-light: #EDE9FF; --pri-dark:  #4B44C1;
-  --green:     #00C896; --green-l: #E0FFF6; --green-d: #006B4F;
-  --amber:     #FF9F43; --amber-l: #FFF3E0; --amber-d: #7A4200;
-  --red:       #FF6B6B; --red-l:   #FFE8E8; --red-d:   #7A0000;
-  --blue:      #4FACFE; --blue-l:  #EAF6FF; --blue-d:  #0A3F6B;
-  --bg:        #F5F3FF; --card:      #FFFFFF;
-  --text:      #2D2B4E; --muted:     #9592B8; --border:    #EAE8FF;
-  --radius:    16px;    --radius-sm: 10px;    --shadow:    0 2px 16px rgba(108,99,255,.08);
-  --fh: 'Nunito', sans-serif; --fb: 'Quicksand', sans-serif;
+  --pri:       #6C63FF; --pri-light: #EDE9FF; --pri-dark:  #4B44C1;
+  --green:     #00C896; --green-l: #E0FFF6; --green-d: #006B4F;
+  --amber:     #FF9F43; --amber-l: #FFF3E0; --amber-d: #7A4200;
+  --red:       #FF6B6B; --red-l:   #FFE8E8; --red-d:   #7A0000;
+  --blue:      #4FACFE; --blue-l:  #EAF6FF; --blue-d:  #0A3F6B;
+  --bg:        #F5F3FF; --card:      #FFFFFF;
+  --text:      #2D2B4E; --muted:     #9592B8; --border:    #EAE8FF;
+  --radius:    16px;    --radius-sm: 10px;    --shadow:    0 2px 16px rgba(108,99,255,.08);
+  --fh: 'Nunito', sans-serif; --fb: 'Quicksand', sans-serif;
 }
 html {
-  height: 100%;
-  /* Dùng -webkit-fill-available cho Safari iOS thay vì 100vh */
-  height: -webkit-fill-available;
+  height: 100%;
+  /* Dùng -webkit-fill-available cho Safari iOS thay vì 100vh */
+  height: -webkit-fill-available;
 }
 body {
-  font-family: var(--fb);
-  background: var(--bg);
-  color: var(--text);
-  overflow: hidden;
-  /* Fill available height — fix Safari 100vh bug */
-  height: 100%;
-  height: -webkit-fill-available;
-  /* Cho phép content mở rộng vào safe area (notch/home bar) */
-  padding-top: env(safe-area-inset-top);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
+  font-family: var(--fb);
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  /* Fill available height — fix Safari 100vh bug */
+  height: 100%;
+  height: -webkit-fill-available;
+  /* Cho phép content mở rộng vào safe area (notch/home bar) */
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 #app {
-  display: flex;
-  flex-direction: column;
-  /* Dùng dvh (dynamic viewport height) — hỗ trợ Safari iOS 15.4+
-     Fallback về -webkit-fill-available cho Safari cũ hơn */
-  height: 100vh;
-  height: 100dvh;
-  max-width: 480px;
-  margin: 0 auto;
-  background: var(--bg);
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 0 40px rgba(0,0,0,.08);
+  display: flex;
+  flex-direction: column;
+  /* Dùng dvh (dynamic viewport height) — hỗ trợ Safari iOS 15.4+
+     Fallback về -webkit-fill-available cho Safari cũ hơn */
+  height: 100vh;
+  height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0,0,0,.08);
 }
 .topbar { background: var(--pri); padding: 14px 18px 12px; padding-top: max(14px, env(safe-area-inset-top, 14px)); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 .topbar-left { display: flex; flex-direction: column; }
@@ -76,67 +76,60 @@ body {
 .page.active { display: block; }
 
 .bnav {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 480px;
-  background: var(--card);
-  border-top: 1px solid var(--border);
-  display: flex;
-  /* Padding bottom = safe area (home indicator iPhone X+) */
-  padding: 6px 0 0;
-  padding-bottom: max(10px, env(safe-area-inset-bottom));
-  z-index: 100;
-  /* Safari iOS: đảm bảo render đúng với backdrop */
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  display: flex;
+  /* Padding bottom = safe area (home indicator iPhone X+) */
+  padding: 6px 0 0;
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+  z-index: 100;
+  /* Safari iOS: đảm bảo render đúng với backdrop */
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 .bnav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; font-weight: 600; color: var(--muted); cursor: pointer; transition: color .2s; }
 .bnav-item.active { color: var(--pri); }
 .bnav-item i { font-size: 21px; }
 
 .fab {
-  position: fixed;
-  /* bottom = bnav height (~56px) + safe area + gap (16px) */
-  bottom: calc(max(10px, env(safe-area-inset-bottom)) + 56px + 16px);
-  right: 18px;
-  /* Trên desktop (max-width 480px) cần căn theo #app */
-  width: 52px;
-  height: 52px;
-  background: var(--pri);
-  border: none;
-  border-radius: 50%;
-  color: #fff;
-  font-size: 24px;
-  cursor: pointer;
-  box-shadow: 0 4px 18px rgba(108,99,255,.4);
-  z-index: 90;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform .15s;
-  -webkit-tap-highlight-color: transparent;
+  position: fixed;
+  /* bottom = bnav height (~56px) + safe area + gap (16px) */
+  bottom: calc(max(10px, env(safe-area-inset-bottom)) + 56px + 16px);
+  right: 18px;
+  /* Trên desktop (max-width 480px) cần căn theo #app */
+  width: 52px;
+  height: 52px;
+  background: var(--pri);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(108,99,255,.4);
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .15s;
+  -webkit-tap-highlight-color: transparent;
 }
 .fab:hover { transform: scale(1.07); }
 /* Trên màn hình rộng hơn 480px, căn FAB theo #app container */
 @media (min-width: 480px) {
-  .fab { right: calc(50% - 480px/2 + 18px); }
+  .fab { right: calc(50% - 480px/2 + 18px); }
 }
 
-.sync-bar { display: flex; align-items: center; gap: 9px; background: var(--green-l); border: 1px solid rgba(0,200,150,.2); border-radius: 12px; padding: 9px 13px; margin-bottom: 13px; transition: background .3s, border-color .3s; }
-.sync-bar.loading { background: var(--pri-light); border-color: rgba(108,99,255,.2); }
-.sync-bar.error   { background: var(--red-l);    border-color: rgba(255,107,107,.2); }
-.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; transition: background .3s; }
-.sync-dot.loading { background: var(--pri); animation: pulse 1s infinite; }
-.sync-dot.err     { background: var(--red); }
+.sync-bar { display: flex; align-items: center; gap: 9px; background: var(--green-l); border: 1px solid rgba(0,200,150,.2); border-radius: 12px; padding: 9px 13px; margin-bottom: 13px; }
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+.sync-dot.err { background: var(--red); }
 .sync-text { font-size: 12px; font-weight: 600; color: var(--green-d); flex: 1; }
-.sync-bar.loading .sync-text { color: var(--pri-dark); }
-.sync-bar.error   .sync-text { color: var(--red-d); }
-.sync-time { font-size: 11px; color: var(--green); cursor: pointer; font-weight: 700; white-space: nowrap; }
-.sync-bar.error .sync-time { color: var(--red); }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+.sync-time { font-size: 11px; color: var(--green); cursor: pointer; font-weight: 700; }
 
 .hero { border-radius: 22px; padding: 22px; margin-bottom: 14px; color: #fff; position: relative; overflow: hidden; }
 .hero-badge { position: absolute; top: 18px; right: 18px; background: rgba(255,255,255,.2); border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; }
@@ -219,29 +212,29 @@ body {
 .empty i { font-size: 32px; margin-bottom: 8px; display: block; }
 
 .overlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0; /* fallback cho Safari < 14.1 không hiểu inset */
-  inset: 0;
-  background: rgba(0,0,0,.45);
-  z-index: 500;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 0;
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0; /* fallback cho Safari < 14.1 không hiểu inset */
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 500;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 0;
 }
 .overlay.open { display: flex; }
 .sheet {
-  background: var(--card);
-  width: 100%;
-  max-width: 480px;
-  border-radius: 22px 22px 0 0;
-  padding: 18px 18px 0;
-  /* padding-bottom = nội dung + safe area bottom (home indicator) */
-  padding-bottom: max(28px, env(safe-area-inset-bottom));
-  max-height: 88dvh; /* dvh cho Safari iOS 15.4+ */
-  max-height: 88vh;  /* fallback */
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  background: var(--card);
+  width: 100%;
+  max-width: 480px;
+  border-radius: 22px 22px 0 0;
+  padding: 18px 18px 0;
+  /* padding-bottom = nội dung + safe area bottom (home indicator) */
+  padding-bottom: max(28px, env(safe-area-inset-bottom));
+  max-height: 88dvh; /* dvh cho Safari iOS 15.4+ */
+  max-height: 88vh;  /* fallback */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .handle { width: 36px; height: 4px; background: var(--border); border-radius: 99px; margin: 0 auto 18px; }
 .sheet-title { font-family: var(--fh); font-size: 17px; font-weight: 800; margin-bottom: 18px; }
@@ -293,94 +286,8 @@ body {
 .acc-card-wrap .acc-card { width: 145px; cursor: default; }
 .acc-actions { display: flex; gap: 4px; margin-top: 5px; justify-content: flex-end; }
 .acc-act-btn { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 7px; border: none; cursor: pointer; display: flex; align-items: center; gap: 3px; }
-.acc-act-btn.edit  { background: var(--pri-light); color: var(--pri); }
-.acc-act-btn.del   { background: var(--red-l);     color: var(--red); }
-
-/* ── Swipe TX item ── */
-.tx-swipe-wrap {
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--radius);
-  margin-bottom: 7px;
-  /* Quan trọng: contain giúp Safari không scroll trang khi vuốt ngang */
-  touch-action: pan-y;
-}
-.tx-swipe-bg {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  border-radius: var(--radius);
-  pointer-events: none;
-}
-.tx-swipe-left-reveal {  /* vuốt trái → xoá (đỏ, phải) */
-  position: absolute; right: 0; top: 0; bottom: 0;
-  width: 100px;
-  background: var(--red);
-  display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 3px;
-  border-radius: 0 var(--radius) var(--radius) 0;
-  color: #fff; font-size: 11px; font-weight: 700;
-  opacity: 0; transition: opacity .15s;
-}
-.tx-swipe-right-reveal { /* vuốt phải → sửa (xanh, trái) */
-  position: absolute; left: 0; top: 0; bottom: 0;
-  width: 100px;
-  background: var(--pri);
-  display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 3px;
-  border-radius: var(--radius) 0 0 var(--radius);
-  color: #fff; font-size: 11px; font-weight: 700;
-  opacity: 0; transition: opacity .15s;
-}
-.tx-swipe-left-reveal i, .tx-swipe-right-reveal i { font-size: 20px; }
-.tx-card {
-  position: relative;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 11px 13px;
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  will-change: transform;
-  /* Transition chỉ khi snap về, không khi đang kéo */
-  transition: none;
-  cursor: pointer;
-  -webkit-user-select: none;
-  user-select: none;
-}
-.tx-card.snapping { transition: transform .25s cubic-bezier(.25,.46,.45,.94); }
-
-/* ── Custom confirm dialog (thay thế window.confirm cho Safari iOS) ── */
-.confirm-dialog {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  inset: 0;
-  background: rgba(0,0,0,.5);
-  z-index: 9999;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-.confirm-dialog.open { display: flex; }
-.confirm-box {
-  background: var(--card);
-  border-radius: 20px;
-  padding: 24px 20px 16px;
-  width: 100%;
-  max-width: 320px;
-  text-align: center;
-  box-shadow: 0 20px 60px rgba(0,0,0,.2);
-}
-.confirm-icon { font-size: 36px; margin-bottom: 10px; }
-.confirm-title { font-family: var(--fh); font-size: 16px; font-weight: 800; margin-bottom: 7px; }
-.confirm-msg { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 20px; }
-.confirm-btns { display: flex; gap: 8px; }
-.confirm-ok  { flex: 1; padding: 12px; border-radius: 12px; border: none; font-size: 14px; font-weight: 700; font-family: var(--fh); cursor: pointer; background: var(--red); color: #fff; }
-.confirm-cancel { flex: 1; padding: 12px; border-radius: 12px; border: 1.5px solid var(--border); font-size: 14px; font-weight: 700; font-family: var(--fh); cursor: pointer; background: transparent; color: var(--muted); }
-
-/* ── Edit TX overlay specific ── */
-.edit-tx-header { display: flex; align-items: center; gap: 10px; background: var(--pri-light); border-radius: 12px; padding: 10px 13px; margin-bottom: 14px; }
-.edit-tx-badge { font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 99px; }
+.acc-act-btn.edit  { background: var(--pri-light); color: var(--pri); }
+.acc-act-btn.del   { background: var(--red-l);     color: var(--red); }
 
 /* ── Credit repay button in TX list ── */
 .tx-repay-btn { color: var(--green-d); background: var(--green-l); border: 1px solid rgba(0,200,150,.3); border-radius: 7px; padding: 3px 8px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 3px; }
@@ -397,30 +304,30 @@ body {
 .spin { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
 
 /* ═══════════════════════════════════════════
-   SAFARI iOS SAFE AREA — @supports guard
-   env() chỉ apply khi trình duyệt thực sự hỗ trợ
+   SAFARI iOS SAFE AREA — @supports guard
+   env() chỉ apply khi trình duyệt thực sự hỗ trợ
 ═══════════════════════════════════════════ */
 @supports (padding: max(0px)) {
-  body {
-    padding-top: env(safe-area-inset-top);
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-  }
-  .topbar {
-    padding-top: max(14px, env(safe-area-inset-top));
-  }
-  .bnav {
-    padding-bottom: max(10px, env(safe-area-inset-bottom));
-  }
-  .fab {
-    bottom: calc(max(10px, env(safe-area-inset-bottom)) + 56px + 16px);
-  }
-  .page {
-    padding-bottom: calc(max(10px, env(safe-area-inset-bottom)) + 56px + 80px);
-  }
-  .sheet {
-    padding-bottom: max(28px, env(safe-area-inset-bottom));
-  }
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  .topbar {
+    padding-top: max(14px, env(safe-area-inset-top));
+  }
+  .bnav {
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+  }
+  .fab {
+    bottom: calc(max(10px, env(safe-area-inset-bottom)) + 56px + 16px);
+  }
+  .page {
+    padding-bottom: calc(max(10px, env(safe-area-inset-bottom)) + 56px + 80px);
+  }
+  .sheet {
+    padding-bottom: max(28px, env(safe-area-inset-bottom));
+  }
 }
 
 /* ── Enhanced bar chart ── */
@@ -440,8 +347,8 @@ body {
 .due-list { display: flex; flex-direction: column; gap: 8px; }
 .due-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 11px 13px; display: flex; align-items: center; gap: 11px; border-left: 4px solid; }
 .due-card.urgent { border-left-color: var(--red); }
-.due-card.soon   { border-left-color: var(--amber); }
-.due-card.ok     { border-left-color: var(--green); }
+.due-card.soon   { border-left-color: var(--amber); }
+.due-card.ok     { border-left-color: var(--green); }
 .due-ico { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
 .due-info { flex: 1; min-width: 0; }
 .due-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -449,572 +356,572 @@ body {
 .due-right { text-align: right; flex-shrink: 0; }
 .due-amt { font-family: var(--fh); font-size: 14px; font-weight: 800; color: var(--red); }
 .due-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin-top: 3px; display: inline-block; }
-.due-badge.urgent { background: var(--red-l);   color: var(--red);   }
-.due-badge.soon   { background: var(--amber-l); color: var(--amber-d); }
-.due-badge.ok     { background: var(--green-l); color: var(--green-d); }</style>
+.due-badge.urgent { background: var(--red-l);   color: var(--red);   }
+.due-badge.soon   { background: var(--amber-l); color: var(--amber-d); }
+.due-badge.ok     { background: var(--green-l); color: var(--green-d); }</style>
 </head>
 <body>
 
 <div id="app">
-  <div class="topbar">
-    <div class="topbar-left">
-      <div class="topbar-title">🏠 Gia Đình Hạnh Phúc</div>
-      <div class="topbar-sub" id="topbar-period">Đang kết nối Cloud...</div>
-    </div>
-    <div class="topbar-right">
-      <div class="icon-btn" onclick="syncAll()" title="Đồng bộ"><i class="ti ti-refresh"></i></div>
-      <div class="icon-btn" onclick="initDatabaseBackend()" title="Cài đặt cấu trúc Sheet"><i class="ti ti-database-gear"></i></div>
-    </div>
-  </div>
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title">🏠 Gia Đình Hạnh Phúc</div>
+      <div class="topbar-sub" id="topbar-period">Đang kết nối Cloud...</div>
+    </div>
+    <div class="topbar-right">
+      <div class="icon-btn" onclick="syncAll()" title="Đồng bộ"><i class="ti ti-refresh"></i></div>
+      <div class="icon-btn" onclick="initDatabaseBackend()" title="Cài đặt cấu trúc Sheet"><i class="ti ti-database-gear"></i></div>
+    </div>
+  </div>
 
-  <div class="nav-tabs" id="nav-tabs">
-    <div class="nav-tab active" data-page="dashboard" onclick="openPage('dashboard')"><i class="ti ti-layout-dashboard"></i>Tổng quan</div>
-    <div class="nav-tab" data-page="personal" onclick="openPage('personal')"><i class="ti ti-user-circle"></i>Cá nhân</div>
-    <div class="nav-tab" data-page="family" onclick="openPage('family')"><i class="ti ti-users"></i>Chung</div>
-    <div class="nav-tab" data-page="inventory" onclick="openPage('inventory')"><i class="ti ti-package"></i>Kho</div>
-    <div class="nav-tab" data-page="notes" onclick="openPage('notes')"><i class="ti ti-notes"></i>Ghi chú</div>
-  </div>
+  <div class="nav-tabs" id="nav-tabs">
+    <div class="nav-tab active" data-page="dashboard" onclick="openPage('dashboard')"><i class="ti ti-layout-dashboard"></i>Tổng quan</div>
+    <div class="nav-tab" data-page="personal" onclick="openPage('personal')"><i class="ti ti-user-circle"></i>Cá nhân</div>
+    <div class="nav-tab" data-page="family" onclick="openPage('family')"><i class="ti ti-users"></i>Chung</div>
+    <div class="nav-tab" data-page="inventory" onclick="openPage('inventory')"><i class="ti ti-package"></i>Kho</div>
+    <div class="nav-tab" data-page="notes" onclick="openPage('notes')"><i class="ti ti-notes"></i>Ghi chú</div>
+  </div>
 
-  <div class="pages" id="pages">
-    <div class="page active" id="page-dashboard">
-      <div class="sync-bar" id="sync-bar">
-        <div class="sync-dot" id="sync-dot"></div>
-        <div class="sync-text" id="sync-text">Hệ thống đang tải dữ liệu...</div>
-        <div class="sync-time" onclick="syncAll()">Làm mới</div>
-      </div>
+  <div class="pages" id="pages">
+    <div class="page active" id="page-dashboard">
+      <div class="sync-bar" id="sync-bar">
+        <div class="sync-dot" id="sync-dot"></div>
+        <div class="sync-text" id="sync-text">Hệ thống đang tải dữ liệu...</div>
+        <div class="sync-time" onclick="syncAll()">Làm mới</div>
+      </div>
 
-      <div class="hero" style="background:linear-gradient(135deg,#6C63FF,#a78bfa);">
-        <div class="hero-badge" id="dash-period">—</div>
-        <div class="hero-lbl">CHI PHÍ CHUNG THÁNG NÀY</div>
-        <div class="hero-amt" id="dash-shared">—</div>
-        <div class="hero-row">
-          <div>
-            <div class="hero-stat-lbl">Tổng thu</div>
-            <div class="hero-stat-val" style="color:#78FFD6;" id="dash-income">—</div>
-          </div>
-          <div>
-            <div class="hero-stat-lbl">Tổng chi</div>
-            <div class="hero-stat-val" style="color:#FFB3B3;" id="dash-expense">—</div>
-          </div>
-        </div>
-      </div>
+      <div class="hero" style="background:linear-gradient(135deg,#6C63FF,#a78bfa);">
+        <div class="hero-badge" id="dash-period">—</div>
+        <div class="hero-lbl">CHI PHÍ CHUNG THÁNG NÀY</div>
+        <div class="hero-amt" id="dash-shared">—</div>
+        <div class="hero-row">
+          <div>
+            <div class="hero-stat-lbl">Tổng thu</div>
+            <div class="hero-stat-val" style="color:#78FFD6;" id="dash-income">—</div>
+          </div>
+          <div>
+            <div class="hero-stat-lbl">Tổng chi</div>
+            <div class="hero-stat-val" style="color:#FFB3B3;" id="dash-expense">—</div>
+          </div>
+        </div>
+      </div>
 
-      <div class="mini-chart">
-        <div class="chart-lbl" style="display:flex;justify-content:space-between;align-items:center;">
-          <span>Biến động chi tiêu chung 6 tháng</span>
-          <span style="font-size:10px;color:var(--muted);">triệu đ</span>
-        </div>
-        <div class="bar-chart" id="bar-chart"></div>
-        <div class="chart-legend">
-          <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#6C63FF;"></div>Tháng này</div>
-          <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#C4BEFE;"></div>Các tháng trước</div>
-        </div>
-      </div>
+      <div class="mini-chart">
+        <div class="chart-lbl" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>Biến động chi tiêu chung 6 tháng</span>
+          <span style="font-size:10px;color:var(--muted);">triệu đ</span>
+        </div>
+        <div class="bar-chart" id="bar-chart"></div>
+        <div class="chart-legend">
+          <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#6C63FF;"></div>Tháng này</div>
+          <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#C4BEFE;"></div>Các tháng trước</div>
+        </div>
+      </div>
 
-      <div class="stat-grid">
-        <div class="stat-card">
-          <div class="stat-icon" style="background:var(--pri-light);color:var(--pri);"><i class="ti ti-users"></i></div>
-          <div class="stat-val" id="dash-members">—</div>
-          <div class="stat-lbl">Thành viên</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background:var(--red-l);color:var(--red);"><i class="ti ti-alert-triangle"></i></div>
-          <div class="stat-val" id="dash-lowstock">—</div>
-          <div class="stat-lbl">Kho cần mua</div>
-        </div>
-      </div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--pri-light);color:var(--pri);"><i class="ti ti-users"></i></div>
+          <div class="stat-val" id="dash-members">—</div>
+          <div class="stat-lbl">Thành viên</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--red-l);color:var(--red);"><i class="ti ti-alert-triangle"></i></div>
+          <div class="stat-val" id="dash-lowstock">—</div>
+          <div class="stat-lbl">Kho cần mua</div>
+        </div>
+      </div>
 
-      <div class="sec-title">Thành viên gia đình <span class="see-all" onclick="openPage('personal')">Quản lý PIN</span></div>
-      <div class="members-row" id="members-row"></div>
+      <div class="sec-title">Thành viên gia đình <span class="see-all" onclick="openPage('personal')">Quản lý PIN</span></div>
+      <div class="members-row" id="members-row"></div>
 
-      <div class="sec-title">
-        📅 Khoản chi định kỳ sắp đến hạn
-        <span class="see-all" onclick="openPage('family')">Xem tất cả</span>
-      </div>
-      <div class="due-list" id="due-list"></div>
-    </div>
+      <div class="sec-title">
+        📅 Khoản chi định kỳ sắp đến hạn
+        <span class="see-all" onclick="openPage('family')">Xem tất cả</span>
+      </div>
+      <div class="due-list" id="due-list"></div>
+    </div>
 
-    <div class="page" id="page-personal">
-      <div class="lock-notice">
-        <i class="ti ti-shield-lock"></i>
-        <div class="lock-notice-text">Ví cá nhân được bảo vệ. Vui lòng chọn thành viên và xác thực mã PIN để tiếp cận sổ thu chi.</div>
-      </div>
-      <div class="sec-title">Danh sách thành viên</div>
-      <div class="members-row" id="personal-members-row"></div>
+    <div class="page" id="page-personal">
+      <div class="lock-notice">
+        <i class="ti ti-shield-lock"></i>
+        <div class="lock-notice-text">Ví cá nhân được bảo vệ. Vui lòng chọn thành viên và xác thực mã PIN để tiếp cận sổ thu chi.</div>
+      </div>
+      <div class="sec-title">Danh sách thành viên</div>
+      <div class="members-row" id="personal-members-row"></div>
 
-      <div id="personal-content" style="display:none; margin-top: 15px;">
-        <div class="sec-title">
-          <span id="personal-member-name">—</span>
-          <span style="display:flex;gap:8px;align-items:center;">
-            <span class="see-all" onclick="openChangePinOv()" style="color:var(--amber);"><i class="ti ti-key"></i> Đổi PIN</span>
-            <span class="see-all" onclick="lockPersonal()" style="color:var(--red);"><i class="ti ti-lock"></i> Khoá ví</span>
-          </span>
-        </div>
-        <div class="sec-title" style="font-size:13px; margin-top:10px;">
-          Tài khoản / Ví / Thẻ
-          <span class="see-all" onclick="openAddAccountModal()">➕ Thêm tài khoản</span>
-        </div>
-        <div class="acc-row" id="personal-accounts"></div>
-        
-        <div style="display:flex; align-items:center; justify-content:space-between; margin:15px 0 10px;">
-          <div class="sec-title" style="margin-bottom:0;">Lịch sử giao dịch riêng</div>
-          <div style="display:flex;gap:4px;">
-            <button class="chip active" id="filter-tx-all" onclick="filterTx('all')">Tất cả</button>
-            <button class="chip" id="filter-tx-income" onclick="filterTx('income')">Thu</button>
-            <button class="chip" id="filter-tx-expense" onclick="filterTx('expense')">Chi</button>
-          </div>
-        </div>
-        <div class="tx-list" id="personal-tx-list"></div>
-      </div>
-    </div>
+      <div id="personal-content" style="display:none; margin-top: 15px;">
+        <div class="sec-title">
+          <span id="personal-member-name">—</span>
+          <span style="display:flex;gap:8px;align-items:center;">
+            <span class="see-all" onclick="openChangePinOv()" style="color:var(--amber);"><i class="ti ti-key"></i> Đổi PIN</span>
+            <span class="see-all" onclick="lockPersonal()" style="color:var(--red);"><i class="ti ti-lock"></i> Khoá ví</span>
+          </span>
+        </div>
+        <div class="sec-title" style="font-size:13px; margin-top:10px;">
+          Tài khoản / Ví / Thẻ
+          <span class="see-all" onclick="openAddAccountModal()">➕ Thêm tài khoản</span>
+        </div>
+        <div class="acc-row" id="personal-accounts"></div>
+        
+        <div style="display:flex; align-items:center; justify-content:space-between; margin:15px 0 10px;">
+          <div class="sec-title" style="margin-bottom:0;">Lịch sử giao dịch riêng</div>
+          <div style="display:flex;gap:4px;">
+            <button class="chip active" id="filter-tx-all" onclick="filterTx('all')">Tất cả</button>
+            <button class="chip" id="filter-tx-income" onclick="filterTx('income')">Thu</button>
+            <button class="chip" id="filter-tx-expense" onclick="filterTx('expense')">Chi</button>
+          </div>
+        </div>
+        <div class="tx-list" id="personal-tx-list"></div>
+      </div>
+    </div>
 
-    <div class="page" id="page-family">
-      <div class="hero" style="background:linear-gradient(135deg,#20BFC1,#085450);">
-        <div class="hero-badge" id="family-period">—</div>
-        <div class="hero-lbl">QUỸ TIỀN CHI TIÊU CHUNG</div>
-        <div class="hero-amt" id="family-total">—</div>
-        <div class="hero-row">
-          <div>
-            <div class="hero-stat-lbl">Đã thanh toán</div>
-            <div class="hero-stat-val" style="color:#78FFD6;" id="family-paid">—</div>
-          </div>
-          <div>
-            <div class="hero-stat-lbl">Chờ quyết toán</div>
-            <div class="hero-stat-val" style="color:#FFB3B3;" id="family-unpaid">—</div>
-          </div>
-        </div>
-      </div>
-      <div class="chips" id="family-cat-chips">
-        <button class="chip active" onclick="filterShared(this,'all')">Tất cả</button>
-        <button class="chip" onclick="filterShared(this,'food')">🛒 Chợ / Siêu thị</button>
-        <button class="chip" onclick="filterShared(this,'electric')">⚡ Tiền điện</button>
-        <button class="chip" onclick="filterShared(this,'water')">💧 Tiền nước</button>
-        <button class="chip" onclick="filterShared(this,'internet')">🌐 Internet</button>
-        <button class="chip" onclick="filterShared(this,'other')">🏠 Khác</button>
-      </div>
-      <div id="family-list"></div>
-    </div>
+    <div class="page" id="page-family">
+      <div class="hero" style="background:linear-gradient(135deg,#20BFC1,#085450);">
+        <div class="hero-badge" id="family-period">—</div>
+        <div class="hero-lbl">QUỸ TIỀN CHI TIÊU CHUNG</div>
+        <div class="hero-amt" id="family-total">—</div>
+        <div class="hero-row">
+          <div>
+            <div class="hero-stat-lbl">Đã thanh toán</div>
+            <div class="hero-stat-val" style="color:#78FFD6;" id="family-paid">—</div>
+          </div>
+          <div>
+            <div class="hero-stat-lbl">Chờ quyết toán</div>
+            <div class="hero-stat-val" style="color:#FFB3B3;" id="family-unpaid">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="chips" id="family-cat-chips">
+        <button class="chip active" onclick="filterShared(this,'all')">Tất cả</button>
+        <button class="chip" onclick="filterShared(this,'food')">🛒 Chợ / Siêu thị</button>
+        <button class="chip" onclick="filterShared(this,'electric')">⚡ Tiền điện</button>
+        <button class="chip" onclick="filterShared(this,'water')">💧 Tiền nước</button>
+        <button class="chip" onclick="filterShared(this,'internet')">🌐 Internet</button>
+        <button class="chip" onclick="filterShared(this,'other')">🏠 Khác</button>
+      </div>
+      <div id="family-list"></div>
+    </div>
 
-    <div class="page" id="page-inventory">
-      <div class="hero" style="background:linear-gradient(135deg,#FF9F43,#FF6B6B);">
-        <div class="hero-lbl">KHO NHU YẾU PHẨM GIA ĐÌNH</div>
-        <div class="hero-amt" id="inv-total">— mặt hàng</div>
-        <div class="hero-row">
-          <div>
-            <div class="hero-stat-lbl">Tồn kho an toàn</div>
-            <div class="hero-stat-val" style="color:#78FFD6;" id="inv-ok">—</div>
-          </div>
-          <div>
-            <div class="hero-stat-lbl">Cần mua thêm</div>
-            <div class="hero-stat-val" style="color:#FFB3B3;" id="inv-low">—</div>
-          </div>
-        </div>
-      </div>
-      <div class="chips">
-        <button class="chip active" onclick="filterInv(this,'all')">Tất cả</button>
-        <button class="chip" onclick="filterInv(this,'hygiene')">🧻 Vệ sinh</button>
-        <button class="chip" onclick="filterInv(this,'cleaning')">🧴 Tẩy rửa</button>
-        <button class="chip" onclick="filterInv(this,'kitchen')">🍽️ Nhà bếp</button>
-        <button class="chip" onclick="filterInv(this,'general')">📦 Loại khác</button>
-      </div>
-      <div class="inv-grid" id="inv-grid"></div>
-    </div>
+    <div class="page" id="page-inventory">
+      <div class="hero" style="background:linear-gradient(135deg,#FF9F43,#FF6B6B);">
+        <div class="hero-lbl">KHO NHU YẾU PHẨM GIA ĐÌNH</div>
+        <div class="hero-amt" id="inv-total">— mặt hàng</div>
+        <div class="hero-row">
+          <div>
+            <div class="hero-stat-lbl">Tồn kho an toàn</div>
+            <div class="hero-stat-val" style="color:#78FFD6;" id="inv-ok">—</div>
+          </div>
+          <div>
+            <div class="hero-stat-lbl">Cần mua thêm</div>
+            <div class="hero-stat-val" style="color:#FFB3B3;" id="inv-low">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="chips">
+        <button class="chip active" onclick="filterInv(this,'all')">Tất cả</button>
+        <button class="chip" onclick="filterInv(this,'hygiene')">🧻 Vệ sinh</button>
+        <button class="chip" onclick="filterInv(this,'cleaning')">🧴 Tẩy rửa</button>
+        <button class="chip" onclick="filterInv(this,'kitchen')">🍽️ Nhà bếp</button>
+        <button class="chip" onclick="filterInv(this,'general')">📦 Loại khác</button>
+      </div>
+      <div class="inv-grid" id="inv-grid"></div>
+    </div>
 
-    <div class="page" id="page-notes">
-      <div id="notes-list"></div>
-    </div>
-  </div>
+    <div class="page" id="page-notes">
+      <div id="notes-list"></div>
+    </div>
+  </div>
 
-  <button class="fab" id="fab-btn" onclick="openAddModal()"><i class="ti ti-plus"></i></button>
+  <button class="fab" id="fab-btn" onclick="openAddModal()"><i class="ti ti-plus"></i></button>
 
-  <div class="bnav">
-    <div class="bnav-item active" data-page="dashboard" onclick="openPage('dashboard')"><i class="ti ti-layout-dashboard"></i>Tổng quan</div>
-    <div class="bnav-item" data-page="personal" onclick="openPage('personal')"><i class="ti ti-wallet"></i>Cá nhân</div>
-    <div class="bnav-item" data-page="family" onclick="openPage('family')"><i class="ti ti-users"></i>Chung</div>
-    <div class="bnav-item" data-page="inventory" onclick="openPage('inventory')"><i class="ti ti-package"></i>Kho</div>
-    <div class="bnav-item" data-page="notes" onclick="openPage('notes')"><i class="ti ti-notes"></i>Ghi chú</div>
-  </div>
+  <div class="bnav">
+    <div class="bnav-item active" data-page="dashboard" onclick="openPage('dashboard')"><i class="ti ti-layout-dashboard"></i>Tổng quan</div>
+    <div class="bnav-item" data-page="personal" onclick="openPage('personal')"><i class="ti ti-wallet"></i>Cá nhân</div>
+    <div class="bnav-item" data-page="family" onclick="openPage('family')"><i class="ti ti-users"></i>Chung</div>
+    <div class="bnav-item" data-page="inventory" onclick="openPage('inventory')"><i class="ti ti-package"></i>Kho</div>
+    <div class="bnav-item" data-page="notes" onclick="openPage('notes')"><i class="ti ti-notes"></i>Ghi chú</div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <!-- ── CHANGE PIN OVERLAY ── -->
 <div class="overlay" id="overlay-change-pin">
-  <div class="sheet">
-    <div class="handle"></div>
-    <div class="sheet-title">🔑 Đổi mã PIN cá nhân</div>
-    <div class="cpn-avatar" id="cpn-emoji">👤</div>
-    <div class="cpn-name" id="cpn-name">—</div>
-    <div class="form-group">
-      <label class="form-lbl">PIN hiện tại</label>
-      <input class="form-input" id="cpn-old" type="password" placeholder="••••" maxlength="4" inputmode="numeric">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">PIN mới</label>
-      <input class="form-input" id="cpn-new" type="password" placeholder="••••" maxlength="4" inputmode="numeric">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Xác nhận PIN mới</label>
-      <input class="form-input" id="cpn-confirm" type="password" placeholder="••••" maxlength="4" inputmode="numeric">
-    </div>
-    <div class="pin-err" id="cpn-err"></div>
-    <button class="submit-btn" id="cpn-sbtn" onclick="submitChangePin()">
-      <i class="ti ti-key"></i> Xác nhận đổi PIN
-    </button>
-    <button class="cancel-btn" onclick="closeOverlay('change-pin')">Huỷ</button>
-  </div>
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">🔑 Đổi mã PIN cá nhân</div>
+    <div class="cpn-avatar" id="cpn-emoji">👤</div>
+    <div class="cpn-name" id="cpn-name">—</div>
+    <div class="form-group">
+      <label class="form-lbl">PIN hiện tại</label>
+      <input class="form-input" id="cpn-old" type="password" placeholder="••••" maxlength="4" inputmode="numeric">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">PIN mới</label>
+      <input class="form-input" id="cpn-new" type="password" placeholder="••••" maxlength="4" inputmode="numeric">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Xác nhận PIN mới</label>
+      <input class="form-input" id="cpn-confirm" type="password" placeholder="••••" maxlength="4" inputmode="numeric">
+    </div>
+    <div class="pin-err" id="cpn-err"></div>
+    <button class="submit-btn" id="cpn-sbtn" onclick="submitChangePin()">
+      <i class="ti ti-key"></i> Xác nhận đổi PIN
+    </button>
+    <button class="cancel-btn" onclick="closeOverlay('change-pin')">Huỷ</button>
+  </div>
 </div>
 
 <!-- ── ADD ACCOUNT OVERLAY ── -->
 <div class="overlay" id="overlay-add-account">
-  <div class="sheet">
-    <div class="handle"></div>
-    <div class="sheet-title">💳 Thêm Tài khoản / Ví / Thẻ</div>
-    <div id="add-acc-member-info" style="display:flex;align-items:center;gap:10px;background:var(--pri-light);border-radius:12px;padding:10px 13px;margin-bottom:14px;">
-      <span id="add-acc-emoji" style="font-size:26px;">👤</span>
-      <div>
-        <div style="font-size:13px;font-weight:700;" id="add-acc-name">—</div>
-        <div style="font-size:11px;color:var(--muted);">Tài khoản mới sẽ gán cho thành viên này</div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Tên tài khoản / Ví</label>
-      <input class="form-input" id="acc-name" type="text" placeholder="Ví dụ: Ví tiền mặt, Thẻ ACB...">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Loại tài khoản</label>
-      <select class="form-input" id="acc-type">
-        <option value="cash">💵 Tiền mặt (Ví)</option>
-        <option value="bank">🏦 Tài khoản ngân hàng</option>
-        <option value="credit">💳 Thẻ tín dụng (Credit Card)</option>
-        <option value="ewallet">📱 Ví điện tử (MoMo, ZaloPay...)</option>
-        <option value="saving">🏧 Tài khoản tiết kiệm</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Số dư / Hạn mức ban đầu (VNĐ)</label>
-      <input class="form-input" id="acc-balance" type="number" placeholder="0" min="0">
-    </div>
-    <div class="form-group" id="acc-bank-group" style="display:none;">
-      <label class="form-lbl">Tên ngân hàng / Nhà phát hành</label>
-      <input class="form-input" id="acc-bank" type="text" placeholder="Ví dụ: ACB, VIB, Techcombank...">
-    </div>
-    <div class="pin-err" id="acc-err"></div>
-    <button class="submit-btn" id="acc-sbtn" onclick="submitAddAccount()">
-      <i class="ti ti-credit-card"></i> Tạo tài khoản
-    </button>
-    <button class="cancel-btn" onclick="closeOverlay('add-account')">Huỷ</button>
-  </div>
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">💳 Thêm Tài khoản / Ví / Thẻ</div>
+    <div id="add-acc-member-info" style="display:flex;align-items:center;gap:10px;background:var(--pri-light);border-radius:12px;padding:10px 13px;margin-bottom:14px;">
+      <span id="add-acc-emoji" style="font-size:26px;">👤</span>
+      <div>
+        <div style="font-size:13px;font-weight:700;" id="add-acc-name">—</div>
+        <div style="font-size:11px;color:var(--muted);">Tài khoản mới sẽ gán cho thành viên này</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Tên tài khoản / Ví</label>
+      <input class="form-input" id="acc-name" type="text" placeholder="Ví dụ: Ví tiền mặt, Thẻ ACB...">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Loại tài khoản</label>
+      <select class="form-input" id="acc-type">
+        <option value="cash">💵 Tiền mặt (Ví)</option>
+        <option value="bank">🏦 Tài khoản ngân hàng</option>
+        <option value="credit">💳 Thẻ tín dụng (Credit Card)</option>
+        <option value="ewallet">📱 Ví điện tử (MoMo, ZaloPay...)</option>
+        <option value="saving">🏧 Tài khoản tiết kiệm</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Số dư / Hạn mức ban đầu (VNĐ)</label>
+      <input class="form-input" id="acc-balance" type="number" placeholder="0" min="0">
+    </div>
+    <div class="form-group" id="acc-bank-group" style="display:none;">
+      <label class="form-lbl">Tên ngân hàng / Nhà phát hành</label>
+      <input class="form-input" id="acc-bank" type="text" placeholder="Ví dụ: ACB, VIB, Techcombank...">
+    </div>
+    <div class="pin-err" id="acc-err"></div>
+    <button class="submit-btn" id="acc-sbtn" onclick="submitAddAccount()">
+      <i class="ti ti-credit-card"></i> Tạo tài khoản
+    </button>
+    <button class="cancel-btn" onclick="closeOverlay('add-account')">Huỷ</button>
+  </div>
 </div>
 
 <!-- ── EDIT ACCOUNT OVERLAY ── -->
 <div class="overlay" id="overlay-edit-account">
-  <div class="sheet">
-    <div class="handle"></div>
-    <div class="sheet-title">✏️ Chỉnh sửa tài khoản</div>
-    <input type="hidden" id="edit-acc-id">
-    <div class="form-group">
-      <label class="form-lbl">Tên tài khoản / Ví</label>
-      <input class="form-input" id="edit-acc-name" type="text" placeholder="Tên tài khoản...">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Loại tài khoản</label>
-      <select class="form-input" id="edit-acc-type">
-        <option value="cash">💵 Tiền mặt (Ví)</option>
-        <option value="bank">🏦 Tài khoản ngân hàng</option>
-        <option value="credit">💳 Thẻ tín dụng (Credit Card)</option>
-        <option value="ewallet">📱 Ví điện tử (MoMo, ZaloPay...)</option>
-        <option value="saving">🏧 Tài khoản tiết kiệm</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Điều chỉnh số dư hiện tại (VNĐ)</label>
-      <input class="form-input" id="edit-acc-balance" type="number" placeholder="0">
-    </div>
-    <div class="form-group" id="edit-acc-bank-group">
-      <label class="form-lbl">Tên ngân hàng / Nhà phát hành</label>
-      <input class="form-input" id="edit-acc-bank" type="text" placeholder="ACB, VIB, Techcombank...">
-    </div>
-    <div class="pin-err" id="edit-acc-err"></div>
-    <button class="submit-btn" id="edit-acc-sbtn" onclick="submitEditAccount()">
-      <i class="ti ti-device-floppy"></i> Lưu thay đổi
-    </button>
-    <button class="cancel-btn" style="background:var(--red-l);color:var(--red);border-color:var(--red);" onclick="confirmDeleteAccount()">
-      <i class="ti ti-trash"></i> Xóa tài khoản này
-    </button>
-    <button class="cancel-btn" onclick="closeOverlay('edit-account')">Huỷ</button>
-  </div>
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">✏️ Chỉnh sửa tài khoản</div>
+    <input type="hidden" id="edit-acc-id">
+    <div class="form-group">
+      <label class="form-lbl">Tên tài khoản / Ví</label>
+      <input class="form-input" id="edit-acc-name" type="text" placeholder="Tên tài khoản...">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Loại tài khoản</label>
+      <select class="form-input" id="edit-acc-type">
+        <option value="cash">💵 Tiền mặt (Ví)</option>
+        <option value="bank">🏦 Tài khoản ngân hàng</option>
+        <option value="credit">💳 Thẻ tín dụng (Credit Card)</option>
+        <option value="ewallet">📱 Ví điện tử (MoMo, ZaloPay...)</option>
+        <option value="saving">🏧 Tài khoản tiết kiệm</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Điều chỉnh số dư hiện tại (VNĐ)</label>
+      <input class="form-input" id="edit-acc-balance" type="number" placeholder="0">
+    </div>
+    <div class="form-group" id="edit-acc-bank-group">
+      <label class="form-lbl">Tên ngân hàng / Nhà phát hành</label>
+      <input class="form-input" id="edit-acc-bank" type="text" placeholder="ACB, VIB, Techcombank...">
+    </div>
+    <div class="pin-err" id="edit-acc-err"></div>
+    <button class="submit-btn" id="edit-acc-sbtn" onclick="submitEditAccount()">
+      <i class="ti ti-device-floppy"></i> Lưu thay đổi
+    </button>
+    <button class="cancel-btn" style="background:var(--red-l);color:var(--red);border-color:var(--red);" onclick="confirmDeleteAccount()">
+      <i class="ti ti-trash"></i> Xóa tài khoản này
+    </button>
+    <button class="cancel-btn" onclick="closeOverlay('edit-account')">Huỷ</button>
+  </div>
 </div>
 
 <!-- ── REPAY CREDIT OVERLAY ── -->
 <div class="overlay" id="overlay-repay-credit">
-  <div class="sheet">
-    <div class="handle"></div>
-    <div class="sheet-title">💸 Trả nợ thẻ tín dụng</div>
-    <div id="repay-credit-info" style="background:var(--red-l);border-radius:12px;padding:12px 14px;margin-bottom:14px;">
-      <div style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.5px;margin-bottom:4px;">KHOẢN NỢ CẦN TRẢ</div>
-      <div style="font-size:13px;font-weight:600;" id="repay-tx-desc">—</div>
-      <div style="font-size:20px;font-weight:900;color:var(--red);font-family:var(--fh);margin-top:4px;" id="repay-tx-amount">—</div>
-    </div>
-    <div style="background:var(--blue-l);border-radius:12px;padding:12px 14px;margin-bottom:14px;">
-      <div style="font-size:11px;font-weight:700;color:var(--blue-d);letter-spacing:.5px;margin-bottom:4px;">TÀI KHOẢN CREDIT</div>
-      <div style="font-size:13px;font-weight:700;" id="repay-acc-name">—</div>
-      <div style="font-size:11px;color:var(--muted);margin-top:2px;">Dư nợ hiện tại: <span id="repay-acc-balance" style="font-weight:700;color:var(--red);">—</span></div>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Số tiền trả nợ (VNĐ)</label>
-      <input class="form-input" id="repay-amount" type="number" placeholder="0" min="0" style="font-size:18px;font-weight:700;">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Nguồn tiền thanh toán</label>
-      <select class="form-input" id="repay-source-account">
-        <option value="">-- Chọn ví / tài khoản nguồn --</option>
-      </select>
-    </div>
-    <input type="hidden" id="repay-tx-id">
-    <input type="hidden" id="repay-acc-id">
-    <div class="pin-err" id="repay-err"></div>
-    <button class="submit-btn" id="repay-sbtn" onclick="submitRepayCredit()">
-      <i class="ti ti-cash"></i> Xác nhận trả nợ
-    </button>
-    <button class="cancel-btn" onclick="closeOverlay('repay-credit')">Huỷ</button>
-  </div>
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">💸 Trả nợ thẻ tín dụng</div>
+    <div id="repay-credit-info" style="background:var(--red-l);border-radius:12px;padding:12px 14px;margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.5px;margin-bottom:4px;">KHOẢN NỢ CẦN TRẢ</div>
+      <div style="font-size:13px;font-weight:600;" id="repay-tx-desc">—</div>
+      <div style="font-size:20px;font-weight:900;color:var(--red);font-family:var(--fh);margin-top:4px;" id="repay-tx-amount">—</div>
+    </div>
+    <div style="background:var(--blue-l);border-radius:12px;padding:12px 14px;margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;color:var(--blue-d);letter-spacing:.5px;margin-bottom:4px;">TÀI KHOẢN CREDIT</div>
+      <div style="font-size:13px;font-weight:700;" id="repay-acc-name">—</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px;">Dư nợ hiện tại: <span id="repay-acc-balance" style="font-weight:700;color:var(--red);">—</span></div>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Số tiền trả nợ (VNĐ)</label>
+      <input class="form-input" id="repay-amount" type="number" placeholder="0" min="0" style="font-size:18px;font-weight:700;">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Nguồn tiền thanh toán</label>
+      <select class="form-input" id="repay-source-account">
+        <option value="">-- Chọn ví / tài khoản nguồn --</option>
+      </select>
+    </div>
+    <input type="hidden" id="repay-tx-id">
+    <input type="hidden" id="repay-acc-id">
+    <div class="pin-err" id="repay-err"></div>
+    <button class="submit-btn" id="repay-sbtn" onclick="submitRepayCredit()">
+      <i class="ti ti-cash"></i> Xác nhận trả nợ
+    </button>
+    <button class="cancel-btn" onclick="closeOverlay('repay-credit')">Huỷ</button>
+  </div>
 </div>
 
 <div class="overlay" id="overlay-pin">
-  <div class="sheet">
-    <div class="handle"></div>
-    <div class="pin-modal">
-      <div class="pin-avatar-big" id="pin-emoji">👤</div>
-      <div class="pin-member-name" id="pin-name">Thành viên</div>
-      <div class="pin-hint">Nhập mã định danh cá nhân PIN để xác thực</div>
-      <div class="pin-dots" id="pin-dots">
-        <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
-      </div>
-      <div class="pin-error" id="pin-error"></div>
-      <div class="pin-pad">
-        <div class="pin-key" onclick="pinKey('1')">1</div><div class="pin-key" onclick="pinKey('2')">2</div><div class="pin-key" onclick="pinKey('3')">3</div>
-        <div class="pin-key" onclick="pinKey('4')">4</div><div class="pin-key" onclick="pinKey('5')">5</div><div class="pin-key" onclick="pinKey('6')">6</div>
-        <div class="pin-key" onclick="pinKey('7')">7</div><div class="pin-key" onclick="pinKey('8')">8</div><div class="pin-key" onclick="pinKey('9')">9</div>
-        <div class="pin-key" style="background:transparent; border:none; cursor:default;"></div><div class="pin-key" onclick="pinKey('0')">0</div><div class="pin-key" onclick="pinDel()"><i class="ti ti-backspace"></i></div>
-      </div>
-    </div>
-    <button class="cancel-btn" onclick="closeOverlay('pin')">Huỷ thao tác</button>
-  </div>
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="pin-modal">
+      <div class="pin-avatar-big" id="pin-emoji">👤</div>
+      <div class="pin-member-name" id="pin-name">Thành viên</div>
+      <div class="pin-hint">Nhập mã định danh cá nhân PIN để xác thực</div>
+      <div class="pin-dots" id="pin-dots">
+        <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+      </div>
+      <div class="pin-error" id="pin-error"></div>
+      <div class="pin-pad">
+        <div class="pin-key" onclick="pinKey('1')">1</div><div class="pin-key" onclick="pinKey('2')">2</div><div class="pin-key" onclick="pinKey('3')">3</div>
+        <div class="pin-key" onclick="pinKey('4')">4</div><div class="pin-key" onclick="pinKey('5')">5</div><div class="pin-key" onclick="pinKey('6')">6</div>
+        <div class="pin-key" onclick="pinKey('7')">7</div><div class="pin-key" onclick="pinKey('8')">8</div><div class="pin-key" onclick="pinKey('9')">9</div>
+        <div class="pin-key" style="background:transparent; border:none; cursor:default;"></div><div class="pin-key" onclick="pinKey('0')">0</div><div class="pin-key" onclick="pinDel()"><i class="ti ti-backspace"></i></div>
+      </div>
+    </div>
+    <button class="cancel-btn" onclick="closeOverlay('pin')">Huỷ thao tác</button>
+  </div>
 </div>
 
 <div class="overlay" id="overlay-add-tx">
-  <div class="sheet">
-    <div class="handle"></div>
-    <div class="sheet-title">➕ Thêm phát sinh tài chính mới</div>
-    <div class="type-toggle">
-      <button class="type-btn expense active" id="tx-btn-expense" onclick="setTxType('expense')">💸 Chi tiêu</button>
-      <button class="type-btn income" id="tx-btn-income" onclick="setTxType('income')">💰 Thu nhập</button>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Số tiền phát sinh (VNĐ)</label>
-      <input class="form-input" id="tx-amount" type="number" placeholder="0" min="0" style="font-size:18px; font-weight:700;">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Mô tả chi tiết</label>
-      <input class="form-input" id="tx-desc" type="text" placeholder="Ví dụ: Mua sắm rau củ siêu thị...">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Ngày thực hiện</label>
-      <input class="form-input" id="tx-date" type="date">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Chủ tài khoản phát sinh</label>
-      <select class="form-input" id="tx-member" onchange="onTxMemberChange()"></select>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Ví thanh toán / Tài khoản</label>
-      <select class="form-input" id="tx-account"></select>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Hạng mục phân loại</label>
-      <select class="form-input" id="tx-category">
-        <option value="food">🛒 Ăn uống / Đi chợ</option>
-        <option value="electric">⚡ Tiền điện gia đình</option>
-        <option value="water">💧 Tiền nước sinh hoạt</option>
-        <option value="internet">🌐 Cước Internet</option>
-        <option value="education">📚 Giáo dục / Học tập</option>
-        <option value="transport">🚗 Đi lại / Di chuyển</option>
-        <option value="health">🏥 Y tế / Chăm sóc sức khoẻ</option>
-        <option value="shopping">🛍️ Mua sắm cá nhân</option>
-        <option value="salary">💼 Thu nhập / Lương</option>
-        <option value="other">📌 Mục chi khác</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl" style="display:flex;align-items:center;gap:7px;cursor:pointer;">
-        <input type="checkbox" id="tx-shared" style="width:16px;height:16px;accent-color:var(--pri);">
-        <span>Đồng bộ vào <strong>Hạng mục chi tiêu chung</strong></span>
-      </label>
-    </div>
-    <button class="submit-btn" id="tx-submit-btn" onclick="submitTransaction()">
-      <i class="ti ti-device-floppy"></i> Lưu dữ liệu lên Cloud Google Sheets
-    </button>
-    <button class="cancel-btn" onclick="closeOverlay('add-tx')">Đóng</button>
-  </div>
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">➕ Thêm phát sinh tài chính mới</div>
+    <div class="type-toggle">
+      <button class="type-btn expense active" id="tx-btn-expense" onclick="setTxType('expense')">💸 Chi tiêu</button>
+      <button class="type-btn income" id="tx-btn-income" onclick="setTxType('income')">💰 Thu nhập</button>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Số tiền phát sinh (VNĐ)</label>
+      <input class="form-input" id="tx-amount" type="number" placeholder="0" min="0" style="font-size:18px; font-weight:700;">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Mô tả chi tiết</label>
+      <input class="form-input" id="tx-desc" type="text" placeholder="Ví dụ: Mua sắm rau củ siêu thị...">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Ngày thực hiện</label>
+      <input class="form-input" id="tx-date" type="date">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Chủ tài khoản phát sinh</label>
+      <select class="form-input" id="tx-member" onchange="onTxMemberChange()"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Ví thanh toán / Tài khoản</label>
+      <select class="form-input" id="tx-account"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Hạng mục phân loại</label>
+      <select class="form-input" id="tx-category">
+        <option value="food">🛒 Ăn uống / Đi chợ</option>
+        <option value="electric">⚡ Tiền điện gia đình</option>
+        <option value="water">💧 Tiền nước sinh hoạt</option>
+        <option value="internet">🌐 Cước Internet</option>
+        <option value="education">📚 Giáo dục / Học tập</option>
+        <option value="transport">🚗 Đi lại / Di chuyển</option>
+        <option value="health">🏥 Y tế / Chăm sóc sức khoẻ</option>
+        <option value="shopping">🛍️ Mua sắm cá nhân</option>
+        <option value="salary">💼 Thu nhập / Lương</option>
+        <option value="other">📌 Mục chi khác</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl" style="display:flex;align-items:center;gap:7px;cursor:pointer;">
+        <input type="checkbox" id="tx-shared" style="width:16px;height:16px;accent-color:var(--pri);">
+        <span>Đồng bộ vào <strong>Hạng mục chi tiêu chung</strong></span>
+      </label>
+    </div>
+    <button class="submit-btn" id="tx-submit-btn" onclick="submitTransaction()">
+      <i class="ti ti-device-floppy"></i> Lưu dữ liệu lên Cloud Google Sheets
+    </button>
+    <button class="cancel-btn" onclick="closeOverlay('add-tx')">Đóng</button>
+  </div>
 </div>
 
 <div class="overlay" id="overlay-add-shared">
-  <div class="sheet">
-    <div class="handle"></div>
-    <div class="sheet-title">🏠 Thêm chi phí chung trực tiếp</div>
-    <div class="form-group">
-      <label class="form-lbl">Mô tả khoản chi</label>
-      <input class="form-input" id="sh-desc" type="text" placeholder="Ví dụ: Đóng tiền rác chung cư...">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Số tiền (VNĐ)</label>
-      <input class="form-input" id="sh-amount" type="number" placeholder="0">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Hạng mục</label>
-      <select class="form-input" id="sh-category">
-        <option value="food">🛒 Chợ / Siêu thị</option>
-        <option value="electric">⚡ Tiền điện</option>
-        <option value="water">💧 Tiền nước</option>
-        <option value="internet">🌐 Internet</option>
-        <option value="other">🏠 Khác</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Người thực hiện chi</label>
-      <select class="form-input" id="sh-paidby"></select>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Ngày chi</label>
-      <input class="form-input" id="sh-date" type="date">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Trạng thái thanh toán</label>
-      <select class="form-input" id="sh-status">
-        <option value="paid">✅ Đã tất toán hoàn toàn</option>
-        <option value="unpaid">⏳ Chưa thanh toán (Ghi nợ)</option>
-      </select>
-    </div>
-    <button class="submit-btn" onclick="submitShared()">
-      <i class="ti ti-device-floppy"></i> Cập nhật bảng tính
-    </button>
-    <button class="cancel-btn" onclick="closeOverlay('add-shared')">Hủy</button>
-  </div>
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">🏠 Thêm chi phí chung trực tiếp</div>
+    <div class="form-group">
+      <label class="form-lbl">Mô tả khoản chi</label>
+      <input class="form-input" id="sh-desc" type="text" placeholder="Ví dụ: Đóng tiền rác chung cư...">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Số tiền (VNĐ)</label>
+      <input class="form-input" id="sh-amount" type="number" placeholder="0">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Hạng mục</label>
+      <select class="form-input" id="sh-category">
+        <option value="food">🛒 Chợ / Siêu thị</option>
+        <option value="electric">⚡ Tiền điện</option>
+        <option value="water">💧 Tiền nước</option>
+        <option value="internet">🌐 Internet</option>
+        <option value="other">🏠 Khác</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Người thực hiện chi</label>
+      <select class="form-input" id="sh-paidby"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Ngày chi</label>
+      <input class="form-input" id="sh-date" type="date">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Trạng thái thanh toán</label>
+      <select class="form-input" id="sh-status">
+        <option value="paid">✅ Đã tất toán hoàn toàn</option>
+        <option value="unpaid">⏳ Chưa thanh toán (Ghi nợ)</option>
+      </select>
+    </div>
+    <button class="submit-btn" onclick="submitShared()">
+      <i class="ti ti-device-floppy"></i> Cập nhật bảng tính
+    </button>
+    <button class="cancel-btn" onclick="closeOverlay('add-shared')">Hủy</button>
+  </div>
 </div>
 
 <div class="overlay" id="overlay-add-inv">
-  <div class="sheet">
-    <div class="handle"></div>
-    <div class="sheet-title">📦 Thêm mới mặt hàng kiểm kho</div>
-    <div class="form-group">
-      <label class="form-lbl">Emoji minh họa</label>
-      <div class="epick-row">
-        <button class="epick-btn" id="inv-epick-btn" onclick="togglePicker('inv')">📦</button>
-        <input class="form-input" id="inv-emoji" type="text" placeholder="Nhập hoặc chọn emoji" maxlength="2" oninput="syncPickerBtn('inv')" style="flex:1;">
-        <span class="epick-toggle" onclick="togglePicker('inv')">🎭 Chọn</span>
-      </div>
-      <div class="epick-grid" id="inv-epick-grid" style="display:none;"></div>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Tên mặt hàng</label>
-      <input class="form-input" id="inv-name" type="text" placeholder="Ví dụ: Nước lau sàn...">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Số lượng hiện có</label>
-      <input class="form-input" id="inv-qty" type="number" placeholder="0" min="0">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Đơn vị tính</label>
-      <input class="form-input" id="inv-unit" type="text" placeholder="chai / cuộn / cái...">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Hạn mức cảnh báo tối thiểu (Min)</label>
-      <input class="form-input" id="inv-min" type="number" placeholder="1" min="0">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Phân loại kho</label>
-      <select class="form-input" id="inv-cat">
-        <option value="hygiene">🧻 Vệ sinh</option>
-        <option value="cleaning">🧴 Tẩy rửa</option>
-        <option value="kitchen">🍽️ Nhà bếp</option>
-        <option value="general">📦 Khác</option>
-      </select>
-    </div>
-    <button class="submit-btn" onclick="submitInventory()">
-      <i class="ti ti-device-floppy"></i> Khởi tạo vật tư
-    </button>
-    <button class="cancel-btn" onclick="closeOverlay('add-inv')">Đóng</button>
-  </div>
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">📦 Thêm mới mặt hàng kiểm kho</div>
+    <div class="form-group">
+      <label class="form-lbl">Emoji minh họa</label>
+      <div class="epick-row">
+        <button class="epick-btn" id="inv-epick-btn" onclick="togglePicker('inv')">📦</button>
+        <input class="form-input" id="inv-emoji" type="text" placeholder="Nhập hoặc chọn emoji" maxlength="2" oninput="syncPickerBtn('inv')" style="flex:1;">
+        <span class="epick-toggle" onclick="togglePicker('inv')">🎭 Chọn</span>
+      </div>
+      <div class="epick-grid" id="inv-epick-grid" style="display:none;"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Tên mặt hàng</label>
+      <input class="form-input" id="inv-name" type="text" placeholder="Ví dụ: Nước lau sàn...">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Số lượng hiện có</label>
+      <input class="form-input" id="inv-qty" type="number" placeholder="0" min="0">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Đơn vị tính</label>
+      <input class="form-input" id="inv-unit" type="text" placeholder="chai / cuộn / cái...">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Hạn mức cảnh báo tối thiểu (Min)</label>
+      <input class="form-input" id="inv-min" type="number" placeholder="1" min="0">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Phân loại kho</label>
+      <select class="form-input" id="inv-cat">
+        <option value="hygiene">🧻 Vệ sinh</option>
+        <option value="cleaning">🧴 Tẩy rửa</option>
+        <option value="kitchen">🍽️ Nhà bếp</option>
+        <option value="general">📦 Khác</option>
+      </select>
+    </div>
+    <button class="submit-btn" onclick="submitInventory()">
+      <i class="ti ti-device-floppy"></i> Khởi tạo vật tư
+    </button>
+    <button class="cancel-btn" onclick="closeOverlay('add-inv')">Đóng</button>
+  </div>
 </div>
 
 <div class="overlay" id="overlay-add-note">
-  <div class="sheet">
-    <div class="handle"></div>
-    <div class="sheet-title">📝 Tạo thông điệp / Ghi chú</div>
-    <div class="form-group">
-      <label class="form-lbl">Tiêu đề ngắn</label>
-      <input class="form-input" id="note-title" type="text" placeholder="Tiêu đề nội dung...">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Nội dung chi tiết</label>
-      <textarea class="form-input" id="note-body" rows="4" placeholder="Viết nội dung cần lưu ý..."></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Màu nền thẻ ghi nhớ</label>
-      <div style="display:flex;gap:9px;flex-wrap:wrap;">
-        <div class="note-color-pick" data-color="#EDE9FF" style="width:30px;height:30px;border-radius:50%;background:#EDE9FF;border:2px solid var(--pri);cursor:pointer;" onclick="pickNoteColor(this)"></div>
-        <div class="note-color-pick" data-color="#E0FFF6" style="width:30px;height:30px;border-radius:50%;background:#E0FFF6;border:2px solid transparent;cursor:pointer;" onclick="pickNoteColor(this)"></div>
-        <div class="note-color-pick" data-color="#FFF3E0" style="width:30px;height:30px;border-radius:50%;background:#FFF3E0;border:2px solid transparent;cursor:pointer;" onclick="pickNoteColor(this)"></div>
-        <div class="note-color-pick" data-color="#EAF6FF" style="width:30px;height:30px;border-radius:50%;background:#EAF6FF;border:2px solid transparent;cursor:pointer;" onclick="pickNoteColor(this)"></div>
-        <div class="note-color-pick" data-color="#FFF0F7" style="width:30px;height:30px;border-radius:50%;background:#FFF0F7;border:2px solid transparent;cursor:pointer;" onclick="pickNoteColor(this)"></div>
-      </div>
-    </div>
-    <button class="submit-btn" onclick="submitNote()">
-      <i class="ti ti-device-floppy"></i> Treo ghi chú lên bảng tin
-    </button>
-    <button class="cancel-btn" onclick="closeOverlay('add-note')">Hủy</button>
-  </div>
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">📝 Tạo thông điệp / Ghi chú</div>
+    <div class="form-group">
+      <label class="form-lbl">Tiêu đề ngắn</label>
+      <input class="form-input" id="note-title" type="text" placeholder="Tiêu đề nội dung...">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Nội dung chi tiết</label>
+      <textarea class="form-input" id="note-body" rows="4" placeholder="Viết nội dung cần lưu ý..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Màu nền thẻ ghi nhớ</label>
+      <div style="display:flex;gap:9px;flex-wrap:wrap;">
+        <div class="note-color-pick" data-color="#EDE9FF" style="width:30px;height:30px;border-radius:50%;background:#EDE9FF;border:2px solid var(--pri);cursor:pointer;" onclick="pickNoteColor(this)"></div>
+        <div class="note-color-pick" data-color="#E0FFF6" style="width:30px;height:30px;border-radius:50%;background:#E0FFF6;border:2px solid transparent;cursor:pointer;" onclick="pickNoteColor(this)"></div>
+        <div class="note-color-pick" data-color="#FFF3E0" style="width:30px;height:30px;border-radius:50%;background:#FFF3E0;border:2px solid transparent;cursor:pointer;" onclick="pickNoteColor(this)"></div>
+        <div class="note-color-pick" data-color="#EAF6FF" style="width:30px;height:30px;border-radius:50%;background:#EAF6FF;border:2px solid transparent;cursor:pointer;" onclick="pickNoteColor(this)"></div>
+        <div class="note-color-pick" data-color="#FFF0F7" style="width:30px;height:30px;border-radius:50%;background:#FFF0F7;border:2px solid transparent;cursor:pointer;" onclick="pickNoteColor(this)"></div>
+      </div>
+    </div>
+    <button class="submit-btn" onclick="submitNote()">
+      <i class="ti ti-device-floppy"></i> Treo ghi chú lên bảng tin
+    </button>
+    <button class="cancel-btn" onclick="closeOverlay('add-note')">Hủy</button>
+  </div>
 </div>
 
 <div class="overlay" id="overlay-add-member">
-  <div class="sheet">
-    <div class="handle"></div>
-    <div class="sheet-title">👨‍👩‍👧‍👦 Thiết lập thành viên gia đình</div>
-    <div class="form-group">
-      <label class="form-lbl">Tên gọi</label>
-      <input class="form-input" id="mem-name" type="text" placeholder="Ví dụ: Bố Dũng, Mẹ Vi...">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Emoji đại diện</label>
-      <div class="epick-row">
-        <button class="epick-btn" id="mem-epick-btn" onclick="togglePicker('mem')">👤</button>
-        <input class="form-input" id="mem-emoji" type="text" placeholder="Nhập hoặc chọn emoji" maxlength="2" oninput="syncPickerBtn('mem')" style="flex:1;">
-        <span class="epick-toggle" onclick="togglePicker('mem')">🎭 Chọn</span>
-      </div>
-      <div class="epick-grid" id="mem-epick-grid" style="display:none;"></div>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Vai trò thành viên</label>
-      <select class="form-input" id="mem-role">
-        <option value="parent">👨‍👩‍👧 Bố / Mẹ</option>
-        <option value="child">👦 Con cái</option>
-        <option value="member">🧑 Thành viên khác</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Mật mã cá nhân PIN (4 chữ số)</label>
-      <input class="form-input" id="mem-pin" type="password" placeholder="••••" maxlength="4" inputmode="numeric">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Màu sắc định danh</label>
-      <input class="form-input" id="mem-color" type="color" value="#6C63FF" style="height:40px; padding:2px;">
-    </div>
-    <button class="submit-btn" onclick="submitMember()">
-      <i class="ti ti-user-plus"></i> Khởi tạo thành viên
-    </button>
-    <button class="cancel-btn" onclick="closeOverlay('add-member')">Đóng</button>
-  </div>
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">👨‍👩‍👧‍👦 Thiết lập thành viên gia đình</div>
+    <div class="form-group">
+      <label class="form-lbl">Tên gọi</label>
+      <input class="form-input" id="mem-name" type="text" placeholder="Ví dụ: Bố Dũng, Mẹ Vi...">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Emoji đại diện</label>
+      <div class="epick-row">
+        <button class="epick-btn" id="mem-epick-btn" onclick="togglePicker('mem')">👤</button>
+        <input class="form-input" id="mem-emoji" type="text" placeholder="Nhập hoặc chọn emoji" maxlength="2" oninput="syncPickerBtn('mem')" style="flex:1;">
+        <span class="epick-toggle" onclick="togglePicker('mem')">🎭 Chọn</span>
+      </div>
+      <div class="epick-grid" id="mem-epick-grid" style="display:none;"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Vai trò thành viên</label>
+      <select class="form-input" id="mem-role">
+        <option value="parent">👨‍👩‍👧 Bố / Mẹ</option>
+        <option value="child">👦 Con cái</option>
+        <option value="member">🧑 Thành viên khác</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Mật mã cá nhân PIN (4 chữ số)</label>
+      <input class="form-input" id="mem-pin" type="password" placeholder="••••" maxlength="4" inputmode="numeric">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Màu sắc định danh</label>
+      <input class="form-input" id="mem-color" type="color" value="#6C63FF" style="height:40px; padding:2px;">
+    </div>
+    <button class="submit-btn" onclick="submitMember()">
+      <i class="ti ti-user-plus"></i> Khởi tạo thành viên
+    </button>
+    <button class="cancel-btn" onclick="closeOverlay('add-member')">Đóng</button>
+  </div>
 </div>
 
 <script>
@@ -1022,17 +929,17 @@ body {
 // CLOUD WEB APP CONFIGURATION
 // ═══════════════════════════════════════════════════════
 const APP_CONFIG = {
-  // Đường dẫn URL Web App thật của anh trên Google Apps Script:
-  GAS_URL: 'https://script.google.com/macros/s/AKfycbwQBoNuEgHqkL82rVS6GnToN5iQupxbBZDbL8U4ikptqD8KOjNQRv0bcbmqX4Ad47nV/exec',
-  DEMO_MODE: false 
+  // Đường dẫn URL Web App thật của anh trên Google Apps Script:
+  GAS_URL: 'https://script.google.com/macros/s/AKfycbwQBoNuEgHqkL82rVS6GnToN5iQupxbBZDbL8U4ikptqD8KOjNQRv0bcbmqX4Ad47nV/exec',
+  DEMO_MODE: false 
 };
 
 const state = {
-  members: [], dashboard: null, sharedExpenses: [], inventory: [], notes: [],
-  currentPage: 'dashboard',
-  personal: { memberId: null, memberName: '', pin: '', accounts: [], transactions: [] },
-  activeSharedFilter: 'all', activeInvFilter: 'all', activeTxFilter: 'all',
-  noteColor: '#EDE9FF', lastSync: null
+  members: [], dashboard: null, sharedExpenses: [], inventory: [], notes: [],
+  currentPage: 'dashboard',
+  personal: { memberId: null, memberName: '', pin: '', accounts: [], transactions: [] },
+  activeSharedFilter: 'all', activeInvFilter: 'all', activeTxFilter: 'all',
+  noteColor: '#EDE9FF', lastSync: null
 };
 
 const fmt = n => (n === undefined || n === null || isNaN(n)) ? '0đ' : Number(n).toLocaleString('vi-VN') + 'đ';
@@ -1041,1511 +948,1148 @@ const catColor = { food:'#FF9F43', electric:'#6C63FF', water:'#20BFC1', internet
 const catBg = { food:'#FFF3E0', electric:'#EDE9FF', water:'#E0FAFB', internet:'#EAF6FF', education:'#FFE8E8', transport:'#FFFFF0', health:'#E0FFF6', shopping:'#FFF0F7', salary:'#E0FFF6', other:'#F5F3FF' };
 const flashGrad = { food:'linear-gradient(135deg,#FF9F43,#FF6B6B)', electric:'linear-gradient(135deg,#6C63FF,#a78bfa)', water:'linear-gradient(135deg,#20BFC1,#085450)', internet:'linear-gradient(135deg,#4FACFE,#185FA5)', education:'linear-gradient(135deg,#FF6B6B,#FF6EB4)', other:'linear-gradient(135deg,#9592B8,#6C63FF)' };
 
-// ── Abort controller hiện tại (để cancel khi cần) ──
-let _currentSyncAbort = null;
-let _isSyncing = false;
-
-// ── fetch với timeout (mặc định 25s — GAS cold start có thể đến 20s) ──
-async function fetchWithTimeout(url, options = {}, timeoutMs = 25000) {
-  const ctrl = new AbortController();
-  const tid = setTimeout(() => ctrl.abort(), timeoutMs);
-  try {
-    const res = await fetch(url, { ...options, signal: ctrl.signal });
-    return res;
-  } finally {
-    clearTimeout(tid);
-  }
+async function api(method, params) {
+  try {
+    let res;
+    if (method === 'GET') {
+      const queryStr = new URLSearchParams(params).toString();
+      res = await fetch(`${APP_CONFIG.GAS_URL}?${queryStr}`);
+    } else {
+      res = await fetch(APP_CONFIG.GAS_URL, {
+        method: 'POST',
+        body: JSON.stringify(params)
+      });
+    }
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error || 'Lỗi xử lý API từ máy chủ');
+    return json.data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
 }
 
-// ── Hàm gọi API với retry tự động (tối đa 2 lần) ──
-async function api(method, params, retries = 2) {
-  let lastErr;
-  for (let attempt = 0; attempt <= retries; attempt++) {
-    try {
-      let res;
-      if (method === 'GET') {
-        const queryStr = new URLSearchParams(params).toString();
-        res = await fetchWithTimeout(`${APP_CONFIG.GAS_URL}?${queryStr}`);
-      } else {
-        res = await fetchWithTimeout(APP_CONFIG.GAS_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' }, // GAS yêu cầu text/plain để tránh CORS preflight
-          body: JSON.stringify(params)
-        });
-      }
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
-      if (!json.ok) throw new Error(json.error || 'Lỗi API server');
-      return json.data;
-    } catch (err) {
-      lastErr = err;
-      // Không retry nếu là lỗi logic (không phải network/timeout)
-      const isNetworkErr = err.name === 'AbortError' || err.message.startsWith('HTTP') || err.message.includes('fetch') || err.message.includes('network') || err.message.includes('Failed');
-      if (!isNetworkErr || attempt === retries) break;
-      // Chờ trước khi retry: 1s, 2s
-      await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
-    }
-  }
-  throw lastErr;
-}
-
-// ── syncAll: tuần tự từng request thay vì Promise.all để tránh GAS bị quá tải ──
-// Mỗi endpoint fail độc lập, không kéo sập cả app
-async function syncAll() {
-  if (_isSyncing) return;
-  _isSyncing = true;
-  setSyncStatus('loading', 'Đang kết nối Google Sheets...');
-
-  // Helper: gọi an toàn — lỗi trả về null thay vì throw
-  async function safeGet(action, fallback = null) {
-    try { return await api('GET', { action }); }
-    catch (e) { console.warn(`[sync] ${action} failed:`, e.message); return fallback; }
-  }
-
-  try {
-    // Tuần tự từng request — GAS xử lý được ổn định hơn
-    const members = await safeGet('get_members', state.members);
-    if (members) { state.members = members; renderPersonalMembers(); }
-
-    const dash = await safeGet('get_dashboard', state.dashboard);
-    if (dash) { state.dashboard = dash; }
-
-    const shared = await safeGet('get_shared', state.sharedExpenses);
-    if (shared) { state.sharedExpenses = shared; }
-
-    const inventory = await safeGet('get_inventory', state.inventory);
-    if (inventory) { state.inventory = inventory; }
-
-    const notes = await safeGet('get_notes_public', state.notes);
-    if (notes) { state.notes = notes; }
-
-    // Render sau khi có data
-    renderDashboard();
-    renderFamily();
-    renderInventory();
-    renderNotes();
-    populateSelects();
-
-    state.lastSync = new Date();
-    const timeString = state.lastSync.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
-    setSyncStatus(true, `Đồng bộ thành công lúc ${timeString}`);
-
-    const periodEl = document.getElementById('topbar-period');
-    if (periodEl) periodEl.textContent = 'Kỳ dữ liệu: ' + (dash?.period || 'Hiện tại');
-
-  } catch (e) {
-    // Lỗi ngoài dự kiến
-    setSyncStatus(false, 'Lỗi kết nối: ' + e.message);
-    showToast('❌ ' + e.message);
-  } finally {
-    _isSyncing = false;
-  }
-}
-  const ok = await showConfirm({ icon:'⚙️', title:'Khởi tạo Database?', msg:'Hệ thống sẽ dọn dẹp và cấu trúc lại toàn bộ đầu bảng trên file Google Sheet hiện tại.', okLabel:'Xác nhận khởi tạo' });
-  if(!ok) return;
-  showToast('Đang tạo các sheet chức năng...');
-  try {
-    const data = await api('GET', { action: 'init_database' });
-    if(data && data.initialized) {
-      showToast('🎉 Thiết lập cấu trúc cơ sở dữ liệu thành công!');
-      syncAll();
-    }
-  } catch (e) {
-    showToast('Lỗi cấu trúc: ' + e.message);
-  }
+async function initDatabaseBackend() {
+  if(!confirm('Hệ thống sẽ dọn dẹp và cấu trúc lại toàn bộ đầu bảng trên file Google Sheet hiện tại?')) return;
+  showToast('Đang tạo các sheet chức năng...');
+  try {
+    const data = await api('GET', { action: 'init_database' });
+    if(data && data.initialized) {
+      showToast('🎉 Thiết lập cấu trúc cơ sở dữ liệu thành công!');
+      syncAll();
+    }
+  } catch (e) {
+    showToast('Lỗi cấu trúc: ' + e.message);
+  }
 }
 
 function openPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
-  
-  document.getElementById('page-' + id)?.classList.add('active');
-  document.querySelector(`.nav-tab[data-page="${id}"]`)?.classList.add('active');
-  document.querySelector(`.bnav-item[data-page="${id}"]`)?.classList.add('active');
-  state.currentPage = id;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
+  
+  document.getElementById('page-' + id)?.classList.add('active');
+  document.querySelector(`.nav-tab[data-page="${id}"]`)?.classList.add('active');
+  document.querySelector(`.bnav-item[data-page="${id}"]`)?.classList.add('active');
+  state.currentPage = id;
 }
 
 // Sửa lỗi hàm gọi mở / đóng popup hoạt động ngay lập tức
-function openOverlay(id) { 
-  const el = document.getElementById('overlay-' + id);
-  if(el) el.classList.add('open'); 
+function openOverlay(id) { 
+  const el = document.getElementById('overlay-' + id);
+  if(el) el.classList.add('open'); 
 }
 
-function closeOverlay(id) { 
-  const el = document.getElementById('overlay-' + id);
-  if(el) el.classList.remove('open'); 
+function closeOverlay(id) { 
+  const el = document.getElementById('overlay-' + id);
+  if(el) el.classList.remove('open'); 
 }
 
 // Sửa lại logic định tuyến nút FAB (+) theo từng tab chính xác
 function openAddModal() {
-  const page = state.currentPage;
-  if (page === 'dashboard' || page === 'personal') openOverlay('add-tx');
-  else if (page === 'family') openOverlay('add-shared');
-  else if (page === 'inventory') openOverlay('add-inv');
-  else if (page === 'notes') openOverlay('add-note');
-  
-  const today = new Date().toISOString().split('T')[0];
-  if(document.getElementById('tx-date')) document.getElementById('tx-date').value = today;
-  if(document.getElementById('sh-date')) document.getElementById('sh-date').value = today;
-  onTxMemberChange(); // Đồng bộ ngay danh mục ví khi mở popup lên
+  const page = state.currentPage;
+  if (page === 'dashboard' || page === 'personal') openOverlay('add-tx');
+  else if (page === 'family') openOverlay('add-shared');
+  else if (page === 'inventory') openOverlay('add-inv');
+  else if (page === 'notes') openOverlay('add-note');
+  
+  const today = new Date().toISOString().split('T')[0];
+  if(document.getElementById('tx-date')) document.getElementById('tx-date').value = today;
+  if(document.getElementById('sh-date')) document.getElementById('sh-date').value = today;
+  onTxMemberChange(); // Đồng bộ ngay danh mục ví khi mở popup lên
 }
 
 let toastTimer;
 function showToast(msg) {
-  const toastContainer = document.getElementById('toast');
-  if (!toastContainer) return;
-  toastContainer.textContent = msg;
-  toastContainer.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toastContainer.classList.remove('show'), 3000);
+  const toastContainer = document.getElementById('toast');
+  if (!toastContainer) return;
+  toastContainer.textContent = msg;
+  toastContainer.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastContainer.classList.remove('show'), 3000);
 }
 
-function setSyncStatus(state_code, msg) {
-  // state_code: 'loading' | true (ok) | false (error)
-  const bar  = document.getElementById('sync-bar');
-  const dot  = document.getElementById('sync-dot');
-  const txt  = document.getElementById('sync-text');
-  const btn  = document.querySelector('#sync-bar .sync-time');
+function setSyncStatus(ok, msg) {
+  const dot = document.getElementById('sync-dot');
+  const txt = document.getElementById('sync-text');
+  if(dot) dot.className = 'sync-dot' + (ok ? '' : ' err');
+  if(txt) txt.textContent = msg;
+}
 
-  if (state_code === 'loading') {
-    bar?.classList.add('loading');    bar?.classList.remove('error');
-    dot?.classList.add('loading');    dot?.classList.remove('err');
-    if(btn) btn.textContent = '...';
-  } else if (state_code === true) {
-    bar?.classList.remove('loading', 'error');
-    dot?.classList.remove('loading', 'err');
-    if(btn) btn.textContent = '↻ Làm mới';
-  } else {
-    bar?.classList.remove('loading'); bar?.classList.add('error');
-    dot?.classList.remove('loading'); dot?.classList.add('err');
-    if(btn) btn.textContent = '↺ Thử lại';
-  }
-  if(txt) txt.textContent = msg;
+async function syncAll() {
+  setSyncStatus(true, 'Đang đồng bộ điện toán đám mây...');
+  try {
+    const [dash, members, shared, inventory, notes] = await Promise.all([
+      api('GET', { action: 'get_dashboard' }),
+      api('GET', { action: 'get_members' }),
+      api('GET', { action: 'get_shared' }),
+      api('GET', { action: 'get_inventory' }),
+      api('GET', { action: 'get_notes_public' })
+    ]);
+    
+    state.dashboard = dash;
+    state.members = members;
+    state.sharedExpenses = shared;
+    state.inventory = inventory;
+    state.notes = notes;
+    state.lastSync = new Date();
+
+    renderDashboard();
+    renderPersonalMembers();
+    renderFamily();
+    renderInventory();
+    renderNotes();
+    populateSelects();
+
+    const timeString = state.lastSync.toLocaleTimeString('vi-VN', {hour: '2-digit', minute: '2-digit'});
+    setSyncStatus(true, `Đã đồng bộ Google Sheets thành công (${timeString})`);
+    
+    const periodEl = document.getElementById('topbar-period');
+    if(periodEl) periodEl.textContent = 'Kỳ dữ liệu: ' + (dash?.period || 'Hiện tại');
+  } catch (e) {
+    setSyncStatus(false, 'Mất kết nối Cloud: ' + e.message);
+    showToast('❌ Đồng bộ thất bại: ' + e.message);
+  }
 }
 
 function renderDashboard() {
-  const d = state.dashboard;
-  if (!d) return;
-  
-  const periodEl   = document.getElementById('dash-period');
-  const sharedEl   = document.getElementById('dash-shared');
-  const incomeEl   = document.getElementById('dash-income');
-  const expenseEl  = document.getElementById('dash-expense');
-  const membersEl  = document.getElementById('dash-members');
-  const lowstockEl = document.getElementById('dash-lowstock');
-  
-  if(periodEl)   periodEl.textContent   = 'Kỳ tháng ' + d.period;
-  if(membersEl)  membersEl.textContent  = d.member_count + ' người';
-  if(lowstockEl) lowstockEl.textContent = d.low_stock_count + ' loại hàng';
+  const d = state.dashboard;
+  if (!d) return;
+  
+  const periodEl   = document.getElementById('dash-period');
+  const sharedEl   = document.getElementById('dash-shared');
+  const incomeEl   = document.getElementById('dash-income');
+  const expenseEl  = document.getElementById('dash-expense');
+  const membersEl  = document.getElementById('dash-members');
+  const lowstockEl = document.getElementById('dash-lowstock');
+  
+  if(periodEl)   periodEl.textContent   = 'Kỳ tháng ' + d.period;
+  if(membersEl)  membersEl.textContent  = d.member_count + ' người';
+  if(lowstockEl) lowstockEl.textContent = d.low_stock_count + ' loại hàng';
 
-  // ── TỔNG CHI PHÍ CHUNG THÁNG NÀY ──────────────────────
-  const thisMonth = new Date().toISOString().substring(0, 7);
-  const sharedThisMonth = (state.sharedExpenses || []).filter(s => String(s.date).startsWith(thisMonth));
-  const totalSharedExpense = sharedThisMonth.reduce((sum, s) => sum + Number(s.amount || 0), 0);
-  const totalSharedIncome  = Number(d.total_shared_income || 0);
+  // ── TỔNG CHI PHÍ CHUNG THÁNG NÀY ──────────────────────
+  const thisMonth = new Date().toISOString().substring(0, 7);
+  const sharedThisMonth = (state.sharedExpenses || []).filter(s => String(s.date).startsWith(thisMonth));
+  const totalSharedExpense = sharedThisMonth.reduce((sum, s) => sum + Number(s.amount || 0), 0);
+  const totalSharedIncome  = Number(d.total_shared_income || 0);
 
-  if(sharedEl)  sharedEl.textContent  = fmt(totalSharedExpense);
-  if(incomeEl)  incomeEl.textContent  = '+' + fmt(totalSharedIncome  || Number(d.total_income  || 0));
-  if(expenseEl) expenseEl.textContent = '-' + fmt(totalSharedExpense || Number(d.total_expense || 0));
+  if(sharedEl)  sharedEl.textContent  = fmt(totalSharedExpense);
+  if(incomeEl)  incomeEl.textContent  = '+' + fmt(totalSharedIncome  || Number(d.total_income  || 0));
+  if(expenseEl) expenseEl.textContent = '-' + fmt(totalSharedExpense || Number(d.total_expense || 0));
 
-  // ── BIỂU ĐỒ 6 THÁNG – tính trực tiếp từ state.sharedExpenses ──────────
-  // Không phụ thuộc d.chart (vốn hay bị backend trả về rỗng)
-  const barChartContainer = document.getElementById('bar-chart');
-  if(barChartContainer) {
-    // Tạo 6 tháng gần nhất
-    const months = [];
-    for(let i = 5; i >= 0; i--) {
-      const d2 = new Date();
-      d2.setDate(1);
-      d2.setMonth(d2.getMonth() - i);
-      months.push(d2.toISOString().substring(0, 7)); // "YYYY-MM"
-    }
+  // ── BIỂU ĐỒ 6 THÁNG – tính trực tiếp từ state.sharedExpenses ──────────
+  // Không phụ thuộc d.chart (vốn hay bị backend trả về rỗng)
+  const barChartContainer = document.getElementById('bar-chart');
+  if(barChartContainer) {
+    // Tạo 6 tháng gần nhất
+    const months = [];
+    for(let i = 5; i >= 0; i--) {
+      const d2 = new Date();
+      d2.setDate(1);
+      d2.setMonth(d2.getMonth() - i);
+      months.push(d2.toISOString().substring(0, 7)); // "YYYY-MM"
+    }
 
-    // Tính tổng chi cho mỗi tháng từ sharedExpenses
-    const monthTotals = months.map(m => ({
-      month: m,
-      label: m.split('-')[1] + '/' + m.split('-')[0].slice(2), // "06/25"
-      expense: (state.sharedExpenses || [])
-        .filter(s => String(s.date).startsWith(m))
-        .reduce((sum, s) => sum + Number(s.amount || 0), 0)
-    }));
+    // Tính tổng chi cho mỗi tháng từ sharedExpenses
+    const monthTotals = months.map(m => ({
+      month: m,
+      label: m.split('-')[1] + '/' + m.split('-')[0].slice(2), // "06/25"
+      expense: (state.sharedExpenses || [])
+        .filter(s => String(s.date).startsWith(m))
+        .reduce((sum, s) => sum + Number(s.amount || 0), 0)
+    }));
 
-    // Nếu sharedExpenses trống nhưng backend có d.chart, dùng fallback
-    const totalFromShared = monthTotals.reduce((s, m) => s + m.expense, 0);
-    const chartData = totalFromShared > 0 ? monthTotals : (d.chart || []).map((c, i) => ({
-      month: c.month || months[i] || '',
-      label: (c.month || months[i] || '').split('-')[1],
-      expense: c.expense || 0
-    }));
+    // Nếu sharedExpenses trống nhưng backend có d.chart, dùng fallback
+    const totalFromShared = monthTotals.reduce((s, m) => s + m.expense, 0);
+    const chartData = totalFromShared > 0 ? monthTotals : (d.chart || []).map((c, i) => ({
+      month: c.month || months[i] || '',
+      label: (c.month || months[i] || '').split('-')[1],
+      expense: c.expense || 0
+    }));
 
-    const maxVal = Math.max(...chartData.map(c => c.expense), 1);
-    barChartContainer.innerHTML = chartData.map((m, idx) => {
-      const isCur = idx === chartData.length - 1;
-      const h = Math.max(Math.round((m.expense / maxVal) * 64), 4);
-      const valLabel = m.expense > 0
-        ? (m.expense >= 1000000 ? (m.expense/1000000).toFixed(1)+'tr' : Math.round(m.expense/1000)+'k')
-        : '';
-      return `<div class="bar-col">
-        <div class="bar-val ${isCur ? 'cur' : ''}">${valLabel}</div>
-        <div class="bar" style="height:${h}px; background:${isCur ? '#6C63FF' : '#C4BEFE'};" title="${m.label}: ${fmt(m.expense)}"></div>
-        <div class="bar-lbl ${isCur ? 'cur' : ''}">${m.label}</div>
-      </div>`;
-    }).join('');
-  }
+    const maxVal = Math.max(...chartData.map(c => c.expense), 1);
+    barChartContainer.innerHTML = chartData.map((m, idx) => {
+      const isCur = idx === chartData.length - 1;
+      const h = Math.max(Math.round((m.expense / maxVal) * 64), 4);
+      const valLabel = m.expense > 0
+        ? (m.expense >= 1000000 ? (m.expense/1000000).toFixed(1)+'tr' : Math.round(m.expense/1000)+'k')
+        : '';
+      return `<div class="bar-col">
+        <div class="bar-val ${isCur ? 'cur' : ''}">${valLabel}</div>
+        <div class="bar" style="height:${h}px; background:${isCur ? '#6C63FF' : '#C4BEFE'};" title="${m.label}: ${fmt(m.expense)}"></div>
+        <div class="bar-lbl ${isCur ? 'cur' : ''}">${m.label}</div>
+      </div>`;
+    }).join('');
+  }
 
-  // ── THÀNH VIÊN ─────────────────────────────────────────
-  const membersRow = document.getElementById('members-row');
-  if(membersRow) {
-    membersRow.innerHTML = state.members.map(member => `
-      <div class="member-card" onclick="openPage('personal')">
-        <div class="member-avatar" style="background:${member.color}22;">${member.emoji}</div>
-        <div class="member-name">${member.name}</div>
-        <div class="member-role">${member.role === 'parent' ? '👨‍👩‍👧 Bố / Mẹ' : '👦 Con cái'}</div>
-        <div class="member-lock"><i class="ti ti-lock"></i> Riêng tư</div>
-      </div>`).join('') +
-      `<div class="member-card" style="border:1.5px dashed var(--muted); display:flex; flex-direction:column; align-items:center; justify-content:center;" onclick="openOverlay('add-member')">
-        <i class="ti ti-user-plus" style="font-size:22px; color:var(--muted);"></i>
-        <div style="font-size:11px; font-weight:600; margin-top:4px;">Thêm mới</div>
-      </div>`;
-  }
+  // ── THÀNH VIÊN ─────────────────────────────────────────
+  const membersRow = document.getElementById('members-row');
+  if(membersRow) {
+    membersRow.innerHTML = state.members.map(member => `
+      <div class="member-card" onclick="openPage('personal')">
+        <div class="member-avatar" style="background:${member.color}22;">${member.emoji}</div>
+        <div class="member-name">${member.name}</div>
+        <div class="member-role">${member.role === 'parent' ? '👨‍👩‍👧 Bố / Mẹ' : '👦 Con cái'}</div>
+        <div class="member-lock"><i class="ti ti-lock"></i> Riêng tư</div>
+      </div>`).join('') +
+      `<div class="member-card" style="border:1.5px dashed var(--muted); display:flex; flex-direction:column; align-items:center; justify-content:center;" onclick="openOverlay('add-member')">
+        <i class="ti ti-user-plus" style="font-size:22px; color:var(--muted);"></i>
+        <div style="font-size:11px; font-weight:600; margin-top:4px;">Thêm mới</div>
+      </div>`;
+  }
 
-  // ── KHOẢN ĐỊNH KỲ SẮP ĐẾN HẠN ────────────────────────
-  renderUpcomingDue();
+  // ── KHOẢN ĐỊNH KỲ SẮP ĐẾN HẠN ────────────────────────
+  renderUpcomingDue();
 }
 
 // ─── RENDER UPCOMING DUE PAYMENTS ────────────────────────────────────────────
 // Phát hiện các khoản chi định kỳ từ sharedExpenses (nhóm theo description + category)
 // và ước tính ngày đến hạn tiếp theo dựa trên lần thanh toán gần nhất
 function renderUpcomingDue() {
-  const container = document.getElementById('due-list');
-  if (!container) return;
+  const container = document.getElementById('due-list');
+  if (!container) return;
 
-  const today = new Date();
-  today.setHours(0,0,0,0);
+  const today = new Date();
+  today.setHours(0,0,0,0);
 
-  // Nhóm giao dịch theo key = category+description (normalize lowercase)
-  const groups = {};
-  (state.sharedExpenses || []).forEach(s => {
-    const key = (s.category || 'other') + '||' + (s.description || '').trim().toLowerCase();
-    if (!groups[key]) groups[key] = [];
-    groups[key].push(s);
-  });
+  // Nhóm giao dịch theo key = category+description (normalize lowercase)
+  const groups = {};
+  (state.sharedExpenses || []).forEach(s => {
+    const key = (s.category || 'other') + '||' + (s.description || '').trim().toLowerCase();
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(s);
+  });
 
-  // Xác định khoản "định kỳ": xuất hiện ≥ 2 lần, hoặc là các loại hóa đơn chuẩn (electric/water/internet)
-  const RECURRING_CATS = new Set(['electric','water','internet','food']);
-  const items = [];
+  // Xác định khoản "định kỳ": xuất hiện ≥ 2 lần, hoặc là các loại hóa đơn chuẩn (electric/water/internet)
+  const RECURRING_CATS = new Set(['electric','water','internet','food']);
+  const items = [];
 
-  Object.values(groups).forEach(list => {
-    if (list.length < 1) return;
-    const sample = list[0];
-    const isRecurring = list.length >= 2 || RECURRING_CATS.has(sample.category);
-    if (!isRecurring) return;
+  Object.values(groups).forEach(list => {
+    if (list.length < 1) return;
+    const sample = list[0];
+    const isRecurring = list.length >= 2 || RECURRING_CATS.has(sample.category);
+    if (!isRecurring) return;
 
-    // Lấy lần chi gần nhất
-    const sorted = [...list].sort((a,b) => String(b.date).localeCompare(String(a.date)));
-    const last = sorted[0];
-    const lastDate = new Date(last.date);
+    // Lấy lần chi gần nhất
+    const sorted = [...list].sort((a,b) => String(b.date).localeCompare(String(a.date)));
+    const last = sorted[0];
+    const lastDate = new Date(last.date);
 
-    // Ước tính chu kỳ (ngày): so sánh 2 lần gần nhất nếu có, không thì mặc định 30
-    let cycleDays = 30;
-    if (sorted.length >= 2) {
-      const prev = new Date(sorted[1].date);
-      const diff = Math.round((lastDate - prev) / 86400000);
-      if (diff >= 7 && diff <= 95) cycleDays = diff;
-    }
-    // Hóa đơn điện/nước/internet mặc định 30 ngày dù chỉ có 1 lần
-    if (RECURRING_CATS.has(sample.category) && sorted.length < 2) cycleDays = 30;
+    // Ước tính chu kỳ (ngày): so sánh 2 lần gần nhất nếu có, không thì mặc định 30
+    let cycleDays = 30;
+    if (sorted.length >= 2) {
+      const prev = new Date(sorted[1].date);
+      const diff = Math.round((lastDate - prev) / 86400000);
+      if (diff >= 7 && diff <= 95) cycleDays = diff;
+    }
+    // Hóa đơn điện/nước/internet mặc định 30 ngày dù chỉ có 1 lần
+    if (RECURRING_CATS.has(sample.category) && sorted.length < 2) cycleDays = 30;
 
-    // Ngày đến hạn tiếp theo
-    const nextDue = new Date(lastDate);
-    nextDue.setDate(nextDue.getDate() + cycleDays);
+    // Ngày đến hạn tiếp theo
+    const nextDue = new Date(lastDate);
+    nextDue.setDate(nextDue.getDate() + cycleDays);
 
-    const daysLeft = Math.round((nextDue - today) / 86400000);
+    const daysLeft = Math.round((nextDue - today) / 86400000);
 
-    // Chỉ hiển thị những khoản đến hạn trong vòng 30 ngày (hoặc đã quá hạn)
-    if (daysLeft > 30) return;
+    // Chỉ hiển thị những khoản đến hạn trong vòng 30 ngày (hoặc đã quá hạn)
+    if (daysLeft > 30) return;
 
-    let urgency = 'ok';
-    if (daysLeft <= 3)      urgency = 'urgent';
-    else if (daysLeft <= 10) urgency = 'soon';
+    let urgency = 'ok';
+    if (daysLeft <= 3)      urgency = 'urgent';
+    else if (daysLeft <= 10) urgency = 'soon';
 
-    let dueBadge = daysLeft < 0
-      ? `Quá hạn ${Math.abs(daysLeft)} ngày`
-      : daysLeft === 0 ? 'Hôm nay!'
-      : daysLeft === 1 ? 'Ngày mai'
-      : `Còn ${daysLeft} ngày`;
+    let dueBadge = daysLeft < 0
+      ? `Quá hạn ${Math.abs(daysLeft)} ngày`
+      : daysLeft === 0 ? 'Hôm nay!'
+      : daysLeft === 1 ? 'Ngày mai'
+      : `Còn ${daysLeft} ngày`;
 
-    items.push({
-      description: last.description,
-      category: last.category || 'other',
-      amount: Number(last.amount || 0),
-      nextDue,
-      daysLeft,
-      urgency,
-      dueBadge,
-      paid_by: last.paid_by || ''
-    });
-  });
+    items.push({
+      description: last.description,
+      category: last.category || 'other',
+      amount: Number(last.amount || 0),
+      nextDue,
+      daysLeft,
+      urgency,
+      dueBadge,
+      paid_by: last.paid_by || ''
+    });
+  });
 
-  // Sắp xếp: quá hạn/sắp nhất lên đầu
-  items.sort((a,b) => a.daysLeft - b.daysLeft);
+  // Sắp xếp: quá hạn/sắp nhất lên đầu
+  items.sort((a,b) => a.daysLeft - b.daysLeft);
 
-  if (!items.length) {
-    container.innerHTML = `<div class="empty" style="padding:20px;">
-      <i class="ti ti-calendar-check" style="font-size:28px;display:block;margin-bottom:8px;"></i>
-      <p>Không có khoản chi định kỳ nào sắp đến hạn trong 30 ngày tới</p>
-    </div>`;
-    return;
-  }
+  if (!items.length) {
+    container.innerHTML = `<div class="empty" style="padding:20px;">
+      <i class="ti ti-calendar-check" style="font-size:28px;display:block;margin-bottom:8px;"></i>
+      <p>Không có khoản chi định kỳ nào sắp đến hạn trong 30 ngày tới</p>
+    </div>`;
+    return;
+  }
 
-  const nextDueFmt = d => `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+  const nextDueFmt = d => `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
 
-  container.innerHTML = items.map(item => `
-    <div class="due-card ${item.urgency}">
-      <div class="due-ico" style="background:${catBg[item.category]};color:${catColor[item.category]};">${catIcon[item.category] || '📌'}</div>
-      <div class="due-info">
-        <div class="due-name">${item.description}</div>
-        <div class="due-meta">Đến hạn ${nextDueFmt(item.nextDue)} · ${item.paid_by || 'Chưa xác định'}</div>
-      </div>
-      <div class="due-right">
-        <div class="due-amt">${fmt(item.amount)}</div>
-        <div class="due-badge ${item.urgency}">${item.dueBadge}</div>
-      </div>
-    </div>`).join('');
+  container.innerHTML = items.map(item => `
+    <div class="due-card ${item.urgency}">
+      <div class="due-ico" style="background:${catBg[item.category]};color:${catColor[item.category]};">${catIcon[item.category] || '📌'}</div>
+      <div class="due-info">
+        <div class="due-name">${item.description}</div>
+        <div class="due-meta">Đến hạn ${nextDueFmt(item.nextDue)} · ${item.paid_by || 'Chưa xác định'}</div>
+      </div>
+      <div class="due-right">
+        <div class="due-amt">${fmt(item.amount)}</div>
+        <div class="due-badge ${item.urgency}">${item.dueBadge}</div>
+      </div>
+    </div>`).join('');
 }
 
 function renderPersonalMembers() {
-  const personalRow = document.getElementById('personal-members-row');
-  if(personalRow) {
-    personalRow.innerHTML = state.members.map(member => `
-      <div class="member-card" onclick="triggerPinAuth('${member.id}','${member.name}','${member.emoji}')">
-        <div class="member-avatar" style="background:${member.color}22;">${member.emoji}</div>
-        <div class="member-name">${member.name}</div>
-        <div class="member-lock" style="color:var(--pri);"><i class="ti ti-key"></i> Xác thực</div>
-      </div>`).join('');
-  }
+  const personalRow = document.getElementById('personal-members-row');
+  if(personalRow) {
+    personalRow.innerHTML = state.members.map(member => `
+      <div class="member-card" onclick="triggerPinAuth('${member.id}','${member.name}','${member.emoji}')">
+        <div class="member-avatar" style="background:${member.color}22;">${member.emoji}</div>
+        <div class="member-name">${member.name}</div>
+        <div class="member-lock" style="color:var(--pri);"><i class="ti ti-key"></i> Xác thực</div>
+      </div>`).join('');
+  }
 }
 
 let pinBuffer = '';
 let targetAuthMemberId = '';
 
 function triggerPinAuth(id, name, emoji) {
-  pinBuffer = '';
-  targetAuthMemberId = id;
-  document.getElementById('pin-emoji').textContent = emoji;
-  document.getElementById('pin-name').textContent = name;
-  document.getElementById('pin-error').textContent = '';
-  updatePinView();
-  openOverlay('pin');
+  pinBuffer = '';
+  targetAuthMemberId = id;
+  document.getElementById('pin-emoji').textContent = emoji;
+  document.getElementById('pin-name').textContent = name;
+  document.getElementById('pin-error').textContent = '';
+  updatePinView();
+  openOverlay('pin');
 }
 
 function pinKey(num) {
-  if (pinBuffer.length >= 4) return;
-  pinBuffer += num;
-  updatePinView();
-  if (pinBuffer.length === 4) setTimeout(verifyPinProcess, 200);
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += num;
+  updatePinView();
+  if (pinBuffer.length === 4) setTimeout(verifyPinProcess, 200);
 }
 
 function pinDel() {
-  pinBuffer = pinBuffer.slice(0, -1);
-  updatePinView();
+  pinBuffer = pinBuffer.slice(0, -1);
+  updatePinView();
 }
 
 function updatePinView() {
-  document.querySelectorAll('.pin-dot').forEach((dot, index) => {
-    dot.classList.toggle('filled', index < pinBuffer.length);
-  });
+  document.querySelectorAll('.pin-dot').forEach((dot, index) => {
+    dot.classList.toggle('filled', index < pinBuffer.length);
+  });
 }
 
 async function verifyPinProcess() {
-  try {
-    const response = await api('POST', { action: 'verify_pin', member_id: targetAuthMemberId, pin: pinBuffer });
-    if (response && response.valid) {
-      closeOverlay('pin');
-      showToast('🔓 Xác thực thành công tài khoản riêng tư!');
-      await loadPersonalWalletData(targetAuthMemberId, pinBuffer);
-    } else {
-      document.getElementById('pin-error').textContent = 'Mật mã PIN nhập chưa chính xác, vui lòng thử lại';
-      pinBuffer = '';
-      updatePinView();
-    }
-  } catch(e) {
-    document.getElementById('pin-error').textContent = 'Lỗi kết nối kiểm tra: ' + e.message;
-  }
+  try {
+    const response = await api('POST', { action: 'verify_pin', member_id: targetAuthMemberId, pin: pinBuffer });
+    if (response && response.valid) {
+      closeOverlay('pin');
+      showToast('🔓 Xác thực thành công tài khoản riêng tư!');
+      await loadPersonalWalletData(targetAuthMemberId, pinBuffer);
+    } else {
+      document.getElementById('pin-error').textContent = 'Mật mã PIN nhập chưa chính xác, vui lòng thử lại';
+      pinBuffer = '';
+      updatePinView();
+    }
+  } catch(e) {
+    document.getElementById('pin-error').textContent = 'Lỗi kết nối kiểm tra: ' + e.message;
+  }
 }
 
 async function loadPersonalWalletData(id, validatedPin) {
-  try {
-    const data = await api('GET', { action: 'get_personal', member_id: id, pin: validatedPin });
-    const member = state.members.find(m => m.id === id);
-    state.personal = { memberId: id, memberName: member?.name || '', pin: validatedPin, accounts: data.accounts || [], transactions: data.transactions || [] };
-    
-    document.getElementById('personal-member-name').textContent = 'Sổ ví: ' + (member?.name || '');
-    
-    const accTypeIcon = { cash:'💵', bank:'🏦', credit:'💳', ewallet:'📱', saving:'🏧' };
-    const accTypeLabel = { cash:'Tiền mặt', bank:'Ngân hàng', credit:'Credit Card', ewallet:'Ví điện tử', saving:'Tiết kiệm' };
-    const accGradients = [
-      'linear-gradient(135deg,#6C63FF,#a78bfa)',
-      'linear-gradient(135deg,#20BFC1,#6DECAE)',
-      'linear-gradient(135deg,#FF9F43,#FF6B6B)',
-      'linear-gradient(135deg,#4FACFE,#185FA5)',
-      'linear-gradient(135deg,#00C896,#085450)',
-    ];
+  try {
+    const data = await api('GET', { action: 'get_personal', member_id: id, pin: validatedPin });
+    const member = state.members.find(m => m.id === id);
+    state.personal = { memberId: id, memberName: member?.name || '', pin: validatedPin, accounts: data.accounts || [], transactions: data.transactions || [] };
+    
+    document.getElementById('personal-member-name').textContent = 'Sổ ví: ' + (member?.name || '');
+    
+    const accTypeIcon = { cash:'💵', bank:'🏦', credit:'💳', ewallet:'📱', saving:'🏧' };
+    const accTypeLabel = { cash:'Tiền mặt', bank:'Ngân hàng', credit:'Credit Card', ewallet:'Ví điện tử', saving:'Tiết kiệm' };
+    const accGradients = [
+      'linear-gradient(135deg,#6C63FF,#a78bfa)',
+      'linear-gradient(135deg,#20BFC1,#6DECAE)',
+      'linear-gradient(135deg,#FF9F43,#FF6B6B)',
+      'linear-gradient(135deg,#4FACFE,#185FA5)',
+      'linear-gradient(135deg,#00C896,#085450)',
+    ];
 
-    const accountsRow = document.getElementById('personal-accounts');
-    if(accountsRow) {
-      const accCards = state.personal.accounts.map((acc, index) => `
-        <div class="acc-card-wrap">
-          <div class="acc-card" style="background:${accGradients[index % accGradients.length]};">
-            <div class="acc-type">${(accTypeIcon[acc.type] || '💰')} ${(accTypeLabel[acc.type] || acc.type).toUpperCase()}</div>
-            <div class="acc-amt">${acc.type === 'credit' ? '-' : ''}${fmt(Math.abs(acc.balance))}</div>
-            <div class="acc-name">${acc.name}</div>
-          </div>
-          <div class="acc-actions">
-            <button class="acc-act-btn edit" onclick="openEditAccount('${acc.id}')"><i class="ti ti-pencil"></i> Sửa</button>
-            <button class="acc-act-btn del"  onclick="openEditAccount('${acc.id}')"><i class="ti ti-trash"></i></button>
-          </div>
-        </div>`).join('');
-      const addCard = `<div class="acc-add-card" onclick="openAddAccountModal()">
-        <i class="ti ti-plus" style="font-size:22px;"></i>
-        <div style="font-size:11px;font-weight:600;">Thêm tài khoản</div>
-      </div>`;
-      accountsRow.innerHTML = accCards + addCard;
-    }
-      
-    renderPersonalTxList();
-    document.getElementById('personal-content').style.display = 'block';
-    document.getElementById('personal-content').scrollIntoView({ behavior: 'smooth' });
-  } catch (e) {
-    showToast('Lỗi truy xuất ví: ' + e.message);
-  }
+    const accountsRow = document.getElementById('personal-accounts');
+    if(accountsRow) {
+      const accCards = state.personal.accounts.map((acc, index) => `
+        <div class="acc-card-wrap">
+          <div class="acc-card" style="background:${accGradients[index % accGradients.length]};">
+            <div class="acc-type">${(accTypeIcon[acc.type] || '💰')} ${(accTypeLabel[acc.type] || acc.type).toUpperCase()}</div>
+            <div class="acc-amt">${acc.type === 'credit' ? '-' : ''}${fmt(Math.abs(acc.balance))}</div>
+            <div class="acc-name">${acc.name}</div>
+          </div>
+          <div class="acc-actions">
+            <button class="acc-act-btn edit" onclick="openEditAccount('${acc.id}')"><i class="ti ti-pencil"></i> Sửa</button>
+            <button class="acc-act-btn del"  onclick="openEditAccount('${acc.id}')"><i class="ti ti-trash"></i></button>
+          </div>
+        </div>`).join('');
+      const addCard = `<div class="acc-add-card" onclick="openAddAccountModal()">
+        <i class="ti ti-plus" style="font-size:22px;"></i>
+        <div style="font-size:11px;font-weight:600;">Thêm tài khoản</div>
+      </div>`;
+      accountsRow.innerHTML = accCards + addCard;
+    }
+      
+    renderPersonalTxList();
+    document.getElementById('personal-content').style.display = 'block';
+    document.getElementById('personal-content').scrollIntoView({ behavior: 'smooth' });
+  } catch (e) {
+    showToast('Lỗi truy xuất ví: ' + e.message);
+  }
 }
 
 function lockPersonal() {
-  state.personal = { memberId: null, memberName: '', pin: '', accounts: [], transactions: [] };
-  document.getElementById('personal-content').style.display = 'none';
-  showToast('🔒 Đã khóa vùng bảo mật cá nhân.');
+  state.personal = { memberId: null, memberName: '', pin: '', accounts: [], transactions: [] };
+  document.getElementById('personal-content').style.display = 'none';
+  showToast('🔒 Đã khóa vùng bảo mật cá nhân.');
 }
 
 function filterTx(type) {
-  state.activeTxFilter = type;
-  document.querySelectorAll('#page-personal .chip').forEach(c => c.classList.remove('active'));
-  document.getElementById('filter-tx-' + type)?.classList.add('active');
-  renderPersonalTxList();
+  state.activeTxFilter = type;
+  document.querySelectorAll('#page-personal .chip').forEach(c => c.classList.remove('active'));
+  document.getElementById('filter-tx-' + type)?.classList.add('active');
+  renderPersonalTxList();
 }
 
 function renderPersonalTxList() {
-  let list = [...state.personal.transactions];
-  list.sort((a, b) => String(b.date).localeCompare(String(a.date)));
-  if (state.activeTxFilter === 'income')  list = list.filter(t => t.type === 'income');
-  if (state.activeTxFilter === 'expense') list = list.filter(t => t.type === 'expense');
+  let list = [...state.personal.transactions];
 
-  const container = document.getElementById('personal-tx-list');
-  if(!container) return;
-  if(!list.length) {
-    container.innerHTML = '<div class="empty"><i class="ti ti-receipt-off"></i><p>Chưa ghi nhận biến động tài chính</p></div>';
-    return;
-  }
+  // ── Sắp xếp gần nhất trên cùng (theo date desc, nếu same date giữ thứ tự gốc)
+  list.sort((a, b) => String(b.date).localeCompare(String(a.date)));
 
-  const accMap = {};
-  (state.personal.accounts || []).forEach(a => { accMap[a.id] = a; });
+  if (state.activeTxFilter === 'income')  list = list.filter(t => t.type === 'income');
+  if (state.activeTxFilter === 'expense') list = list.filter(t => t.type === 'expense');
+  
+  const container = document.getElementById('personal-tx-list');
+  if(!container) return;
+  if(!list.length) {
+    container.innerHTML = '<div class="empty"><i class="ti ti-receipt-off"></i><p>Chưa ghi nhận biến động tài chính</p></div>';
+    return;
+  }
 
-  // Render HTML — mỗi item dùng cấu trúc swipe-wrap
-  container.innerHTML = list.map(item => {
-    const acc = accMap[item.account_id] || {};
-    const isCreditExpense = acc.type === 'credit' && item.type === 'expense';
-    const repayBtn = isCreditExpense
-      ? `<button class="tx-repay-btn" onclick="openRepayCredit('${item.id}','${item.account_id}','${(item.description||'').replace(/'/g,"\\'").replace(/"/g,'&quot;')}',${item.amount})">
-           <i class="ti ti-cash"></i> Trả nợ
-         </button>`
-      : '';
+  // Tạo map account_id -> account để tra loại tài khoản
+  const accMap = {};
+  (state.personal.accounts || []).forEach(a => { accMap[a.id] = a; });
 
-    // data-id dùng để swipe handlers tìm lại item
-    return `
-    <div class="tx-swipe-wrap" data-txid="${item.id}">
-      <!-- Panel lộ ra khi vuốt PHẢI (edit - xanh bên trái) -->
-      <div class="tx-swipe-right-reveal">
-        <i class="ti ti-pencil"></i>
-        <span>Sửa</span>
-      </div>
-      <!-- Panel lộ ra khi vuốt TRÁI (xoá - đỏ bên phải) -->
-      <div class="tx-swipe-left-reveal">
-        <i class="ti ti-trash"></i>
-        <span>Xoá</span>
-      </div>
-      <!-- Card chính -->
-      <div class="tx-card" data-txid="${item.id}">
-        <div class="tx-ico" style="background:${catBg[item.category]};color:${catColor[item.category]};">${catIcon[item.category]||'📌'}</div>
-        <div class="tx-info">
-          <div class="tx-name">${item.description}</div>
-          <div class="tx-meta">
-            ${item.date}
-            ${acc.name ? `· <span style="font-size:10px;background:var(--border);padding:1px 6px;border-radius:99px;">${acc.name}</span>` : ''}
-            ${item.is_shared==='TRUE' ? '<span class="tag shared">👥 Chung</span>' : ''}
-          </div>
-        </div>
-        <div class="tx-actions-col">
-          <div class="tx-amt ${item.type==='income'?'in':'out'}">${item.type==='income'?'+':'-'}${fmt(item.amount)}</div>
-          ${repayBtn}
-        </div>
-      </div>
-    </div>`;
-  }).join('');
+  container.innerHTML = list.map(item => {
+    const acc = accMap[item.account_id] || {};
+    const isCreditExpense = acc.type === 'credit' && item.type === 'expense';
 
-  // Gắn swipe handlers sau khi render xong
-  attachSwipeHandlers(container, list, accMap);
-}
+    // Nút trả nợ chỉ hiện cho giao dịch chi của tài khoản credit
+    const repayBtn = isCreditExpense
+      ? `<button class="tx-repay-btn" onclick="openRepayCredit('${item.id}','${item.account_id}','${(item.description||'').replace(/'/g,"\\'")}',${item.amount})">
+           <i class="ti ti-cash"></i> Trả nợ
+         </button>`
+      : '';
 
-// ─── SWIPE GESTURE ENGINE (Safari iOS compatible) ────────────────────────────
-function attachSwipeHandlers(container, txList, accMap) {
-  const THRESHOLD  = 72;   // px vuốt tối thiểu để trigger action
-  const PEEK       = 90;   // px card dịch tối đa để lộ panel
-  const SNAP_VEL   = 0.4;  // velocity tối thiểu (px/ms) để trigger kể cả chưa đủ THRESHOLD
-
-  container.querySelectorAll('.tx-swipe-wrap').forEach(wrap => {
-    const card      = wrap.querySelector('.tx-card');
-    const leftReveal  = wrap.querySelector('.tx-swipe-right-reveal'); // vuốt phải → lộ bên trái
-    const rightReveal = wrap.querySelector('.tx-swipe-left-reveal');  // vuốt trái → lộ bên phải
-    const txId      = wrap.dataset.txid;
-
-    let startX = 0, startY = 0, curX = 0, startTime = 0;
-    let tracking = false, axis = null; // axis: 'x' | 'y' | null
-
-    function setTranslate(dx) {
-      // Clamp trong [-PEEK, PEEK]
-      dx = Math.max(-PEEK, Math.min(PEEK, dx));
-      card.style.transform = `translateX(${dx}px)`;
-      // Fade panel theo tỉ lệ kéo
-      const ratio = Math.abs(dx) / PEEK;
-      if (dx > 0)       { leftReveal.style.opacity = ratio; rightReveal.style.opacity = 0; }
-      else if (dx < 0)  { rightReveal.style.opacity = ratio; leftReveal.style.opacity = 0; }
-      else              { leftReveal.style.opacity = 0; rightReveal.style.opacity = 0; }
-    }
-
-    function snapBack() {
-      card.classList.add('snapping');
-      setTranslate(0);
-      setTimeout(() => card.classList.remove('snapping'), 280);
-    }
-
-    // ── Pointer Events (hỗ trợ cả touch và mouse, kể cả Safari iOS 13+) ──
-    card.addEventListener('pointerdown', e => {
-      if (e.pointerType === 'mouse' && e.button !== 0) return;
-      startX = e.clientX; startY = e.clientY;
-      startTime = Date.now(); curX = 0; tracking = true; axis = null;
-      card.setPointerCapture(e.pointerId);
-      card.style.transition = 'none';
-    }, { passive: true });
-
-    card.addEventListener('pointermove', e => {
-      if (!tracking) return;
-      const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
-
-      // Xác định trục di chuyển ở lần move đầu tiên
-      if (!axis) {
-        if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
-          axis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
-        }
-        return;
-      }
-      if (axis === 'y') return; // scroll dọc → không làm gì
-
-      curX = dx;
-      setTranslate(dx);
-    }, { passive: true });
-
-    card.addEventListener('pointerup', e => {
-      if (!tracking) return;
-      tracking = false;
-      if (axis !== 'x') { snapBack(); return; }
-
-      const elapsed  = Date.now() - startTime;
-      const velocity = Math.abs(curX) / Math.max(elapsed, 1);
-      const triggered = Math.abs(curX) >= THRESHOLD || velocity >= SNAP_VEL;
-
-      if (triggered) {
-        if (curX > 0) {
-          // Vuốt phải → EDIT
-          snapBack();
-          const tx = txList.find(t => t.id === txId);
-          if (tx) setTimeout(() => openEditTxOverlay(tx, accMap), 80);
-        } else {
-          // Vuốt trái → XOÁ
-          snapBack();
-          setTimeout(() => deleteTransactionProcess(txId), 80);
-        }
-      } else {
-        snapBack();
-      }
-    }, { passive: true });
-
-    card.addEventListener('pointercancel', () => { tracking = false; snapBack(); }, { passive: true });
-  });
-}
-
-// ─── CUSTOM CONFIRM (thay window.confirm — không bị Safari iOS block) ────────
-function showConfirm({ icon = '⚠️', title = 'Xác nhận', msg = '', okLabel = 'Xác nhận', okClass = 'confirm-ok' } = {}) {
-  return new Promise(resolve => {
-    const dialog   = document.getElementById('confirm-dialog');
-    const iconEl   = document.getElementById('confirm-icon');
-    const titleEl  = document.getElementById('confirm-title');
-    const msgEl    = document.getElementById('confirm-msg');
-    const okBtn    = document.getElementById('confirm-ok-btn');
-    const cancelBtn= document.getElementById('confirm-cancel-btn');
-
-    iconEl.textContent  = icon;
-    titleEl.textContent = title;
-    msgEl.textContent   = msg;
-    okBtn.textContent   = okLabel;
-    okBtn.className     = okClass;
-
-    dialog.classList.add('open');
-
-    function cleanup(result) {
-      dialog.classList.remove('open');
-      okBtn.removeEventListener('click', onOk);
-      cancelBtn.removeEventListener('click', onCancel);
-      resolve(result);
-    }
-    const onOk     = () => cleanup(true);
-    const onCancel = () => cleanup(false);
-    okBtn.addEventListener('click', onOk);
-    cancelBtn.addEventListener('click', onCancel);
-  });
+    return `<div class="tx-item">
+      <div class="tx-ico" style="background:${catBg[item.category]}; color:${catColor[item.category]};">${catIcon[item.category] || '📌'}</div>
+      <div class="tx-info">
+        <div class="tx-name">${item.description}</div>
+        <div class="tx-meta">
+          ${item.date}
+          ${acc.name ? `· <span style="font-size:10px;background:var(--border);padding:1px 6px;border-radius:99px;">${acc.name}</span>` : ''}
+          ${item.is_shared === 'TRUE' ? '<span class="tag shared">👥 Chung</span>' : ''}
+        </div>
+      </div>
+      <div class="tx-actions-col">
+        <div class="tx-amt ${item.type === 'income' ? 'in' : 'out'}">${item.type === 'income' ? '+' : '-'}${fmt(item.amount)}</div>
+        <div style="display:flex;gap:4px;align-items:center;">
+          ${repayBtn}
+          <div class="tx-del-btn" onclick="deleteTransactionProcess('${item.id}')"><i class="ti ti-trash"></i></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 async function deleteTransactionProcess(txId) {
-  // Dùng custom confirm thay window.confirm — Safari iOS không block async
-  const ok = await showConfirm({
-    icon: '🗑️',
-    title: 'Xoá giao dịch?',
-    msg: 'Giao dịch sẽ bị xoá vĩnh viễn và số dư ví sẽ được hoàn lại trên Google Sheet.',
-    okLabel: 'Xoá ngay',
-    okClass: 'confirm-ok'
-  });
-  if (!ok) return;
-
-  try {
-    const res = await api('POST', {
-      action: 'delete_transaction',
-      tx_id: txId,
-      member_id: state.personal.memberId,
-      pin: state.personal.pin
-    });
-    if (res && res.deleted) {
-      // Cập nhật state local ngay (không chờ syncAll) để UI phản hồi tức thì
-      state.personal.transactions = state.personal.transactions.filter(t => t.id !== txId);
-      renderPersonalTxList();
-      showToast('🗑️ Đã xoá giao dịch');
-      // Sync ngầm để cập nhật số dư
-      syncAll().then(() => loadPersonalWalletData(state.personal.memberId, state.personal.pin));
-    }
-  } catch(e) {
-    showToast('❌ Lỗi xoá: ' + e.message);
-  }
+  if(!confirm('Xác nhận xóa bỏ vĩnh viễn giao dịch này và hoàn lại số dư ví tương ứng trên Google Sheet?')) return;
+  try {
+    const res = await api('POST', { action: 'delete_transaction', tx_id: txId, member_id: state.personal.memberId, pin: state.personal.pin });
+    if(res && res.deleted) {
+      showToast('🗑️ Đã loại bỏ giao dịch hoàn tất');
+      await syncAll();
+      await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
+    }
+  } catch(e) {
+    showToast('Lỗi xóa giao dịch: ' + e.message);
+  }
 }
 
-// ─── EDIT TRANSACTION ────────────────────────────────────────────────────────
-let editTxType = 'expense';
+function renderFamily() {
+  const shared = state.sharedExpenses;
+  const thisMonthString = new Date().toISOString().substring(0, 7);
+  const matchedExpenses = shared.filter(s => String(s.date).startsWith(thisMonthString));
+  
+  const total = matchedExpenses.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const paid = matchedExpenses.filter(item => item.status === 'paid').reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  
+  const fPeriod = document.getElementById('family-period');
+  const fTotal = document.getElementById('family-total');
+  const fPaid = document.getElementById('family-paid');
+  const fUnpaid = document.getElementById('family-unpaid');
 
-function openEditTxOverlay(tx, accMap) {
-  editTxType = tx.type || 'expense';
-  document.getElementById('edit-tx-id').value       = tx.id;
-  document.getElementById('edit-tx-desc').value     = tx.description || '';
-  document.getElementById('edit-tx-amount').value   = tx.amount || '';
-  document.getElementById('edit-tx-date').value     = tx.date || '';
-  document.getElementById('edit-tx-category').value = tx.category || 'other';
-  document.getElementById('edit-tx-shared').checked = tx.is_shared === 'TRUE';
-  document.getElementById('edit-tx-err').textContent = '';
-
-  // Populate account dropdown
-  const sel = document.getElementById('edit-tx-account');
-  sel.innerHTML = (state.personal.accounts || [])
-    .map(a => `<option value="${a.id}" ${a.id === tx.account_id ? 'selected' : ''}>${a.name}</option>`)
-    .join('');
-
-  // Highlight type buttons
-  setEditTxType(editTxType);
-  openOverlay('edit-tx');
-}
-
-function setEditTxType(type) {
-  editTxType = type;
-  const btnE = document.getElementById('edit-tx-btn-expense');
-  const btnI = document.getElementById('edit-tx-btn-income');
-  if(btnE) { btnE.classList.toggle('active', type === 'expense'); }
-  if(btnI) { btnI.classList.toggle('active', type === 'income'); }
-}
-
-async function submitEditTx() {
-  const txId    = document.getElementById('edit-tx-id').value;
-  const desc    = document.getElementById('edit-tx-desc').value.trim();
-  const amount  = parseFloat(document.getElementById('edit-tx-amount').value) || 0;
-  const date    = document.getElementById('edit-tx-date').value;
-  const cat     = document.getElementById('edit-tx-category').value;
-  const accId   = document.getElementById('edit-tx-account').value;
-  const shared  = document.getElementById('edit-tx-shared').checked;
-  const errEl   = document.getElementById('edit-tx-err');
-  errEl.textContent = '';
-
-  if (!desc)    { errEl.textContent = '❗ Vui lòng nhập mô tả'; return; }
-  if (amount <= 0) { errEl.textContent = '❗ Số tiền phải lớn hơn 0'; return; }
-  if (!date)    { errEl.textContent = '❗ Vui lòng chọn ngày'; return; }
-
-  const btn = document.getElementById('edit-tx-sbtn');
-  btn.disabled = true;
-  btn.innerHTML = '<div class="spin"></div> Đang lưu...';
-
-  try {
-    await api('POST', {
-      action:      'update_transaction',
-      tx_id:       txId,
-      member_id:   state.personal.memberId,
-      pin:         state.personal.pin,
-      description: desc,
-      amount,
-      date,
-      category:    cat,
-      account_id:  accId,
-      type:        editTxType,
-      is_shared:   shared ? 'TRUE' : 'FALSE'
-    });
-
-    // Cập nhật state local ngay lập tức
-    const idx = state.personal.transactions.findIndex(t => t.id === txId);
-    if (idx !== -1) {
-      state.personal.transactions[idx] = {
-        ...state.personal.transactions[idx],
-        description: desc, amount, date, category: cat,
-        account_id: accId, type: editTxType,
-        is_shared: shared ? 'TRUE' : 'FALSE'
-      };
-    }
-
-    closeOverlay('edit-tx');
-    showToast('✅ Đã cập nhật giao dịch');
-    renderPersonalTxList();
-    // Sync ngầm để cập nhật số dư
-    syncAll().then(() => loadPersonalWalletData(state.personal.memberId, state.personal.pin));
-  } catch(e) {
-    errEl.textContent = '❌ ' + e.message;
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '<i class="ti ti-device-floppy"></i> Lưu thay đổi';
-  }
-}
-  const shared = state.sharedExpenses;
-  const thisMonthString = new Date().toISOString().substring(0, 7);
-  const matchedExpenses = shared.filter(s => String(s.date).startsWith(thisMonthString));
-  
-  const total = matchedExpenses.reduce((sum, item) => sum + Number(item.amount || 0), 0);
-  const paid = matchedExpenses.filter(item => item.status === 'paid').reduce((sum, item) => sum + Number(item.amount || 0), 0);
-  
-  const fPeriod = document.getElementById('family-period');
-  const fTotal = document.getElementById('family-total');
-  const fPaid = document.getElementById('family-paid');
-  const fUnpaid = document.getElementById('family-unpaid');
-
-  if(fPeriod) fPeriod.textContent = 'Kỳ quỹ phát sinh ' + thisMonthString;
-  if(fTotal) fTotal.textContent = fmt(total);
-  if(fPaid) fPaid.textContent = fmt(paid);
-  if(fUnpaid) fUnpaid.textContent = fmt(total - paid);
-  
-  renderFamilyListUI();
+  if(fPeriod) fPeriod.textContent = 'Kỳ quỹ phát sinh ' + thisMonthString;
+  if(fTotal) fTotal.textContent = fmt(total);
+  if(fPaid) fPaid.textContent = fmt(paid);
+  if(fUnpaid) fUnpaid.textContent = fmt(total - paid);
+  
+  renderFamilyListUI();
 }
 
 function filterShared(chipElement, category) {
-  document.querySelectorAll('#family-cat-chips .chip').forEach(c => c.classList.remove('active'));
-  chipElement.classList.add('active');
-  state.activeSharedFilter = category;
-  renderFamilyListUI();
+  document.querySelectorAll('#family-cat-chips .chip').forEach(c => c.classList.remove('active'));
+  chipElement.classList.add('active');
+  state.activeSharedFilter = category;
+  renderFamilyListUI();
 }
 
 function renderFamilyListUI() {
-  let list = state.sharedExpenses;
-  if(state.activeSharedFilter !== 'all') list = list.filter(s => s.category === state.activeSharedFilter);
-  list = [...list].sort((a, b) => String(b.date).localeCompare(String(a.date)));
-  
-  const container = document.getElementById('family-list');
-  if(!container) return;
-  if(!list.length) {
-    container.innerHTML = '<div class="empty"><i class="ti ti-receipt-off"></i><p>Không tìm thấy hạng mục chi tiêu chung phù hợp</p></div>';
-    return;
-  }
-  
-  container.innerHTML = list.map(item => `
-    <div class="flash-card" style="background:${flashGrad[item.category] || flashGrad.other};">
-      <div class="flash-card-ico">${catIcon[item.category] || '📌'}</div>
-      <div class="flash-lbl">${item.category.toUpperCase()}</div>
-      <div class="flash-name">${item.description}</div>
-      <div class="flash-foot">
-        <div class="flash-amt">${fmt(item.amount)}</div>
-        <div style="text-align:right;">
-          <div class="flash-date">${item.paid_by} · ${item.date}</div>
-          <div class="flash-status" onclick="toggleSharedStatus('${item.id}','${item.status}')">${item.status === 'paid' ? '✅ Đã thanh toán hoàn tất' : '⏳ Chờ quyết toán'}</div>
-        </div>
-      </div>
-    </div>`).join('');
+  let list = state.sharedExpenses;
+  if(state.activeSharedFilter !== 'all') list = list.filter(s => s.category === state.activeSharedFilter);
+  list = [...list].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  
+  const container = document.getElementById('family-list');
+  if(!container) return;
+  if(!list.length) {
+    container.innerHTML = '<div class="empty"><i class="ti ti-receipt-off"></i><p>Không tìm thấy hạng mục chi tiêu chung phù hợp</p></div>';
+    return;
+  }
+  
+  container.innerHTML = list.map(item => `
+    <div class="flash-card" style="background:${flashGrad[item.category] || flashGrad.other};">
+      <div class="flash-card-ico">${catIcon[item.category] || '📌'}</div>
+      <div class="flash-lbl">${item.category.toUpperCase()}</div>
+      <div class="flash-name">${item.description}</div>
+      <div class="flash-foot">
+        <div class="flash-amt">${fmt(item.amount)}</div>
+        <div style="text-align:right;">
+          <div class="flash-date">${item.paid_by} · ${item.date}</div>
+          <div class="flash-status" onclick="toggleSharedStatus('${item.id}','${item.status}')">${item.status === 'paid' ? '✅ Đã thanh toán hoàn tất' : '⏳ Chờ quyết toán'}</div>
+        </div>
+      </div>
+    </div>`).join('');
 }
 
 async function toggleSharedStatus(id, currentStatus) {
-  const nextStatus = currentStatus === 'paid' ? 'unpaid' : 'paid';
-  try {
-    await api('POST', { action: 'update_shared_status', id: id, status: nextStatus });
-    showToast('🔄 Đã cập nhật trạng thái hóa đơn chung');
-    await syncAll();
-  } catch (e) { showToast(e.message); }
+  const nextStatus = currentStatus === 'paid' ? 'unpaid' : 'paid';
+  try {
+    await api('POST', { action: 'update_shared_status', id: id, status: nextStatus });
+    showToast('🔄 Đã cập nhật trạng thái hóa đơn chung');
+    await syncAll();
+  } catch (e) { showToast(e.message); }
 }
 
 function renderInventory() {
-  const inv = state.inventory;
-  const iTotal = document.getElementById('inv-total');
-  const iOk = document.getElementById('inv-ok');
-  const iLow = document.getElementById('inv-low');
+  const inv = state.inventory;
+  const iTotal = document.getElementById('inv-total');
+  const iOk = document.getElementById('inv-ok');
+  const iLow = document.getElementById('inv-low');
 
-  if(iTotal) iTotal.textContent = inv.length + ' mặt hàng';
-  const lowItems = inv.filter(i => Number(i.quantity) <= Number(i.min_qty));
-  if(iOk) iOk.textContent = (inv.length - lowItems.length) + ' an toàn';
-  if(iLow) iLow.textContent = lowItems.length + ' cần mua';
-  
-  renderInventoryGridUI();
+  if(iTotal) iTotal.textContent = inv.length + ' mặt hàng';
+  const lowItems = inv.filter(i => Number(i.quantity) <= Number(i.min_qty));
+  if(iOk) iOk.textContent = (inv.length - lowItems.length) + ' an toàn';
+  if(iLow) iLow.textContent = lowItems.length + ' cần mua';
+  
+  renderInventoryGridUI();
 }
 
 function filterInv(chipElement, cat) {
-  document.querySelectorAll('#page-inventory .chip').forEach(c => c.classList.remove('active'));
-  chipElement.classList.add('active');
-  state.activeInvFilter = cat;
-  renderInventoryGridUI();
+  document.querySelectorAll('#page-inventory .chip').forEach(c => c.classList.remove('active'));
+  chipElement.classList.add('active');
+  state.activeInvFilter = cat;
+  renderInventoryGridUI();
 }
 
 function renderInventoryGridUI() {
-  let list = state.inventory;
-  if(state.activeInvFilter !== 'all') list = list.filter(i => i.category === state.activeInvFilter);
-  const grid = document.getElementById('inv-grid');
-  if(!grid) return;
-  if(!list.length) {
-    grid.innerHTML = '<div class="empty"><i class="ti ti-package-off"></i><p>Không có vật tư thuộc nhóm này</p></div>';
-    return;
-  }
-  
-  grid.innerHTML = list.map(item => {
-    const qty = Number(item.quantity);
-    const min = Number(item.min_qty);
-    const percent = Math.min(Math.round((qty / (min * 3 || 1)) * 100), 100);
-    const isLow = qty <= min;
-    return `<div class="inv-card">
-      <div class="inv-emoji">${item.emoji}</div>
-      <div class="inv-name">${item.name}</div>
-      <div class="inv-qty-row"><div class="inv-qty">${qty}</div><div class="inv-unit">${item.unit}</div></div>
-      <div class="inv-bar-wrap"><div class="inv-bar" style="width:${percent}%; background:${isLow ? '#FF9F43':'#00C896'};"></div></div>
-      <div class="inv-badge" style="background:${isLow ? 'var(--amber-l)':'var(--green-l)'}; color:${isLow?'var(--amber-d)':'var(--green-d)'};">${isLow?'⚠️ Cần mua thêm':'✓ Đủ dùng'}</div>
-      <div class="inv-actions">
-        <button class="inv-btn" onclick="adjustInventoryQty('${item.id}', ${qty + 1})">+</button>
-        <button class="inv-btn" onclick="adjustInventoryQty('${item.id}', ${Math.max(0, qty - 1)})">-</button>
-      </div>
-    </div>`;
-  }).join('');
+  let list = state.inventory;
+  if(state.activeInvFilter !== 'all') list = list.filter(i => i.category === state.activeInvFilter);
+  const grid = document.getElementById('inv-grid');
+  if(!grid) return;
+  if(!list.length) {
+    grid.innerHTML = '<div class="empty"><i class="ti ti-package-off"></i><p>Không có vật tư thuộc nhóm này</p></div>';
+    return;
+  }
+  
+  grid.innerHTML = list.map(item => {
+    const qty = Number(item.quantity);
+    const min = Number(item.min_qty);
+    const percent = Math.min(Math.round((qty / (min * 3 || 1)) * 100), 100);
+    const isLow = qty <= min;
+    return `<div class="inv-card">
+      <div class="inv-emoji">${item.emoji}</div>
+      <div class="inv-name">${item.name}</div>
+      <div class="inv-qty-row"><div class="inv-qty">${qty}</div><div class="inv-unit">${item.unit}</div></div>
+      <div class="inv-bar-wrap"><div class="inv-bar" style="width:${percent}%; background:${isLow ? '#FF9F43':'#00C896'};"></div></div>
+      <div class="inv-badge" style="background:${isLow ? 'var(--amber-l)':'var(--green-l)'}; color:${isLow?'var(--amber-d)':'var(--green-d)'};">${isLow?'⚠️ Cần mua thêm':'✓ Đủ dùng'}</div>
+      <div class="inv-actions">
+        <button class="inv-btn" onclick="adjustInventoryQty('${item.id}', ${qty + 1})">+</button>
+        <button class="inv-btn" onclick="adjustInventoryQty('${item.id}', ${Math.max(0, qty - 1)})">-</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 async function adjustInventoryQty(id, newQty) {
-  try {
-    await api('POST', { action: 'update_inventory', item_id: id, quantity: newQty });
-    showToast('Số lượng vật tư đã thay đổi');
-    await syncAll();
-  } catch (e) { showToast(e.message); }
+  try {
+    await api('POST', { action: 'update_inventory', item_id: id, quantity: newQty });
+    showToast('Số lượng vật tư đã thay đổi');
+    await syncAll();
+  } catch (e) { showToast(e.message); }
 }
 
 function renderNotes() {
-  const container = document.getElementById('notes-list');
-  if(!container) return;
-  if(!state.notes.length) {
-    container.innerHTML = '<div class="empty"><i class="ti ti-notes-off"></i><p>Bảng thông điệp trống</p></div>';
-    return;
-  }
-  container.innerHTML = state.notes.map(note => `
-    <div class="note-card" style="background:${note.color}; border-left-color:#6C63FF;">
-      <div class="note-title">${note.title}</div>
-      <div class="note-body">${note.body}</div>
-      <div class="note-foot">
-        <div class="note-date">${note.created_at.substring(0,10)}</div>
-        <i class="ti ti-trash" style="color:var(--red); cursor:pointer;" onclick="deleteNoteProcess('${note.id}')"></i>
-      </div>
-    </div>`).join('');
+  const container = document.getElementById('notes-list');
+  if(!container) return;
+  if(!state.notes.length) {
+    container.innerHTML = '<div class="empty"><i class="ti ti-notes-off"></i><p>Bảng thông điệp trống</p></div>';
+    return;
+  }
+  container.innerHTML = state.notes.map(note => `
+    <div class="note-card" style="background:${note.color}; border-left-color:#6C63FF;">
+      <div class="note-title">${note.title}</div>
+      <div class="note-body">${note.body}</div>
+      <div class="note-foot">
+        <div class="note-date">${note.created_at.substring(0,10)}</div>
+        <i class="ti ti-trash" style="color:var(--red); cursor:pointer;" onclick="deleteNoteProcess('${note.id}')"></i>
+      </div>
+    </div>`).join('');
 }
 
 async function deleteNoteProcess(id) {
-  const ok = await showConfirm({ icon:'🗑️', title:'Xoá ghi chú?', msg:'Ghi chú này sẽ bị gỡ bỏ khỏi bảng tin chung.', okLabel:'Xoá' });
-  if(!ok) return;
-  try {
-    await api('POST', { action: 'delete_note', note_id: id });
-    showToast('🗑️ Đã xóa ghi chú');
-    await syncAll();
-  } catch (e) { showToast(e.message); }
+  if(!confirm('Gỡ bỏ ghi chú này khỏi bảng tin chung?')) return;
+  try {
+    await api('POST', { action: 'delete_note', note_id: id });
+    showToast('🗑️ Đã xóa ghi chú');
+    await syncAll();
+  } catch (e) { showToast(e.message); }
 }
 
 function populateSelects() {
-  const memberSelect = document.getElementById('tx-member');
-  const sharedPaidBySelect = document.getElementById('sh-paidby');
-  
-  const optionsHtml = state.members.map(m => `<option value="${m.id}">${m.emoji} ${m.name}</option>`).join('');
-  if (memberSelect) memberSelect.innerHTML = optionsHtml;
-  if (sharedPaidBySelect) sharedPaidBySelect.innerHTML = optionsHtml;
+  const memberSelect = document.getElementById('tx-member');
+  const sharedPaidBySelect = document.getElementById('sh-paidby');
+  
+  const optionsHtml = state.members.map(m => `<option value="${m.id}">${m.emoji} ${m.name}</option>`).join('');
+  if (memberSelect) memberSelect.innerHTML = optionsHtml;
+  if (sharedPaidBySelect) sharedPaidBySelect.innerHTML = optionsHtml;
 }
 
 function onTxMemberChange() {
-  const memberSelect = document.getElementById('tx-member');
-  if(!memberSelect) return;
-  
-  const selectedMemberId = memberSelect.value;
-  const sharedCheckbox = document.getElementById('tx-shared');
-  const isSharedChecked = sharedCheckbox ? sharedCheckbox.checked : false;
-  const accountSelect = document.getElementById('tx-account');
-  if(!accountSelect) return;
-  
-  // FIX: Khi tick shared=true, KHÔNG thay đổi danh sách ví – giữ nguyên tên ví đã chọn
-  // Chỉ rebuild danh sách ví khi thay đổi thành viên hoặc khi bỏ tick shared
-  if (isSharedChecked) {
-    // Nếu ví đang trống (chưa chọn thành viên/chưa có ví) thì để trống, không điền gì
-    // Nếu đã có ví được chọn rồi thì giữ nguyên -> không làm gì cả
-    return;
-  }
-  
-  // Rebuild ví theo thành viên được chọn (chỉ khi shared=false)
-  if (state.personal.memberId === selectedMemberId && state.personal.accounts.length > 0) {
-    const prevVal = accountSelect.value;
-    accountSelect.innerHTML = state.personal.accounts.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
-    // Khôi phục lựa chọn trước nếu còn tồn tại
-    if (prevVal) accountSelect.value = prevVal;
-  } else {
-    const targetMember = state.members.find(m => m.id === selectedMemberId);
-    accountSelect.innerHTML = `<option value="">-- Cần mở khóa ví ${targetMember ? targetMember.name : ''} trước --</option>`;
-  }
+  const memberSelect = document.getElementById('tx-member');
+  if(!memberSelect) return;
+  
+  const selectedMemberId = memberSelect.value;
+  const sharedCheckbox = document.getElementById('tx-shared');
+  const isSharedChecked = sharedCheckbox ? sharedCheckbox.checked : false;
+  const accountSelect = document.getElementById('tx-account');
+  if(!accountSelect) return;
+  
+  // FIX: Khi tick shared=true, KHÔNG thay đổi danh sách ví – giữ nguyên tên ví đã chọn
+  // Chỉ rebuild danh sách ví khi thay đổi thành viên hoặc khi bỏ tick shared
+  if (isSharedChecked) {
+    // Nếu ví đang trống (chưa chọn thành viên/chưa có ví) thì để trống, không điền gì
+    // Nếu đã có ví được chọn rồi thì giữ nguyên -> không làm gì cả
+    return;
+  }
+  
+  // Rebuild ví theo thành viên được chọn (chỉ khi shared=false)
+  if (state.personal.memberId === selectedMemberId && state.personal.accounts.length > 0) {
+    const prevVal = accountSelect.value;
+    accountSelect.innerHTML = state.personal.accounts.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+    // Khôi phục lựa chọn trước nếu còn tồn tại
+    if (prevVal) accountSelect.value = prevVal;
+  } else {
+    const targetMember = state.members.find(m => m.id === selectedMemberId);
+    accountSelect.innerHTML = `<option value="">-- Cần mở khóa ví ${targetMember ? targetMember.name : ''} trước --</option>`;
+  }
 }
 
 let txType = 'expense';
 function setTxType(type) {
-  txType = type;
-  document.getElementById('tx-btn-expense')?.classList.toggle('active', type === 'expense');
-  document.getElementById('tx-btn-income')?.classList.toggle('active', type === 'income');
+  txType = type;
+  document.getElementById('tx-btn-expense')?.classList.toggle('active', type === 'expense');
+  document.getElementById('tx-btn-income')?.classList.toggle('active', type === 'income');
 }
 
 async function submitTransaction() {
-  const amount = parseFloat(document.getElementById('tx-amount').value);
-  const desc = document.getElementById('tx-desc').value.trim();
-  const date = document.getElementById('tx-date').value;
-  const memberId = document.getElementById('tx-member').value;
-  const accountId = document.getElementById('tx-account').value;
-  const category = document.getElementById('tx-category').value;
-  const isShared = document.getElementById('tx-shared').checked;
+  const amount = parseFloat(document.getElementById('tx-amount').value);
+  const desc = document.getElementById('tx-desc').value.trim();
+  const date = document.getElementById('tx-date').value;
+  const memberId = document.getElementById('tx-member').value;
+  const accountId = document.getElementById('tx-account').value;
+  const category = document.getElementById('tx-category').value;
+  const isShared = document.getElementById('tx-shared').checked;
 
-  if(!amount || !desc || !date) { showToast('⚠️ Vui lòng điền đầy đủ thông tin bắt buộc.'); return; }
-  if(!isShared && state.personal.memberId !== memberId) {
-    showToast('⚠️ Vui lòng chuyển sang tab "Cá nhân" xác thực mã PIN cho thành viên này trước khi tạo giao dịch riêng tư.');
-    return;
-  }
+  if(!amount || !desc || !date) { showToast('⚠️ Vui lòng điền đầy đủ thông tin bắt buộc.'); return; }
+  if(!isShared && state.personal.memberId !== memberId) {
+    showToast('⚠️ Vui lòng chuyển sang tab "Cá nhân" xác thực mã PIN cho thành viên này trước khi tạo giao dịch riêng tư.');
+    return;
+  }
 
-  const submitBtn = document.getElementById('tx-submit-btn');
-  if(submitBtn) submitBtn.disabled = true;
-  
-  try {
-    await api('POST', {
-      action: 'add_transaction', member_id: memberId, account_id: accountId,
-      date: date, amount: amount, type: txType, category: category,
-      description: desc, is_shared: isShared, pin: state.personal.pin
-    });
-    closeOverlay('add-tx');
-    showToast('✅ Đăng ký giao dịch thành công!');
-    await syncAll();
-    if (state.personal.memberId === memberId) await loadPersonalWalletData(memberId, state.personal.pin);
-  } catch (e) {
-    showToast('Lỗi: ' + e.message);
-  } finally { if(submitBtn) submitBtn.disabled = false; }
+  const submitBtn = document.getElementById('tx-submit-btn');
+  if(submitBtn) submitBtn.disabled = true;
+  
+  try {
+    await api('POST', {
+      action: 'add_transaction', member_id: memberId, account_id: accountId,
+      date: date, amount: amount, type: txType, category: category,
+      description: desc, is_shared: isShared, pin: state.personal.pin
+    });
+    closeOverlay('add-tx');
+    showToast('✅ Đăng ký giao dịch thành công!');
+    await syncAll();
+    if (state.personal.memberId === memberId) await loadPersonalWalletData(memberId, state.personal.pin);
+  } catch (e) {
+    showToast('Lỗi: ' + e.message);
+  } finally { if(submitBtn) submitBtn.disabled = false; }
 }
 
 async function submitShared() {
-  const desc = document.getElementById('sh-desc').value.trim();
-  const amount = parseFloat(document.getElementById('sh-amount').value);
-  const category = document.getElementById('sh-category').value;
-  const paidBySelect = document.getElementById('sh-paidby');
-  if(!paidBySelect) return;
-  const paidByName = paidBySelect.options[paidBySelect.selectedIndex].text;
-  const date = document.getElementById('sh-date').value;
-  const status = document.getElementById('sh-status').value;
+  const desc = document.getElementById('sh-desc').value.trim();
+  const amount = parseFloat(document.getElementById('sh-amount').value);
+  const category = document.getElementById('sh-category').value;
+  const paidBySelect = document.getElementById('sh-paidby');
+  if(!paidBySelect) return;
+  const paidByName = paidBySelect.options[paidBySelect.selectedIndex].text;
+  const date = document.getElementById('sh-date').value;
+  const status = document.getElementById('sh-status').value;
 
-  if(!desc || !amount || !date) { showToast('Vui lòng điền đủ thông tin.'); return; }
-  try {
-    await api('POST', { action: 'add_shared', description: desc, amount: amount, category: category, paid_by: paidByName, date: date, status: status });
-    closeOverlay('add-shared');
-    showToast('✅ Đã thêm hóa đơn chi tiêu chung');
-    await syncAll();
-  } catch (e) { showToast(e.message); }
+  if(!desc || !amount || !date) { showToast('Vui lòng điền đủ thông tin.'); return; }
+  try {
+    await api('POST', { action: 'add_shared', description: desc, amount: amount, category: category, paid_by: paidByName, date: date, status: status });
+    closeOverlay('add-shared');
+    showToast('✅ Đã thêm hóa đơn chi tiêu chung');
+    await syncAll();
+  } catch (e) { showToast(e.message); }
 }
 
 async function submitInventory() {
-  const name = document.getElementById('inv-name').value.trim();
-  const emoji = document.getElementById('inv-emoji').value.trim() || '📦';
-  const qty = parseFloat(document.getElementById('inv-qty').value) || 0;
-  const unit = document.getElementById('inv-unit').value.trim();
-  const min = parseFloat(document.getElementById('inv-min').value) || 1;
-  const cat = document.getElementById('inv-cat').value;
+  const name = document.getElementById('inv-name').value.trim();
+  const emoji = document.getElementById('inv-emoji').value.trim() || '📦';
+  const qty = parseFloat(document.getElementById('inv-qty').value) || 0;
+  const unit = document.getElementById('inv-unit').value.trim();
+  const min = parseFloat(document.getElementById('inv-min').value) || 1;
+  const cat = document.getElementById('inv-cat').value;
 
-  if(!name || !unit) { showToast('Tên và đơn vị tính không được bỏ trống'); return; }
-  try {
-    await api('POST', { action: 'add_inventory_item', name: name, emoji: emoji, quantity: qty, unit: unit, min_qty: min, category: cat });
-    closeOverlay('add-inv');
-    showToast('✅ Thêm mặt hàng thành công');
-    await syncAll();
-  } catch(e) { showToast(e.message); }
+  if(!name || !unit) { showToast('Tên và đơn vị tính không được bỏ trống'); return; }
+  try {
+    await api('POST', { action: 'add_inventory_item', name: name, emoji: emoji, quantity: qty, unit: unit, min_qty: min, category: cat });
+    closeOverlay('add-inv');
+    showToast('✅ Thêm mặt hàng thành công');
+    await syncAll();
+  } catch(e) { showToast(e.message); }
 }
 
 async function submitNote() {
-  const title = document.getElementById('note-title').value.trim();
-  const body = document.getElementById('note-body').value.trim();
-  if(!title || !body) { showToast('Vui lòng hoàn thiện tiêu đề và nội dung'); return; }
-  try {
-    await api('POST', { action: 'add_note', title: title, body: body, color: state.noteColor });
-    closeOverlay('add-note');
-    showToast('✅ Đã đính kèm ghi chú mới');
-    await syncAll();
-  } catch(e) { showToast(e.message); }
+  const title = document.getElementById('note-title').value.trim();
+  const body = document.getElementById('note-body').value.trim();
+  if(!title || !body) { showToast('Vui lòng hoàn thiện tiêu đề và nội dung'); return; }
+  try {
+    await api('POST', { action: 'add_note', title: title, body: body, color: state.noteColor });
+    closeOverlay('add-note');
+    showToast('✅ Đã đính kèm ghi chú mới');
+    await syncAll();
+  } catch(e) { showToast(e.message); }
 }
 
 async function submitMember() {
-  const name = document.getElementById('mem-name').value.trim();
-  const emoji = document.getElementById('mem-emoji').value.trim() || '👤';
-  const role = document.getElementById('mem-role').value;
-  const pin = document.getElementById('mem-pin').value;
-  const color = document.getElementById('mem-color').value;
+  const name = document.getElementById('mem-name').value.trim();
+  const emoji = document.getElementById('mem-emoji').value.trim() || '👤';
+  const role = document.getElementById('mem-role').value;
+  const pin = document.getElementById('mem-pin').value;
+  const color = document.getElementById('mem-color').value;
 
-  if(!name || pin.length !== 4) { showToast('Yêu cầu điền tên và mã PIN bảo mật bắt buộc gồm 4 chữ số'); return; }
-  try {
-    await api('POST', { action: 'add_member', name: name, emoji: emoji, role: role, pin: pin, color: color });
-    closeOverlay('add-member');
-    showToast('🎉 Chào mừng thành viên mới: ' + name);
-    await syncAll();
-  } catch (e) { showToast(e.message); }
+  if(!name || pin.length !== 4) { showToast('Yêu cầu điền tên và mã PIN bảo mật bắt buộc gồm 4 chữ số'); return; }
+  try {
+    await api('POST', { action: 'add_member', name: name, emoji: emoji, role: role, pin: pin, color: color });
+    closeOverlay('add-member');
+    showToast('🎉 Chào mừng thành viên mới: ' + name);
+    await syncAll();
+  } catch (e) { showToast(e.message); }
 }
 
 function pickNoteColor(el) {
-  document.querySelectorAll('.note-color-pick').forEach(e => e.style.border = '2px solid transparent');
-  el.style.border = '2px solid var(--pri)';
-  state.noteColor = el.dataset.color;
+  document.querySelectorAll('.note-color-pick').forEach(e => e.style.border = '2px solid transparent');
+  el.style.border = '2px solid var(--pri)';
+  state.noteColor = el.dataset.color;
 }
 
 // ─── EMOJI PICKERS ────────────────────────────────────
 const EMOJIS_MEMBER = [
-  '👨','👩','👦','👧','🧑','👴','👵','👶','🧒','🧔','🧕','👲',
-  '🙋','🙎','💁','🧑‍💼','👨‍💼','👩‍💼','🧑‍🍳','👨‍🍳','👩‍🍳','🧑‍🎓','👨‍🎓','👩‍🎓',
-  '🧑‍🔬','👨‍⚕️','👩‍⚕️','🧑‍🌾','🦸','🦹','🧛','🧜','🧝','🧙',
-  '😊','😄','😎','🥰','🤩','😇','🤓','😴','🙃','🥳',
-  '🐱','🐶','🦊','🐻','🐼','🦁','🐯','🐧','🦄','🐸',
+  '👨','👩','👦','👧','🧑','👴','👵','👶','🧒','🧔','🧕','👲',
+  '🙋','🙎','💁','🧑‍💼','👨‍💼','👩‍💼','🧑‍🍳','👨‍🍳','👩‍🍳','🧑‍🎓','👨‍🎓','👩‍🎓',
+  '🧑‍🔬','👨‍⚕️','👩‍⚕️','🧑‍🌾','🦸','🦹','🧛','🧜','🧝','🧙',
+  '😊','😄','😎','🥰','🤩','😇','🤓','😴','🙃','🥳',
+  '🐱','🐶','🦊','🐻','🐼','🦁','🐯','🐧','🦄','🐸',
 ];
 const EMOJIS_INV = [
-  '🧻','🧴','🧼','🪥','🧽','🧹','🧺','🧷','🪣','🪤',
-  '🛁','🚿','🪒','💊','🩺','🩹','🌡️','🩼','🧬','💉',
-  '🍽️','🥄','🍴','🫙','🍶','🥢','🧂','🫒','🧃','🥛',
-  '☕','🫖','🥤','🍵','🧋','🫗','🍺','🧊','🥚','🫓',
-  '🛒','🛍️','📦','🎁','🔋','💡','🔦','🕯️','🔌','🖇️',
-  '🔧','🔨','🪛','🧰','🪜','🗑️','🪟','🚪','🛏️','🪑',
-  '🛋️','🪴','🌿','🍃','🌱','🌻','🌸','❄️','🔑','🗝️',
+  '🧻','🧴','🧼','🪥','🧽','🧹','🧺','🧷','🪣','🪤',
+  '🛁','🚿','🪒','💊','🩺','🩹','🌡️','🩼','🧬','💉',
+  '🍽️','🥄','🍴','🫙','🍶','🥢','🧂','🫒','🧃','🥛',
+  '☕','🫖','🥤','🍵','🧋','🫗','🍺','🧊','🥚','🫓',
+  '🛒','🛍️','📦','🎁','🔋','💡','🔦','🕯️','🔌','🖇️',
+  '🔧','🔨','🪛','🧰','🪜','🗑️','🪟','🚪','🛏️','🪑',
+  '🛋️','🪴','🌿','🍃','🌱','🌻','🌸','❄️','🔑','🗝️',
 ];
 
 function buildPickerGrid(scope) {
-  const emojis = scope === 'mem' ? EMOJIS_MEMBER : EMOJIS_INV;
-  const grid = document.getElementById(scope + '-epick-grid');
-  if (grid.dataset.built) return;
-  grid.dataset.built = '1';
-  grid.innerHTML = emojis.map(e =>
-    `<button class="eg-btn" onclick="pickEmoji('${scope}','${e}')">${e}</button>`
-  ).join('');
+  const emojis = scope === 'mem' ? EMOJIS_MEMBER : EMOJIS_INV;
+  const grid = document.getElementById(scope + '-epick-grid');
+  if (grid.dataset.built) return;
+  grid.dataset.built = '1';
+  grid.innerHTML = emojis.map(e =>
+    `<button class="eg-btn" onclick="pickEmoji('${scope}','${e}')">${e}</button>`
+  ).join('');
 }
 
 function togglePicker(scope) {
-  buildPickerGrid(scope);
-  const grid = document.getElementById(scope + '-epick-grid');
-  grid.style.display = grid.style.display === 'none' ? 'flex' : 'none';
+  buildPickerGrid(scope);
+  const grid = document.getElementById(scope + '-epick-grid');
+  grid.style.display = grid.style.display === 'none' ? 'flex' : 'none';
 }
 
 function pickEmoji(scope, emoji) {
-  document.getElementById(scope + '-emoji').value = emoji;
-  document.getElementById(scope + '-epick-btn').textContent = emoji;
-  document.getElementById(scope + '-epick-grid').style.display = 'none';
-  // highlight selection
-  document.querySelectorAll('#' + scope + '-epick-grid .eg-btn').forEach(b =>
-    b.classList.toggle('sel', b.textContent === emoji));
+  document.getElementById(scope + '-emoji').value = emoji;
+  document.getElementById(scope + '-epick-btn').textContent = emoji;
+  document.getElementById(scope + '-epick-grid').style.display = 'none';
+  // highlight selection
+  document.querySelectorAll('#' + scope + '-epick-grid .eg-btn').forEach(b =>
+    b.classList.toggle('sel', b.textContent === emoji));
 }
 
 function syncPickerBtn(scope) {
-  const v = document.getElementById(scope + '-emoji').value.trim();
-  if (v) document.getElementById(scope + '-epick-btn').textContent = v;
+  const v = document.getElementById(scope + '-emoji').value.trim();
+  if (v) document.getElementById(scope + '-epick-btn').textContent = v;
 }
 
 function resetPicker(scope, defaultEmoji) {
-  const grid = document.getElementById(scope + '-epick-grid');
-  if (grid) { grid.style.display = 'none'; delete grid.dataset.built; grid.innerHTML = ''; }
-  const btn = document.getElementById(scope + '-epick-btn');
-  if (btn) btn.textContent = defaultEmoji;
+  const grid = document.getElementById(scope + '-epick-grid');
+  if (grid) { grid.style.display = 'none'; delete grid.dataset.built; grid.innerHTML = ''; }
+  const btn = document.getElementById(scope + '-epick-btn');
+  if (btn) btn.textContent = defaultEmoji;
 }
 
 // ─── CHANGE PIN ───────────────────────────────────────
 function openChangePinOv() {
-  if (!state.personal.memberId) { showToast('❗ Chưa mở ví thành viên nào'); return; }
-  const member = state.members.find(m => m.id === state.personal.memberId);
-  document.getElementById('cpn-emoji').textContent = member?.emoji || '👤';
-  document.getElementById('cpn-name').textContent  = member?.name  || '—';
-  document.getElementById('cpn-old').value = '';
-  document.getElementById('cpn-new').value = '';
-  document.getElementById('cpn-confirm').value = '';
-  document.getElementById('cpn-err').textContent = '';
-  openOverlay('change-pin');
+  if (!state.personal.memberId) { showToast('❗ Chưa mở ví thành viên nào'); return; }
+  const member = state.members.find(m => m.id === state.personal.memberId);
+  document.getElementById('cpn-emoji').textContent = member?.emoji || '👤';
+  document.getElementById('cpn-name').textContent  = member?.name  || '—';
+  document.getElementById('cpn-old').value = '';
+  document.getElementById('cpn-new').value = '';
+  document.getElementById('cpn-confirm').value = '';
+  document.getElementById('cpn-err').textContent = '';
+  openOverlay('change-pin');
 }
 
 async function submitChangePin() {
-  const oldPin     = document.getElementById('cpn-old').value;
-  const newPin     = document.getElementById('cpn-new').value;
-  const confirmPin = document.getElementById('cpn-confirm').value;
-  const errEl      = document.getElementById('cpn-err');
-  errEl.textContent = '';
-  if (oldPin.length !== 4 || newPin.length !== 4 || confirmPin.length !== 4) {
-    errEl.textContent = '❗ Tất cả PIN phải đủ 4 số'; return;
-  }
-  if (newPin !== confirmPin) { errEl.textContent = '❌ PIN mới và xác nhận không khớp'; return; }
-  if (newPin === oldPin)     { errEl.textContent = '❗ PIN mới phải khác PIN cũ'; return; }
-  const btn = document.getElementById('cpn-sbtn');
-  btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Đang xử lý...';
-  try {
-    const vr = await api('GET', { action:'verify_pin', member_id: state.personal.memberId, pin: oldPin });
-    if (!vr.valid) { errEl.textContent = '❌ PIN hiện tại không đúng'; return; }
-    await api('POST', { action:'change_pin', member_id: state.personal.memberId, pin: oldPin, new_pin: newPin });
-    state.personal.pin = newPin;
-    closeOverlay('change-pin');
-    showToast('✅ Đổi PIN thành công!');
-  } catch(e) { errEl.textContent = '❌ ' + e.message; }
-  finally { btn.disabled = false; btn.innerHTML = '<i class="ti ti-key"></i> Xác nhận đổi PIN'; }
+  const oldPin     = document.getElementById('cpn-old').value;
+  const newPin     = document.getElementById('cpn-new').value;
+  const confirmPin = document.getElementById('cpn-confirm').value;
+  const errEl      = document.getElementById('cpn-err');
+  errEl.textContent = '';
+  if (oldPin.length !== 4 || newPin.length !== 4 || confirmPin.length !== 4) {
+    errEl.textContent = '❗ Tất cả PIN phải đủ 4 số'; return;
+  }
+  if (newPin !== confirmPin) { errEl.textContent = '❌ PIN mới và xác nhận không khớp'; return; }
+  if (newPin === oldPin)     { errEl.textContent = '❗ PIN mới phải khác PIN cũ'; return; }
+  const btn = document.getElementById('cpn-sbtn');
+  btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Đang xử lý...';
+  try {
+    const vr = await api('GET', { action:'verify_pin', member_id: state.personal.memberId, pin: oldPin });
+    if (!vr.valid) { errEl.textContent = '❌ PIN hiện tại không đúng'; return; }
+    await api('POST', { action:'change_pin', member_id: state.personal.memberId, pin: oldPin, new_pin: newPin });
+    state.personal.pin = newPin;
+    closeOverlay('change-pin');
+    showToast('✅ Đổi PIN thành công!');
+  } catch(e) { errEl.textContent = '❌ ' + e.message; }
+  finally { btn.disabled = false; btn.innerHTML = '<i class="ti ti-key"></i> Xác nhận đổi PIN'; }
 }
 
 // ─── ADD ACCOUNT ──────────────────────────────────────
 function openAddAccountModal() {
-  if (!state.personal.memberId) { showToast('❗ Vui lòng mở ví thành viên trước'); return; }
-  const member = state.members.find(m => m.id === state.personal.memberId);
-  document.getElementById('add-acc-emoji').textContent = member?.emoji || '👤';
-  document.getElementById('add-acc-name').textContent  = member?.name  || '—';
-  document.getElementById('acc-name').value    = '';
-  document.getElementById('acc-balance').value = '';
-  document.getElementById('acc-bank').value    = '';
-  document.getElementById('acc-err').textContent = '';
-  document.getElementById('acc-type').value = 'cash';
-  toggleAccBankField();
-  openOverlay('add-account');
+  if (!state.personal.memberId) { showToast('❗ Vui lòng mở ví thành viên trước'); return; }
+  const member = state.members.find(m => m.id === state.personal.memberId);
+  document.getElementById('add-acc-emoji').textContent = member?.emoji || '👤';
+  document.getElementById('add-acc-name').textContent  = member?.name  || '—';
+  document.getElementById('acc-name').value    = '';
+  document.getElementById('acc-balance').value = '';
+  document.getElementById('acc-bank').value    = '';
+  document.getElementById('acc-err').textContent = '';
+  document.getElementById('acc-type').value = 'cash';
+  toggleAccBankField();
+  openOverlay('add-account');
 }
 
 function toggleAccBankField() {
-  const type = document.getElementById('acc-type')?.value;
-  const bankGroup = document.getElementById('acc-bank-group');
-  if(bankGroup) bankGroup.style.display = (type === 'bank' || type === 'credit') ? 'block' : 'none';
+  const type = document.getElementById('acc-type')?.value;
+  const bankGroup = document.getElementById('acc-bank-group');
+  if(bankGroup) bankGroup.style.display = (type === 'bank' || type === 'credit') ? 'block' : 'none';
 }
 
 async function submitAddAccount() {
-  const name    = document.getElementById('acc-name').value.trim();
-  const type    = document.getElementById('acc-type').value;
-  const balance = parseFloat(document.getElementById('acc-balance').value) || 0;
-  const bank    = document.getElementById('acc-bank').value.trim();
-  const errEl   = document.getElementById('acc-err');
-  errEl.textContent = '';
+  const name    = document.getElementById('acc-name').value.trim();
+  const type    = document.getElementById('acc-type').value;
+  const balance = parseFloat(document.getElementById('acc-balance').value) || 0;
+  const bank    = document.getElementById('acc-bank').value.trim();
+  const errEl   = document.getElementById('acc-err');
+  errEl.textContent = '';
 
-  if (!name) { errEl.textContent = '❗ Vui lòng nhập tên tài khoản'; return; }
-  const btn = document.getElementById('acc-sbtn');
-  btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Đang tạo...';
-  try {
-    await api('POST', {
-      action: 'add_account',
-      member_id: state.personal.memberId,
-      pin: state.personal.pin,
-      name, type, balance,
-      bank_name: bank
-    });
-    closeOverlay('add-account');
-    showToast('✅ Tạo tài khoản thành công!');
-    await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
-    onTxMemberChange();
-  } catch(e) { errEl.textContent = '❌ ' + e.message; }
-  finally { btn.disabled = false; btn.innerHTML = '<i class="ti ti-credit-card"></i> Tạo tài khoản'; }
+  if (!name) { errEl.textContent = '❗ Vui lòng nhập tên tài khoản'; return; }
+  const btn = document.getElementById('acc-sbtn');
+  btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Đang tạo...';
+  try {
+    await api('POST', {
+      action: 'add_account',
+      member_id: state.personal.memberId,
+      pin: state.personal.pin,
+      name, type, balance,
+      bank_name: bank
+    });
+    closeOverlay('add-account');
+    showToast('✅ Tạo tài khoản thành công!');
+    await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
+    onTxMemberChange();
+  } catch(e) { errEl.textContent = '❌ ' + e.message; }
+  finally { btn.disabled = false; btn.innerHTML = '<i class="ti ti-credit-card"></i> Tạo tài khoản'; }
 }
 
 // ─── EDIT / DELETE ACCOUNT ────────────────────────────
 function openEditAccount(accId) {
-  const acc = state.personal.accounts.find(a => a.id === accId);
-  if (!acc) return;
-  document.getElementById('edit-acc-id').value      = acc.id;
-  document.getElementById('edit-acc-name').value    = acc.name;
-  document.getElementById('edit-acc-type').value    = acc.type || 'cash';
-  document.getElementById('edit-acc-balance').value = acc.balance;
-  document.getElementById('edit-acc-bank').value    = acc.bank_name || '';
-  document.getElementById('edit-acc-err').textContent = '';
-  openOverlay('edit-account');
+  const acc = state.personal.accounts.find(a => a.id === accId);
+  if (!acc) return;
+  document.getElementById('edit-acc-id').value      = acc.id;
+  document.getElementById('edit-acc-name').value    = acc.name;
+  document.getElementById('edit-acc-type').value    = acc.type || 'cash';
+  document.getElementById('edit-acc-balance').value = acc.balance;
+  document.getElementById('edit-acc-bank').value    = acc.bank_name || '';
+  document.getElementById('edit-acc-err').textContent = '';
+  openOverlay('edit-account');
 }
 
 async function submitEditAccount() {
-  const id      = document.getElementById('edit-acc-id').value;
-  const name    = document.getElementById('edit-acc-name').value.trim();
-  const type    = document.getElementById('edit-acc-type').value;
-  const balance = parseFloat(document.getElementById('edit-acc-balance').value) || 0;
-  const bank    = document.getElementById('edit-acc-bank').value.trim();
-  const errEl   = document.getElementById('edit-acc-err');
-  errEl.textContent = '';
+  const id      = document.getElementById('edit-acc-id').value;
+  const name    = document.getElementById('edit-acc-name').value.trim();
+  const type    = document.getElementById('edit-acc-type').value;
+  const balance = parseFloat(document.getElementById('edit-acc-balance').value) || 0;
+  const bank    = document.getElementById('edit-acc-bank').value.trim();
+  const errEl   = document.getElementById('edit-acc-err');
+  errEl.textContent = '';
 
-  if (!name) { errEl.textContent = '❗ Tên tài khoản không được để trống'; return; }
-  const btn = document.getElementById('edit-acc-sbtn');
-  btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Đang lưu...';
-  try {
-    await api('POST', {
-      action: 'update_account',
-      account_id: id,
-      member_id: state.personal.memberId,
-      pin: state.personal.pin,
-      name, type, balance,
-      bank_name: bank
-    });
-    closeOverlay('edit-account');
-    showToast('✅ Đã cập nhật tài khoản');
-    await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
-    onTxMemberChange();
-  } catch(e) { errEl.textContent = '❌ ' + e.message; }
-  finally { btn.disabled = false; btn.innerHTML = '<i class="ti ti-device-floppy"></i> Lưu thay đổi'; }
+  if (!name) { errEl.textContent = '❗ Tên tài khoản không được để trống'; return; }
+  const btn = document.getElementById('edit-acc-sbtn');
+  btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Đang lưu...';
+  try {
+    await api('POST', {
+      action: 'update_account',
+      account_id: id,
+      member_id: state.personal.memberId,
+      pin: state.personal.pin,
+      name, type, balance,
+      bank_name: bank
+    });
+    closeOverlay('edit-account');
+    showToast('✅ Đã cập nhật tài khoản');
+    await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
+    onTxMemberChange();
+  } catch(e) { errEl.textContent = '❌ ' + e.message; }
+  finally { btn.disabled = false; btn.innerHTML = '<i class="ti ti-device-floppy"></i> Lưu thay đổi'; }
 }
 
 async function confirmDeleteAccount() {
-  const id   = document.getElementById('edit-acc-id').value;
-  const name = document.getElementById('edit-acc-name').value;
-  const ok = await showConfirm({ icon:'🗑️', title:`Xoá tài khoản?`, msg:`Xoá "${name}"?\n⚠️ Toàn bộ lịch sử giao dịch liên quan cũng sẽ bị xoá vĩnh viễn.`, okLabel:'Xoá tài khoản' });
-  if (!ok) return;
-  try {
-    await api('POST', {
-      action: 'delete_account',
-      account_id: id,
-      member_id: state.personal.memberId,
-      pin: state.personal.pin
-    });
-    closeOverlay('edit-account');
-    showToast('🗑️ Đã xoá tài khoản ' + name);
-    await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
-    onTxMemberChange();
-  } catch(e) { showToast('❌ ' + e.message); }
+  const id   = document.getElementById('edit-acc-id').value;
+  const name = document.getElementById('edit-acc-name').value;
+  if (!confirm(`Xác nhận xoá tài khoản "${name}"?\n⚠️ Toàn bộ lịch sử giao dịch liên quan cũng sẽ bị xoá.`)) return;
+  try {
+    await api('POST', {
+      action: 'delete_account',
+      account_id: id,
+      member_id: state.personal.memberId,
+      pin: state.personal.pin
+    });
+    closeOverlay('edit-account');
+    showToast('🗑️ Đã xoá tài khoản ' + name);
+    await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
+    onTxMemberChange();
+  } catch(e) { showToast('❌ ' + e.message); }
 }
 
 // ─── REPAY CREDIT ─────────────────────────────────────
 function openRepayCredit(txId, accId, txDesc, txAmount) {
-  const acc = state.personal.accounts.find(a => a.id === accId);
-  if (!acc) { showToast('❗ Không tìm thấy tài khoản credit'); return; }
+  const acc = state.personal.accounts.find(a => a.id === accId);
+  if (!acc) { showToast('❗ Không tìm thấy tài khoản credit'); return; }
 
-  document.getElementById('repay-tx-id').value   = txId;
-  document.getElementById('repay-acc-id').value  = accId;
-  document.getElementById('repay-tx-desc').textContent   = txDesc;
-  document.getElementById('repay-tx-amount').textContent = fmt(txAmount);
-  document.getElementById('repay-acc-name').textContent  = acc.name;
-  document.getElementById('repay-acc-balance').textContent = fmt(Math.abs(acc.balance || 0));
-  document.getElementById('repay-amount').value  = txAmount;
-  document.getElementById('repay-err').textContent = '';
+  document.getElementById('repay-tx-id').value   = txId;
+  document.getElementById('repay-acc-id').value  = accId;
+  document.getElementById('repay-tx-desc').textContent   = txDesc;
+  document.getElementById('repay-tx-amount').textContent = fmt(txAmount);
+  document.getElementById('repay-acc-name').textContent  = acc.name;
+  document.getElementById('repay-acc-balance').textContent = fmt(Math.abs(acc.balance || 0));
+  document.getElementById('repay-amount').value  = txAmount;
+  document.getElementById('repay-err').textContent = '';
 
-  // Populate nguồn tiền: tất cả ví không phải credit của thành viên này
-  const sourceSelect = document.getElementById('repay-source-account');
-  const sourceOptions = state.personal.accounts
-    .filter(a => a.id !== accId)
-    .map(a => `<option value="${a.id}">${a.name} (${fmt(a.balance)})</option>`)
-    .join('');
-  sourceSelect.innerHTML = '<option value="">-- Không trừ ví nguồn (chỉ giảm nợ) --</option>' + sourceOptions;
+  // Populate nguồn tiền: tất cả ví không phải credit của thành viên này
+  const sourceSelect = document.getElementById('repay-source-account');
+  const sourceOptions = state.personal.accounts
+    .filter(a => a.id !== accId)
+    .map(a => `<option value="${a.id}">${a.name} (${fmt(a.balance)})</option>`)
+    .join('');
+  sourceSelect.innerHTML = '<option value="">-- Không trừ ví nguồn (chỉ giảm nợ) --</option>' + sourceOptions;
 
-  openOverlay('repay-credit');
+  openOverlay('repay-credit');
 }
 
 async function submitRepayCredit() {
-  const txId         = document.getElementById('repay-tx-id').value;
-  const creditAccId  = document.getElementById('repay-acc-id').value;
-  const repayAmount  = parseFloat(document.getElementById('repay-amount').value) || 0;
-  const sourceAccId  = document.getElementById('repay-source-account').value;
-  const errEl        = document.getElementById('repay-err');
-  errEl.textContent  = '';
+  const txId         = document.getElementById('repay-tx-id').value;
+  const creditAccId  = document.getElementById('repay-acc-id').value;
+  const repayAmount  = parseFloat(document.getElementById('repay-amount').value) || 0;
+  const sourceAccId  = document.getElementById('repay-source-account').value;
+  const errEl        = document.getElementById('repay-err');
+  errEl.textContent  = '';
 
-  if (repayAmount <= 0) { errEl.textContent = '❗ Số tiền trả nợ phải lớn hơn 0'; return; }
+  if (repayAmount <= 0) { errEl.textContent = '❗ Số tiền trả nợ phải lớn hơn 0'; return; }
 
-  // Kiểm tra số dư ví nguồn (nếu có chọn)
-  if (sourceAccId) {
-    const srcAcc = state.personal.accounts.find(a => a.id === sourceAccId);
-    if (srcAcc && Number(srcAcc.balance) < repayAmount) {
-      errEl.textContent = `⚠️ Số dư ${srcAcc.name} không đủ (${fmt(srcAcc.balance)})`;
-      return;
-    }
-  }
+  // Kiểm tra số dư ví nguồn (nếu có chọn)
+  if (sourceAccId) {
+    const srcAcc = state.personal.accounts.find(a => a.id === sourceAccId);
+    if (srcAcc && Number(srcAcc.balance) < repayAmount) {
+      errEl.textContent = `⚠️ Số dư ${srcAcc.name} không đủ (${fmt(srcAcc.balance)})`;
+      return;
+    }
+  }
 
-  const btn = document.getElementById('repay-sbtn');
-  btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Đang xử lý...';
-  try {
-    // Gọi API trả nợ credit: giảm dư nợ credit + tuỳ chọn trừ ví nguồn
-    await api('POST', {
-      action: 'repay_credit',
-      member_id:        state.personal.memberId,
-      pin:              state.personal.pin,
-      credit_account_id: creditAccId,
-      source_account_id: sourceAccId || null,
-      amount:           repayAmount,
-      tx_id:            txId  // để backend ghi chú liên kết giao dịch gốc
-    });
-    closeOverlay('repay-credit');
-    showToast('✅ Trả nợ thẻ tín dụng thành công!');
-    await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
-  } catch(e) {
-    // Nếu backend chưa hỗ trợ action này, cập nhật số dư locally để vẫn dùng được
-    if (e.message && e.message.includes('action')) {
-      // Fallback: cập nhật balance credit account trực tiếp
-      const creditAcc = state.personal.accounts.find(a => a.id === creditAccId);
-      if (creditAcc) {
-        const newBalance = Number(creditAcc.balance) + repayAmount; // balance credit là âm, cộng vào = giảm nợ
-        await api('POST', {
-          action: 'update_account',
-          account_id: creditAccId,
-          member_id: state.personal.memberId,
-          pin: state.personal.pin,
-          name: creditAcc.name,
-          type: creditAcc.type,
-          balance: newBalance
-        });
-        // Trừ ví nguồn nếu có
-        if (sourceAccId) {
-          const srcAcc = state.personal.accounts.find(a => a.id === sourceAccId);
-          if (srcAcc) {
-            await api('POST', {
-              action: 'update_account',
-              account_id: sourceAccId,
-              member_id: state.personal.memberId,
-              pin: state.personal.pin,
-              name: srcAcc.name,
-              type: srcAcc.type,
-              balance: Number(srcAcc.balance) - repayAmount
-            });
-          }
-        }
-        closeOverlay('repay-credit');
-        showToast('✅ Đã giảm dư nợ thẻ tín dụng!');
-        await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
-      }
-    } else {
-      errEl.textContent = '❌ ' + e.message;
-    }
-  }
-  finally { btn.disabled = false; btn.innerHTML = '<i class="ti ti-cash"></i> Xác nhận trả nợ'; }
+  const btn = document.getElementById('repay-sbtn');
+  btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Đang xử lý...';
+  try {
+    // Gọi API trả nợ credit: giảm dư nợ credit + tuỳ chọn trừ ví nguồn
+    await api('POST', {
+      action: 'repay_credit',
+      member_id:        state.personal.memberId,
+      pin:              state.personal.pin,
+      credit_account_id: creditAccId,
+      source_account_id: sourceAccId || null,
+      amount:           repayAmount,
+      tx_id:            txId  // để backend ghi chú liên kết giao dịch gốc
+    });
+    closeOverlay('repay-credit');
+    showToast('✅ Trả nợ thẻ tín dụng thành công!');
+    await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
+  } catch(e) {
+    // Nếu backend chưa hỗ trợ action này, cập nhật số dư locally để vẫn dùng được
+    if (e.message && e.message.includes('action')) {
+      // Fallback: cập nhật balance credit account trực tiếp
+      const creditAcc = state.personal.accounts.find(a => a.id === creditAccId);
+      if (creditAcc) {
+        const newBalance = Number(creditAcc.balance) + repayAmount; // balance credit là âm, cộng vào = giảm nợ
+        await api('POST', {
+          action: 'update_account',
+          account_id: creditAccId,
+          member_id: state.personal.memberId,
+          pin: state.personal.pin,
+          name: creditAcc.name,
+          type: creditAcc.type,
+          balance: newBalance
+        });
+        // Trừ ví nguồn nếu có
+        if (sourceAccId) {
+          const srcAcc = state.personal.accounts.find(a => a.id === sourceAccId);
+          if (srcAcc) {
+            await api('POST', {
+              action: 'update_account',
+              account_id: sourceAccId,
+              member_id: state.personal.memberId,
+              pin: state.personal.pin,
+              name: srcAcc.name,
+              type: srcAcc.type,
+              balance: Number(srcAcc.balance) - repayAmount
+            });
+          }
+        }
+        closeOverlay('repay-credit');
+        showToast('✅ Đã giảm dư nợ thẻ tín dụng!');
+        await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
+      }
+    } else {
+      errEl.textContent = '❌ ' + e.message;
+    }
+  }
+  finally { btn.disabled = false; btn.innerHTML = '<i class="ti ti-cash"></i> Xác nhận trả nợ'; }
 }
 
 
 // ═══════════════════════════════════════════════════════
 // ĐĂNG KÝ SỰ KIỆN GIAO DIỆN
 // ═══════════════════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', () => { 
-  
-  // 1. Kích hoạt sự kiện Click cho các tab thanh menu trên (Desktop)
-  document.querySelectorAll('.nav-tab').forEach(tab => {
-    tab.addEventListener('click', () => openPage(tab.dataset.page));
-  });
+document.addEventListener('DOMContentLoaded', () => { 
+  
+  // 1. Kích hoạt sự kiện Click cho các tab thanh menu trên (Desktop)
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', () => openPage(tab.dataset.page));
+  });
 
-  // 2. Kích hoạt sự kiện Click cho thanh điều hướng dưới đáy (Mobile)
-  document.querySelectorAll('.bnav-item').forEach(btn => {
-    btn.addEventListener('click', () => openPage(btn.dataset.page));
-  });
+  // 2. Kích hoạt sự kiện Click cho thanh điều hướng dưới đáy (Mobile)
+  document.querySelectorAll('.bnav-item').forEach(btn => {
+    btn.addEventListener('click', () => openPage(btn.dataset.page));
+  });
 
-  // 3. Kích hoạt sự kiện đóng popup thông minh khi bấm ra vùng trống bên ngoài Overlay
-  document.querySelectorAll('.overlay').forEach(overlayElement => {
-    overlayElement.addEventListener('click', e => { 
-      if (e.target === overlayElement) overlayElement.classList.remove('open'); 
-    });
-  });
+  // 3. Kích hoạt sự kiện đóng popup thông minh khi bấm ra vùng trống bên ngoài Overlay
+  document.querySelectorAll('.overlay').forEach(overlayElement => {
+    overlayElement.addEventListener('click', e => { 
+      if (e.target === overlayElement) overlayElement.classList.remove('open'); 
+    });
+  });
 
-  // 4. Kích hoạt bộ theo dõi thay đổi tự động trong form phát sinh giao dịch
-  const txMemberDropdown = document.getElementById('tx-member');
-  if (txMemberDropdown) txMemberDropdown.addEventListener('change', onTxMemberChange);
-  
-  // FIX: khi tick/untick shared -> rebuild ví chỉ khi bỏ tick (untick)
-  const txSharedCheck = document.getElementById('tx-shared');
-  if (txSharedCheck) txSharedCheck.addEventListener('change', () => {
-    if (!txSharedCheck.checked) onTxMemberChange(); // bỏ tick mới rebuild ví
-    // tick -> không thay đổi ví đang chọn
-  });
+  // 4. Kích hoạt bộ theo dõi thay đổi tự động trong form phát sinh giao dịch
+  const txMemberDropdown = document.getElementById('tx-member');
+  if (txMemberDropdown) txMemberDropdown.addEventListener('change', onTxMemberChange);
+  
+  // FIX: khi tick/untick shared -> rebuild ví chỉ khi bỏ tick (untick)
+  const txSharedCheck = document.getElementById('tx-shared');
+  if (txSharedCheck) txSharedCheck.addEventListener('change', () => {
+    if (!txSharedCheck.checked) onTxMemberChange(); // bỏ tick mới rebuild ví
+    // tick -> không thay đổi ví đang chọn
+  });
 
-  // Kích hoạt chuyển đổi hiện/ẩn trường ngân hàng khi tạo tài khoản mới
-  const accTypeSelect = document.getElementById('acc-type');
-  if (accTypeSelect) accTypeSelect.addEventListener('change', toggleAccBankField);
+  // Kích hoạt chuyển đổi hiện/ẩn trường ngân hàng khi tạo tài khoản mới
+  const accTypeSelect = document.getElementById('acc-type');
+  if (accTypeSelect) accTypeSelect.addEventListener('change', toggleAccBankField);
 
-  // 5. Chạy lệnh đồng bộ dữ liệu đám mây ban đầu khi tải trang
-  syncAll(); 
+  // 5. Chạy lệnh đồng bộ dữ liệu đám mây ban đầu khi tải trang
+  syncAll(); 
 });
 </script>
 
-<!-- ── CUSTOM CONFIRM DIALOG (thay window.confirm — Safari iOS friendly) ── -->
-<div class="confirm-dialog" id="confirm-dialog">
-  <div class="confirm-box">
-    <div class="confirm-icon" id="confirm-icon">⚠️</div>
-    <div class="confirm-title" id="confirm-title">Xác nhận</div>
-    <div class="confirm-msg" id="confirm-msg">Bạn có chắc muốn thực hiện hành động này?</div>
-    <div class="confirm-btns">
-      <button class="confirm-cancel" id="confirm-cancel-btn">Huỷ</button>
-      <button class="confirm-ok" id="confirm-ok-btn">Xác nhận</button>
-    </div>
-  </div>
-</div>
 
-<!-- ── EDIT TRANSACTION OVERLAY ── -->
-<div class="overlay" id="overlay-edit-tx">
-  <div class="sheet">
-    <div class="handle"></div>
-    <div class="sheet-title">✏️ Chỉnh sửa giao dịch</div>
-    <input type="hidden" id="edit-tx-id">
-    <div class="edit-tx-header">
-      <div class="type-toggle" style="margin:0;flex:1;">
-        <button class="type-btn expense" id="edit-tx-btn-expense" onclick="setEditTxType('expense')">💸 Chi tiêu</button>
-        <button class="type-btn income" id="edit-tx-btn-income" onclick="setEditTxType('income')">💰 Thu nhập</button>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Mô tả / Nội dung</label>
-      <input class="form-input" id="edit-tx-desc" type="text" placeholder="Mô tả giao dịch...">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Số tiền (VNĐ)</label>
-      <input class="form-input" id="edit-tx-amount" type="number" placeholder="0" min="0" style="font-size:18px;font-weight:700;">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Ngày giao dịch</label>
-      <input class="form-input" id="edit-tx-date" type="date">
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Tài khoản / Ví</label>
-      <select class="form-input" id="edit-tx-account"></select>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl">Hạng mục</label>
-      <select class="form-input" id="edit-tx-category">
-        <option value="food">🛒 Ăn uống / Đi chợ</option>
-        <option value="electric">⚡ Tiền điện</option>
-        <option value="water">💧 Tiền nước</option>
-        <option value="internet">🌐 Internet</option>
-        <option value="education">📚 Giáo dục</option>
-        <option value="transport">🚗 Đi lại</option>
-        <option value="health">🏥 Y tế</option>
-        <option value="shopping">🛍️ Mua sắm</option>
-        <option value="salary">💼 Thu nhập / Lương</option>
-        <option value="other">📌 Khác</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-lbl" style="display:flex;align-items:center;gap:7px;cursor:pointer;">
-        <input type="checkbox" id="edit-tx-shared" style="width:16px;height:16px;accent-color:var(--pri);">
-        <span>Đồng bộ vào <strong>Chi tiêu chung</strong></span>
-      </label>
-    </div>
-    <div class="pin-err" id="edit-tx-err"></div>
-    <button class="submit-btn" id="edit-tx-sbtn" onclick="submitEditTx()">
-      <i class="ti ti-device-floppy"></i> Lưu thay đổi
-    </button>
-    <button class="cancel-btn" onclick="closeOverlay('edit-tx')">Huỷ</button>
-  </div>
-</div>
