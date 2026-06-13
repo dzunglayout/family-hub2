@@ -189,6 +189,19 @@ html, body { height: 100%; font-family: var(--fb); background: var(--bg); color:
 .acc-add-card { flex: 0 0 auto; width: 145px; border-radius: 18px; padding: 15px 14px; border: 2px dashed var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; color: var(--muted); }
 .acc-add-card:hover { border-color: var(--pri); color: var(--pri); }
 
+/* ── Account Card with action menu ── */
+.acc-card-wrap { flex: 0 0 auto; position: relative; }
+.acc-card-wrap .acc-card { width: 145px; cursor: default; }
+.acc-actions { display: flex; gap: 4px; margin-top: 5px; justify-content: flex-end; }
+.acc-act-btn { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 7px; border: none; cursor: pointer; display: flex; align-items: center; gap: 3px; }
+.acc-act-btn.edit  { background: var(--pri-light); color: var(--pri); }
+.acc-act-btn.del   { background: var(--red-l);     color: var(--red); }
+
+/* ── Credit repay button in TX list ── */
+.tx-repay-btn { color: var(--green-d); background: var(--green-l); border: 1px solid rgba(0,200,150,.3); border-radius: 7px; padding: 3px 8px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 3px; }
+.tx-repay-btn:hover { background: var(--green); color: #fff; }
+.tx-actions-col { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+
 /* ── Change PIN overlay ── */
 .cpn-avatar { font-size: 40px; text-align: center; margin-bottom: 6px; }
 .cpn-name { font-size: 15px; font-weight: 700; text-align: center; margin-bottom: 14px; color: var(--text); }
@@ -440,6 +453,80 @@ html, body { height: 100%; font-family: var(--fb); background: var(--bg); color:
       <i class="ti ti-credit-card"></i> Tạo tài khoản
     </button>
     <button class="cancel-btn" onclick="closeOverlay('add-account')">Huỷ</button>
+  </div>
+</div>
+
+<!-- ── EDIT ACCOUNT OVERLAY ── -->
+<div class="overlay" id="overlay-edit-account">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">✏️ Chỉnh sửa tài khoản</div>
+    <input type="hidden" id="edit-acc-id">
+    <div class="form-group">
+      <label class="form-lbl">Tên tài khoản / Ví</label>
+      <input class="form-input" id="edit-acc-name" type="text" placeholder="Tên tài khoản...">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Loại tài khoản</label>
+      <select class="form-input" id="edit-acc-type">
+        <option value="cash">💵 Tiền mặt (Ví)</option>
+        <option value="bank">🏦 Tài khoản ngân hàng</option>
+        <option value="credit">💳 Thẻ tín dụng (Credit Card)</option>
+        <option value="ewallet">📱 Ví điện tử (MoMo, ZaloPay...)</option>
+        <option value="saving">🏧 Tài khoản tiết kiệm</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Điều chỉnh số dư hiện tại (VNĐ)</label>
+      <input class="form-input" id="edit-acc-balance" type="number" placeholder="0">
+    </div>
+    <div class="form-group" id="edit-acc-bank-group">
+      <label class="form-lbl">Tên ngân hàng / Nhà phát hành</label>
+      <input class="form-input" id="edit-acc-bank" type="text" placeholder="ACB, VIB, Techcombank...">
+    </div>
+    <div class="pin-err" id="edit-acc-err"></div>
+    <button class="submit-btn" id="edit-acc-sbtn" onclick="submitEditAccount()">
+      <i class="ti ti-device-floppy"></i> Lưu thay đổi
+    </button>
+    <button class="cancel-btn" style="background:var(--red-l);color:var(--red);border-color:var(--red);" onclick="confirmDeleteAccount()">
+      <i class="ti ti-trash"></i> Xóa tài khoản này
+    </button>
+    <button class="cancel-btn" onclick="closeOverlay('edit-account')">Huỷ</button>
+  </div>
+</div>
+
+<!-- ── REPAY CREDIT OVERLAY ── -->
+<div class="overlay" id="overlay-repay-credit">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">💸 Trả nợ thẻ tín dụng</div>
+    <div id="repay-credit-info" style="background:var(--red-l);border-radius:12px;padding:12px 14px;margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;color:var(--red);letter-spacing:.5px;margin-bottom:4px;">KHOẢN NỢ CẦN TRẢ</div>
+      <div style="font-size:13px;font-weight:600;" id="repay-tx-desc">—</div>
+      <div style="font-size:20px;font-weight:900;color:var(--red);font-family:var(--fh);margin-top:4px;" id="repay-tx-amount">—</div>
+    </div>
+    <div style="background:var(--blue-l);border-radius:12px;padding:12px 14px;margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;color:var(--blue-d);letter-spacing:.5px;margin-bottom:4px;">TÀI KHOẢN CREDIT</div>
+      <div style="font-size:13px;font-weight:700;" id="repay-acc-name">—</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px;">Dư nợ hiện tại: <span id="repay-acc-balance" style="font-weight:700;color:var(--red);">—</span></div>
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Số tiền trả nợ (VNĐ)</label>
+      <input class="form-input" id="repay-amount" type="number" placeholder="0" min="0" style="font-size:18px;font-weight:700;">
+    </div>
+    <div class="form-group">
+      <label class="form-lbl">Nguồn tiền thanh toán</label>
+      <select class="form-input" id="repay-source-account">
+        <option value="">-- Chọn ví / tài khoản nguồn --</option>
+      </select>
+    </div>
+    <input type="hidden" id="repay-tx-id">
+    <input type="hidden" id="repay-acc-id">
+    <div class="pin-err" id="repay-err"></div>
+    <button class="submit-btn" id="repay-sbtn" onclick="submitRepayCredit()">
+      <i class="ti ti-cash"></i> Xác nhận trả nợ
+    </button>
+    <button class="cancel-btn" onclick="closeOverlay('repay-credit')">Huỷ</button>
   </div>
 </div>
 
@@ -992,10 +1079,16 @@ async function loadPersonalWalletData(id, validatedPin) {
     const accountsRow = document.getElementById('personal-accounts');
     if(accountsRow) {
       const accCards = state.personal.accounts.map((acc, index) => `
-        <div class="acc-card" style="background:${accGradients[index % accGradients.length]};">
-          <div class="acc-type">${(accTypeIcon[acc.type] || '💰')} ${(accTypeLabel[acc.type] || acc.type).toUpperCase()}</div>
-          <div class="acc-amt">${fmt(acc.balance)}</div>
-          <div class="acc-name">${acc.name}</div>
+        <div class="acc-card-wrap">
+          <div class="acc-card" style="background:${accGradients[index % accGradients.length]};">
+            <div class="acc-type">${(accTypeIcon[acc.type] || '💰')} ${(accTypeLabel[acc.type] || acc.type).toUpperCase()}</div>
+            <div class="acc-amt">${acc.type === 'credit' ? '-' : ''}${fmt(Math.abs(acc.balance))}</div>
+            <div class="acc-name">${acc.name}</div>
+          </div>
+          <div class="acc-actions">
+            <button class="acc-act-btn edit" onclick="openEditAccount('${acc.id}')"><i class="ti ti-pencil"></i> Sửa</button>
+            <button class="acc-act-btn del"  onclick="openEditAccount('${acc.id}')"><i class="ti ti-trash"></i></button>
+          </div>
         </div>`).join('');
       const addCard = `<div class="acc-add-card" onclick="openAddAccountModal()">
         <i class="ti ti-plus" style="font-size:22px;"></i>
@@ -1026,8 +1119,12 @@ function filterTx(type) {
 }
 
 function renderPersonalTxList() {
-  let list = state.personal.transactions;
-  if (state.activeTxFilter === 'income') list = list.filter(t => t.type === 'income');
+  let list = [...state.personal.transactions];
+
+  // ── Sắp xếp gần nhất trên cùng (theo date desc, nếu same date giữ thứ tự gốc)
+  list.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+
+  if (state.activeTxFilter === 'income')  list = list.filter(t => t.type === 'income');
   if (state.activeTxFilter === 'expense') list = list.filter(t => t.type === 'expense');
   
   const container = document.getElementById('personal-tx-list');
@@ -1036,17 +1133,41 @@ function renderPersonalTxList() {
     container.innerHTML = '<div class="empty"><i class="ti ti-receipt-off"></i><p>Chưa ghi nhận biến động tài chính</p></div>';
     return;
   }
-  
-  container.innerHTML = list.map(item => `
-    <div class="tx-item">
+
+  // Tạo map account_id -> account để tra loại tài khoản
+  const accMap = {};
+  (state.personal.accounts || []).forEach(a => { accMap[a.id] = a; });
+
+  container.innerHTML = list.map(item => {
+    const acc = accMap[item.account_id] || {};
+    const isCreditExpense = acc.type === 'credit' && item.type === 'expense';
+
+    // Nút trả nợ chỉ hiện cho giao dịch chi của tài khoản credit
+    const repayBtn = isCreditExpense
+      ? `<button class="tx-repay-btn" onclick="openRepayCredit('${item.id}','${item.account_id}','${(item.description||'').replace(/'/g,"\\'")}',${item.amount})">
+           <i class="ti ti-cash"></i> Trả nợ
+         </button>`
+      : '';
+
+    return `<div class="tx-item">
       <div class="tx-ico" style="background:${catBg[item.category]}; color:${catColor[item.category]};">${catIcon[item.category] || '📌'}</div>
       <div class="tx-info">
         <div class="tx-name">${item.description}</div>
-        <div class="tx-meta">${item.date} ${item.is_shared === 'TRUE' ? '<span class="tag shared">👥 Đã đồng bộ chi phí chung</span>' : ''}</div>
+        <div class="tx-meta">
+          ${item.date}
+          ${acc.name ? `· <span style="font-size:10px;background:var(--border);padding:1px 6px;border-radius:99px;">${acc.name}</span>` : ''}
+          ${item.is_shared === 'TRUE' ? '<span class="tag shared">👥 Chung</span>' : ''}
+        </div>
       </div>
-      <div class="tx-amt ${item.type === 'income' ? 'in' : 'out'}">${item.type === 'income' ? '+' : '-'}${fmt(item.amount)}</div>
-      <div class="tx-del-btn" onclick="deleteTransactionProcess('${item.id}')"><i class="ti ti-trash"></i></div>
-    </div>`).join('');
+      <div class="tx-actions-col">
+        <div class="tx-amt ${item.type === 'income' ? 'in' : 'out'}">${item.type === 'income' ? '+' : '-'}${fmt(item.amount)}</div>
+        <div style="display:flex;gap:4px;align-items:center;">
+          ${repayBtn}
+          <div class="tx-del-btn" onclick="deleteTransactionProcess('${item.id}')"><i class="ti ti-trash"></i></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 async function deleteTransactionProcess(txId) {
@@ -1496,9 +1617,171 @@ async function submitAddAccount() {
     closeOverlay('add-account');
     showToast('✅ Tạo tài khoản thành công!');
     await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
-    onTxMemberChange(); // refresh ví dropdown
+    onTxMemberChange();
   } catch(e) { errEl.textContent = '❌ ' + e.message; }
   finally { btn.disabled = false; btn.innerHTML = '<i class="ti ti-credit-card"></i> Tạo tài khoản'; }
+}
+
+// ─── EDIT / DELETE ACCOUNT ────────────────────────────
+function openEditAccount(accId) {
+  const acc = state.personal.accounts.find(a => a.id === accId);
+  if (!acc) return;
+  document.getElementById('edit-acc-id').value      = acc.id;
+  document.getElementById('edit-acc-name').value    = acc.name;
+  document.getElementById('edit-acc-type').value    = acc.type || 'cash';
+  document.getElementById('edit-acc-balance').value = acc.balance;
+  document.getElementById('edit-acc-bank').value    = acc.bank_name || '';
+  document.getElementById('edit-acc-err').textContent = '';
+  openOverlay('edit-account');
+}
+
+async function submitEditAccount() {
+  const id      = document.getElementById('edit-acc-id').value;
+  const name    = document.getElementById('edit-acc-name').value.trim();
+  const type    = document.getElementById('edit-acc-type').value;
+  const balance = parseFloat(document.getElementById('edit-acc-balance').value) || 0;
+  const bank    = document.getElementById('edit-acc-bank').value.trim();
+  const errEl   = document.getElementById('edit-acc-err');
+  errEl.textContent = '';
+
+  if (!name) { errEl.textContent = '❗ Tên tài khoản không được để trống'; return; }
+  const btn = document.getElementById('edit-acc-sbtn');
+  btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Đang lưu...';
+  try {
+    await api('POST', {
+      action: 'update_account',
+      account_id: id,
+      member_id: state.personal.memberId,
+      pin: state.personal.pin,
+      name, type, balance,
+      bank_name: bank
+    });
+    closeOverlay('edit-account');
+    showToast('✅ Đã cập nhật tài khoản');
+    await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
+    onTxMemberChange();
+  } catch(e) { errEl.textContent = '❌ ' + e.message; }
+  finally { btn.disabled = false; btn.innerHTML = '<i class="ti ti-device-floppy"></i> Lưu thay đổi'; }
+}
+
+async function confirmDeleteAccount() {
+  const id   = document.getElementById('edit-acc-id').value;
+  const name = document.getElementById('edit-acc-name').value;
+  if (!confirm(`Xác nhận xoá tài khoản "${name}"?\n⚠️ Toàn bộ lịch sử giao dịch liên quan cũng sẽ bị xoá.`)) return;
+  try {
+    await api('POST', {
+      action: 'delete_account',
+      account_id: id,
+      member_id: state.personal.memberId,
+      pin: state.personal.pin
+    });
+    closeOverlay('edit-account');
+    showToast('🗑️ Đã xoá tài khoản ' + name);
+    await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
+    onTxMemberChange();
+  } catch(e) { showToast('❌ ' + e.message); }
+}
+
+// ─── REPAY CREDIT ─────────────────────────────────────
+function openRepayCredit(txId, accId, txDesc, txAmount) {
+  const acc = state.personal.accounts.find(a => a.id === accId);
+  if (!acc) { showToast('❗ Không tìm thấy tài khoản credit'); return; }
+
+  document.getElementById('repay-tx-id').value   = txId;
+  document.getElementById('repay-acc-id').value  = accId;
+  document.getElementById('repay-tx-desc').textContent   = txDesc;
+  document.getElementById('repay-tx-amount').textContent = fmt(txAmount);
+  document.getElementById('repay-acc-name').textContent  = acc.name;
+  document.getElementById('repay-acc-balance').textContent = fmt(Math.abs(acc.balance || 0));
+  document.getElementById('repay-amount').value  = txAmount;
+  document.getElementById('repay-err').textContent = '';
+
+  // Populate nguồn tiền: tất cả ví không phải credit của thành viên này
+  const sourceSelect = document.getElementById('repay-source-account');
+  const sourceOptions = state.personal.accounts
+    .filter(a => a.id !== accId)
+    .map(a => `<option value="${a.id}">${a.name} (${fmt(a.balance)})</option>`)
+    .join('');
+  sourceSelect.innerHTML = '<option value="">-- Không trừ ví nguồn (chỉ giảm nợ) --</option>' + sourceOptions;
+
+  openOverlay('repay-credit');
+}
+
+async function submitRepayCredit() {
+  const txId         = document.getElementById('repay-tx-id').value;
+  const creditAccId  = document.getElementById('repay-acc-id').value;
+  const repayAmount  = parseFloat(document.getElementById('repay-amount').value) || 0;
+  const sourceAccId  = document.getElementById('repay-source-account').value;
+  const errEl        = document.getElementById('repay-err');
+  errEl.textContent  = '';
+
+  if (repayAmount <= 0) { errEl.textContent = '❗ Số tiền trả nợ phải lớn hơn 0'; return; }
+
+  // Kiểm tra số dư ví nguồn (nếu có chọn)
+  if (sourceAccId) {
+    const srcAcc = state.personal.accounts.find(a => a.id === sourceAccId);
+    if (srcAcc && Number(srcAcc.balance) < repayAmount) {
+      errEl.textContent = `⚠️ Số dư ${srcAcc.name} không đủ (${fmt(srcAcc.balance)})`;
+      return;
+    }
+  }
+
+  const btn = document.getElementById('repay-sbtn');
+  btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Đang xử lý...';
+  try {
+    // Gọi API trả nợ credit: giảm dư nợ credit + tuỳ chọn trừ ví nguồn
+    await api('POST', {
+      action: 'repay_credit',
+      member_id:        state.personal.memberId,
+      pin:              state.personal.pin,
+      credit_account_id: creditAccId,
+      source_account_id: sourceAccId || null,
+      amount:           repayAmount,
+      tx_id:            txId  // để backend ghi chú liên kết giao dịch gốc
+    });
+    closeOverlay('repay-credit');
+    showToast('✅ Trả nợ thẻ tín dụng thành công!');
+    await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
+  } catch(e) {
+    // Nếu backend chưa hỗ trợ action này, cập nhật số dư locally để vẫn dùng được
+    if (e.message && e.message.includes('action')) {
+      // Fallback: cập nhật balance credit account trực tiếp
+      const creditAcc = state.personal.accounts.find(a => a.id === creditAccId);
+      if (creditAcc) {
+        const newBalance = Number(creditAcc.balance) + repayAmount; // balance credit là âm, cộng vào = giảm nợ
+        await api('POST', {
+          action: 'update_account',
+          account_id: creditAccId,
+          member_id: state.personal.memberId,
+          pin: state.personal.pin,
+          name: creditAcc.name,
+          type: creditAcc.type,
+          balance: newBalance
+        });
+        // Trừ ví nguồn nếu có
+        if (sourceAccId) {
+          const srcAcc = state.personal.accounts.find(a => a.id === sourceAccId);
+          if (srcAcc) {
+            await api('POST', {
+              action: 'update_account',
+              account_id: sourceAccId,
+              member_id: state.personal.memberId,
+              pin: state.personal.pin,
+              name: srcAcc.name,
+              type: srcAcc.type,
+              balance: Number(srcAcc.balance) - repayAmount
+            });
+          }
+        }
+        closeOverlay('repay-credit');
+        showToast('✅ Đã giảm dư nợ thẻ tín dụng!');
+        await loadPersonalWalletData(state.personal.memberId, state.personal.pin);
+      }
+    } else {
+      errEl.textContent = '❌ ' + e.message;
+    }
+  }
+  finally { btn.disabled = false; btn.innerHTML = '<i class="ti ti-cash"></i> Xác nhận trả nợ'; }
 }
 
 
