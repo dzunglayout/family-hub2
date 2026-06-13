@@ -125,11 +125,18 @@ body {
   .fab { right: calc(50% - 480px/2 + 18px); }
 }
 
-.sync-bar { display: flex; align-items: center; gap: 9px; background: var(--green-l); border: 1px solid rgba(0,200,150,.2); border-radius: 12px; padding: 9px 13px; margin-bottom: 13px; }
-.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
-.sync-dot.err { background: var(--red); }
+.sync-bar { display: flex; align-items: center; gap: 9px; background: var(--green-l); border: 1px solid rgba(0,200,150,.2); border-radius: 12px; padding: 9px 13px; margin-bottom: 13px; transition: background .3s, border-color .3s; }
+.sync-bar.loading { background: var(--pri-light); border-color: rgba(108,99,255,.2); }
+.sync-bar.error   { background: var(--red-l);    border-color: rgba(255,107,107,.2); }
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; transition: background .3s; }
+.sync-dot.loading { background: var(--pri); animation: pulse 1s infinite; }
+.sync-dot.err     { background: var(--red); }
 .sync-text { font-size: 12px; font-weight: 600; color: var(--green-d); flex: 1; }
-.sync-time { font-size: 11px; color: var(--green); cursor: pointer; font-weight: 700; }
+.sync-bar.loading .sync-text { color: var(--pri-dark); }
+.sync-bar.error   .sync-text { color: var(--red-d); }
+.sync-time { font-size: 11px; color: var(--green); cursor: pointer; font-weight: 700; white-space: nowrap; }
+.sync-bar.error .sync-time { color: var(--red); }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
 
 .hero { border-radius: 22px; padding: 22px; margin-bottom: 14px; color: #fff; position: relative; overflow: hidden; }
 .hero-badge { position: absolute; top: 18px; right: 18px; background: rgba(255,255,255,.2); border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; }
@@ -1034,28 +1041,106 @@ const catColor = { food:'#FF9F43', electric:'#6C63FF', water:'#20BFC1', internet
 const catBg = { food:'#FFF3E0', electric:'#EDE9FF', water:'#E0FAFB', internet:'#EAF6FF', education:'#FFE8E8', transport:'#FFFFF0', health:'#E0FFF6', shopping:'#FFF0F7', salary:'#E0FFF6', other:'#F5F3FF' };
 const flashGrad = { food:'linear-gradient(135deg,#FF9F43,#FF6B6B)', electric:'linear-gradient(135deg,#6C63FF,#a78bfa)', water:'linear-gradient(135deg,#20BFC1,#085450)', internet:'linear-gradient(135deg,#4FACFE,#185FA5)', education:'linear-gradient(135deg,#FF6B6B,#FF6EB4)', other:'linear-gradient(135deg,#9592B8,#6C63FF)' };
 
-async function api(method, params) {
+// ── Abort controller hiện tại (để cancel khi cần) ──
+let _currentSyncAbort = null;
+let _isSyncing = false;
+
+// ── fetch với timeout (mặc định 25s — GAS cold start có thể đến 20s) ──
+async function fetchWithTimeout(url, options = {}, timeoutMs = 25000) {
+  const ctrl = new AbortController();
+  const tid = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
-    let res;
-    if (method === 'GET') {
-      const queryStr = new URLSearchParams(params).toString();
-      res = await fetch(`${APP_CONFIG.GAS_URL}?${queryStr}`);
-    } else {
-      res = await fetch(APP_CONFIG.GAS_URL, {
-        method: 'POST',
-        body: JSON.stringify(params)
-      });
-    }
-    const json = await res.json();
-    if (!json.ok) throw new Error(json.error || 'Lỗi xử lý API từ máy chủ');
-    return json.data;
-  } catch (err) {
-    console.error(err);
-    throw err;
+    const res = await fetch(url, { ...options, signal: ctrl.signal });
+    return res;
+  } finally {
+    clearTimeout(tid);
   }
 }
 
-async function initDatabaseBackend() {
+// ── Hàm gọi API với retry tự động (tối đa 2 lần) ──
+async function api(method, params, retries = 2) {
+  let lastErr;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      let res;
+      if (method === 'GET') {
+        const queryStr = new URLSearchParams(params).toString();
+        res = await fetchWithTimeout(`${APP_CONFIG.GAS_URL}?${queryStr}`);
+      } else {
+        res = await fetchWithTimeout(APP_CONFIG.GAS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' }, // GAS yêu cầu text/plain để tránh CORS preflight
+          body: JSON.stringify(params)
+        });
+      }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      if (!json.ok) throw new Error(json.error || 'Lỗi API server');
+      return json.data;
+    } catch (err) {
+      lastErr = err;
+      // Không retry nếu là lỗi logic (không phải network/timeout)
+      const isNetworkErr = err.name === 'AbortError' || err.message.startsWith('HTTP') || err.message.includes('fetch') || err.message.includes('network') || err.message.includes('Failed');
+      if (!isNetworkErr || attempt === retries) break;
+      // Chờ trước khi retry: 1s, 2s
+      await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+    }
+  }
+  throw lastErr;
+}
+
+// ── syncAll: tuần tự từng request thay vì Promise.all để tránh GAS bị quá tải ──
+// Mỗi endpoint fail độc lập, không kéo sập cả app
+async function syncAll() {
+  if (_isSyncing) return;
+  _isSyncing = true;
+  setSyncStatus('loading', 'Đang kết nối Google Sheets...');
+
+  // Helper: gọi an toàn — lỗi trả về null thay vì throw
+  async function safeGet(action, fallback = null) {
+    try { return await api('GET', { action }); }
+    catch (e) { console.warn(`[sync] ${action} failed:`, e.message); return fallback; }
+  }
+
+  try {
+    // Tuần tự từng request — GAS xử lý được ổn định hơn
+    const members = await safeGet('get_members', state.members);
+    if (members) { state.members = members; renderPersonalMembers(); }
+
+    const dash = await safeGet('get_dashboard', state.dashboard);
+    if (dash) { state.dashboard = dash; }
+
+    const shared = await safeGet('get_shared', state.sharedExpenses);
+    if (shared) { state.sharedExpenses = shared; }
+
+    const inventory = await safeGet('get_inventory', state.inventory);
+    if (inventory) { state.inventory = inventory; }
+
+    const notes = await safeGet('get_notes_public', state.notes);
+    if (notes) { state.notes = notes; }
+
+    // Render sau khi có data
+    renderDashboard();
+    renderFamily();
+    renderInventory();
+    renderNotes();
+    populateSelects();
+
+    state.lastSync = new Date();
+    const timeString = state.lastSync.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+    setSyncStatus(true, `Đồng bộ thành công lúc ${timeString}`);
+
+    const periodEl = document.getElementById('topbar-period');
+    if (periodEl) periodEl.textContent = 'Kỳ dữ liệu: ' + (dash?.period || 'Hiện tại');
+
+  } catch (e) {
+    // Lỗi ngoài dự kiến
+    setSyncStatus(false, 'Lỗi kết nối: ' + e.message);
+    showToast('❌ ' + e.message);
+  } finally {
+    _isSyncing = false;
+  }
+}
   const ok = await showConfirm({ icon:'⚙️', title:'Khởi tạo Database?', msg:'Hệ thống sẽ dọn dẹp và cấu trúc lại toàn bộ đầu bảng trên file Google Sheet hiện tại.', okLabel:'Xác nhận khởi tạo' });
   if(!ok) return;
   showToast('Đang tạo các sheet chức năng...');
@@ -1116,47 +1201,27 @@ function showToast(msg) {
   toastTimer = setTimeout(() => toastContainer.classList.remove('show'), 3000);
 }
 
-function setSyncStatus(ok, msg) {
-  const dot = document.getElementById('sync-dot');
-  const txt = document.getElementById('sync-text');
-  if(dot) dot.className = 'sync-dot' + (ok ? '' : ' err');
-  if(txt) txt.textContent = msg;
-}
+function setSyncStatus(state_code, msg) {
+  // state_code: 'loading' | true (ok) | false (error)
+  const bar  = document.getElementById('sync-bar');
+  const dot  = document.getElementById('sync-dot');
+  const txt  = document.getElementById('sync-text');
+  const btn  = document.querySelector('#sync-bar .sync-time');
 
-async function syncAll() {
-  setSyncStatus(true, 'Đang đồng bộ điện toán đám mây...');
-  try {
-    const [dash, members, shared, inventory, notes] = await Promise.all([
-      api('GET', { action: 'get_dashboard' }),
-      api('GET', { action: 'get_members' }),
-      api('GET', { action: 'get_shared' }),
-      api('GET', { action: 'get_inventory' }),
-      api('GET', { action: 'get_notes_public' })
-    ]);
-    
-    state.dashboard = dash;
-    state.members = members;
-    state.sharedExpenses = shared;
-    state.inventory = inventory;
-    state.notes = notes;
-    state.lastSync = new Date();
-
-    renderDashboard();
-    renderPersonalMembers();
-    renderFamily();
-    renderInventory();
-    renderNotes();
-    populateSelects();
-
-    const timeString = state.lastSync.toLocaleTimeString('vi-VN', {hour: '2-digit', minute: '2-digit'});
-    setSyncStatus(true, `Đã đồng bộ Google Sheets thành công (${timeString})`);
-    
-    const periodEl = document.getElementById('topbar-period');
-    if(periodEl) periodEl.textContent = 'Kỳ dữ liệu: ' + (dash?.period || 'Hiện tại');
-  } catch (e) {
-    setSyncStatus(false, 'Mất kết nối Cloud: ' + e.message);
-    showToast('❌ Đồng bộ thất bại: ' + e.message);
+  if (state_code === 'loading') {
+    bar?.classList.add('loading');    bar?.classList.remove('error');
+    dot?.classList.add('loading');    dot?.classList.remove('err');
+    if(btn) btn.textContent = '...';
+  } else if (state_code === true) {
+    bar?.classList.remove('loading', 'error');
+    dot?.classList.remove('loading', 'err');
+    if(btn) btn.textContent = '↻ Làm mới';
+  } else {
+    bar?.classList.remove('loading'); bar?.classList.add('error');
+    dot?.classList.remove('loading'); dot?.classList.add('err');
+    if(btn) btn.textContent = '↺ Thử lại';
   }
+  if(txt) txt.textContent = msg;
 }
 
 function renderDashboard() {
