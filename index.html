@@ -114,10 +114,9 @@ html, body { height: 100%; font-family: var(--fb); background: var(--bg); color:
 .inv-actions { display: flex; gap: 5px; margin-top: 8px; justify-content: flex-end; }
 .inv-btn { padding: 3px 8px; font-size: 11px; font-weight: 700; border: 1px solid var(--border); background: var(--bg); border-radius: 6px; cursor: pointer; }
 
-/* SAU */
-.note-card{border-radius:14px;padding:14px;margin-bottom:9px;border-left:4px solid;overflow:hidden}
-.note-title{font-size:14px;font-weight:700;margin-bottom:4px;word-break:break-word;overflow-wrap:anywhere}
-.note-body{font-size:13px;line-height:1.55;opacity:.75;word-break:break-word;overflow-wrap:anywhere;white-space:pre-wrap}
+.note-card { border-radius: 14px; padding: 14px; margin-bottom: 9px; border-left: 4px solid; position: relative; }
+.note-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.note-body { font-size: 13px; line-height: 1.55; color: var(--text); }
 .note-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 9px; }
 .note-date { font-size: 10px; color: var(--muted); font-weight: 500; }
 
@@ -133,10 +132,6 @@ html, body { height: 100%; font-family: var(--fb); background: var(--bg); color:
 
 .mini-chart { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 14px; }
 .chart-lbl { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 11px; }
-.bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 65px; }
-.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.bar { width: 100%; border-radius: 5px 5px 0 0; min-height: 4px; }
-.bar-lbl { font-size: 10px; color: var(--muted); font-weight: 600; }
 .tag { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 99px; font-size: 10px; font-weight: 700; }
 .tag.shared { background: var(--pri-light); color: var(--pri); }
 .empty { text-align: center; padding: 32px 20px; color: var(--muted); grid-column: 1/-1; }
@@ -211,7 +206,36 @@ html, body { height: 100%; font-family: var(--fb); background: var(--bg); color:
 /* ── Account type badge ── */
 .acc-type-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin-bottom: 4px; }
 .spin { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
-</style>
+
+/* ── Enhanced bar chart ── */
+.bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 80px; padding-top: 8px; }
+.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0; position: relative; }
+.bar-col .bar-val { font-size: 9px; font-weight: 700; color: var(--muted); margin-bottom: 3px; white-space: nowrap; }
+.bar-col .bar-val.cur { color: var(--pri); }
+.bar { width: 100%; border-radius: 5px 5px 0 0; min-height: 4px; transition: opacity .15s; cursor: pointer; }
+.bar:hover { opacity: .75; }
+.bar-lbl { font-size: 10px; color: var(--muted); font-weight: 600; margin-top: 4px; }
+.bar-lbl.cur { color: var(--pri); font-weight: 800; }
+.chart-legend { display: flex; gap: 12px; margin-top: 8px; justify-content: flex-end; }
+.chart-leg-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--muted); font-weight: 600; }
+.chart-leg-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* ── Recurring / upcoming payment cards ── */
+.due-list { display: flex; flex-direction: column; gap: 8px; }
+.due-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 11px 13px; display: flex; align-items: center; gap: 11px; border-left: 4px solid; }
+.due-card.urgent { border-left-color: var(--red); }
+.due-card.soon   { border-left-color: var(--amber); }
+.due-card.ok     { border-left-color: var(--green); }
+.due-ico { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.due-info { flex: 1; min-width: 0; }
+.due-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.due-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.due-right { text-align: right; flex-shrink: 0; }
+.due-amt { font-family: var(--fh); font-size: 14px; font-weight: 800; color: var(--red); }
+.due-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin-top: 3px; display: inline-block; }
+.due-badge.urgent { background: var(--red-l);   color: var(--red);   }
+.due-badge.soon   { background: var(--amber-l); color: var(--amber-d); }
+.due-badge.ok     { background: var(--green-l); color: var(--green-d); }</style>
 </head>
 <body>
 
@@ -260,8 +284,15 @@ html, body { height: 100%; font-family: var(--fb); background: var(--bg); color:
       </div>
 
       <div class="mini-chart">
-        <div class="chart-lbl">Biến động chi tiêu 6 tháng (triệu đ)</div>
+        <div class="chart-lbl" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>Biến động chi tiêu chung 6 tháng</span>
+          <span style="font-size:10px;color:var(--muted);">triệu đ</span>
+        </div>
         <div class="bar-chart" id="bar-chart"></div>
+        <div class="chart-legend">
+          <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#6C63FF;"></div>Tháng này</div>
+          <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#C4BEFE;"></div>Các tháng trước</div>
+        </div>
       </div>
 
       <div class="stat-grid">
@@ -280,8 +311,11 @@ html, body { height: 100%; font-family: var(--fb); background: var(--bg); color:
       <div class="sec-title">Thành viên gia đình <span class="see-all" onclick="openPage('personal')">Quản lý PIN</span></div>
       <div class="members-row" id="members-row"></div>
 
-      <div class="sec-title">Hoạt động chi tiêu chung mới nhất</div>
-      <div class="tx-list" id="recent-shared-list"></div>
+      <div class="sec-title">
+        📅 Khoản chi định kỳ sắp đến hạn
+        <span class="see-all" onclick="openPage('family')">Xem tất cả</span>
+      </div>
+      <div class="due-list" id="due-list"></div>
     </div>
 
     <div class="page" id="page-personal">
@@ -919,56 +953,73 @@ function renderDashboard() {
   const d = state.dashboard;
   if (!d) return;
   
-  const periodEl = document.getElementById('dash-period');
-  const sharedEl = document.getElementById('dash-shared');
-  const incomeEl = document.getElementById('dash-income');
-  const expenseEl = document.getElementById('dash-expense');
-  const membersEl = document.getElementById('dash-members');
+  const periodEl   = document.getElementById('dash-period');
+  const sharedEl   = document.getElementById('dash-shared');
+  const incomeEl   = document.getElementById('dash-income');
+  const expenseEl  = document.getElementById('dash-expense');
+  const membersEl  = document.getElementById('dash-members');
   const lowstockEl = document.getElementById('dash-lowstock');
   
-  if(periodEl) periodEl.textContent = 'Kỳ tháng ' + d.period;
-  if(membersEl) membersEl.textContent = d.member_count + ' người';
+  if(periodEl)   periodEl.textContent   = 'Kỳ tháng ' + d.period;
+  if(membersEl)  membersEl.textContent  = d.member_count + ' người';
   if(lowstockEl) lowstockEl.textContent = d.low_stock_count + ' loại hàng';
 
-  // ── TÍNH TỔNG CHI PHÍ CHUNG THÁNG NÀY ──────────────────────────────────
-  // Gồm: tất cả sharedExpenses + giao dịch cá nhân có is_shared=TRUE
+  // ── TỔNG CHI PHÍ CHUNG THÁNG NÀY ──────────────────────
   const thisMonth = new Date().toISOString().substring(0, 7);
-  
-  // 1. Từ bảng SharedExpenses (chi tiêu chung trực tiếp)
-  const sharedDirectExpense = (state.sharedExpenses || [])
-    .filter(s => String(s.date).startsWith(thisMonth))
-    .reduce((sum, s) => sum + Number(s.amount || 0), 0);
+  const sharedThisMonth = (state.sharedExpenses || []).filter(s => String(s.date).startsWith(thisMonth));
+  const totalSharedExpense = sharedThisMonth.reduce((sum, s) => sum + Number(s.amount || 0), 0);
+  const totalSharedIncome  = Number(d.total_shared_income || 0);
 
-  // 2. Từ giao dịch cá nhân có đánh dấu is_shared (nếu dashboard trả về recent_shared có đủ dữ liệu)
-  // Dùng d.total_shared_income / d.total_shared_expense nếu backend hỗ trợ, ngược lại dùng sharedExpenses
-  let totalSharedIncome  = Number(d.total_shared_income  || 0);
-  let totalSharedExpense = Number(d.total_shared_expense || 0);
-
-  // Nếu backend chưa trả về breakdown income/expense riêng, fallback về sharedDirectExpense
-  if (!totalSharedIncome && !totalSharedExpense) {
-    totalSharedExpense = sharedDirectExpense;
-  }
-
-  const netShared = totalSharedIncome - totalSharedExpense;
-
-  if(sharedEl)  sharedEl.textContent  = fmt(Math.abs(netShared));
+  if(sharedEl)  sharedEl.textContent  = fmt(totalSharedExpense);
   if(incomeEl)  incomeEl.textContent  = '+' + fmt(totalSharedIncome  || Number(d.total_income  || 0));
   if(expenseEl) expenseEl.textContent = '-' + fmt(totalSharedExpense || Number(d.total_expense || 0));
 
-  const chart = d.chart || [];
-  const maxExpense = Math.max(...chart.map(c => c.expense), 1);
+  // ── BIỂU ĐỒ 6 THÁNG – tính trực tiếp từ state.sharedExpenses ──────────
+  // Không phụ thuộc d.chart (vốn hay bị backend trả về rỗng)
   const barChartContainer = document.getElementById('bar-chart');
   if(barChartContainer) {
-    barChartContainer.innerHTML = chart.map((monthData, index) => {
-      const calculatedHeight = Math.round((monthData.expense / maxExpense) * 60);
-      const isCurrentMonth = index === chart.length - 1;
+    // Tạo 6 tháng gần nhất
+    const months = [];
+    for(let i = 5; i >= 0; i--) {
+      const d2 = new Date();
+      d2.setDate(1);
+      d2.setMonth(d2.getMonth() - i);
+      months.push(d2.toISOString().substring(0, 7)); // "YYYY-MM"
+    }
+
+    // Tính tổng chi cho mỗi tháng từ sharedExpenses
+    const monthTotals = months.map(m => ({
+      month: m,
+      label: m.split('-')[1] + '/' + m.split('-')[0].slice(2), // "06/25"
+      expense: (state.sharedExpenses || [])
+        .filter(s => String(s.date).startsWith(m))
+        .reduce((sum, s) => sum + Number(s.amount || 0), 0)
+    }));
+
+    // Nếu sharedExpenses trống nhưng backend có d.chart, dùng fallback
+    const totalFromShared = monthTotals.reduce((s, m) => s + m.expense, 0);
+    const chartData = totalFromShared > 0 ? monthTotals : (d.chart || []).map((c, i) => ({
+      month: c.month || months[i] || '',
+      label: (c.month || months[i] || '').split('-')[1],
+      expense: c.expense || 0
+    }));
+
+    const maxVal = Math.max(...chartData.map(c => c.expense), 1);
+    barChartContainer.innerHTML = chartData.map((m, idx) => {
+      const isCur = idx === chartData.length - 1;
+      const h = Math.max(Math.round((m.expense / maxVal) * 64), 4);
+      const valLabel = m.expense > 0
+        ? (m.expense >= 1000000 ? (m.expense/1000000).toFixed(1)+'tr' : Math.round(m.expense/1000)+'k')
+        : '';
       return `<div class="bar-col">
-        <div class="bar" style="height:${Math.max(calculatedHeight,4)}px; background:${isCurrentMonth ? '#6C63FF' : '#C4BEFE'};"></div>
-        <div class="bar-lbl">${monthData.month.split('-')[1]}</div>
+        <div class="bar-val ${isCur ? 'cur' : ''}">${valLabel}</div>
+        <div class="bar" style="height:${h}px; background:${isCur ? '#6C63FF' : '#C4BEFE'};" title="${m.label}: ${fmt(m.expense)}"></div>
+        <div class="bar-lbl ${isCur ? 'cur' : ''}">${m.label}</div>
       </div>`;
     }).join('');
   }
 
+  // ── THÀNH VIÊN ─────────────────────────────────────────
   const membersRow = document.getElementById('members-row');
   if(membersRow) {
     membersRow.innerHTML = state.members.map(member => `
@@ -977,26 +1028,116 @@ function renderDashboard() {
         <div class="member-name">${member.name}</div>
         <div class="member-role">${member.role === 'parent' ? '👨‍👩‍👧 Bố / Mẹ' : '👦 Con cái'}</div>
         <div class="member-lock"><i class="ti ti-lock"></i> Riêng tư</div>
-      </div>`).join('') + 
+      </div>`).join('') +
       `<div class="member-card" style="border:1.5px dashed var(--muted); display:flex; flex-direction:column; align-items:center; justify-content:center;" onclick="openOverlay('add-member')">
         <i class="ti ti-user-plus" style="font-size:22px; color:var(--muted);"></i>
         <div style="font-size:11px; font-weight:600; margin-top:4px;">Thêm mới</div>
       </div>`;
   }
 
-  const recentSharedList = document.getElementById('recent-shared-list');
-  if(recentSharedList) {
-    const items = d.recent_shared || [];
-    recentSharedList.innerHTML = items.length ? items.map(item => `
-      <div class="tx-item">
-        <div class="tx-ico" style="background:${catBg[item.category]}; color:${catColor[item.category]};">${catIcon[item.category] || '📌'}</div>
-        <div class="tx-info">
-          <div class="tx-name">${item.description}</div>
-          <div class="tx-meta">${item.paid_by} · ${item.date}</div>
-        </div>
-        <div class="tx-amt out">-${fmt(item.amount)}</div>
-      </div>`).join('') : '<div class="empty"><i class="ti ti-receipt-off"></i><p>Chưa có chi tiêu chung phát sinh</p></div>';
+  // ── KHOẢN ĐỊNH KỲ SẮP ĐẾN HẠN ────────────────────────
+  renderUpcomingDue();
+}
+
+// ─── RENDER UPCOMING DUE PAYMENTS ────────────────────────────────────────────
+// Phát hiện các khoản chi định kỳ từ sharedExpenses (nhóm theo description + category)
+// và ước tính ngày đến hạn tiếp theo dựa trên lần thanh toán gần nhất
+function renderUpcomingDue() {
+  const container = document.getElementById('due-list');
+  if (!container) return;
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  // Nhóm giao dịch theo key = category+description (normalize lowercase)
+  const groups = {};
+  (state.sharedExpenses || []).forEach(s => {
+    const key = (s.category || 'other') + '||' + (s.description || '').trim().toLowerCase();
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(s);
+  });
+
+  // Xác định khoản "định kỳ": xuất hiện ≥ 2 lần, hoặc là các loại hóa đơn chuẩn (electric/water/internet)
+  const RECURRING_CATS = new Set(['electric','water','internet','food']);
+  const items = [];
+
+  Object.values(groups).forEach(list => {
+    if (list.length < 1) return;
+    const sample = list[0];
+    const isRecurring = list.length >= 2 || RECURRING_CATS.has(sample.category);
+    if (!isRecurring) return;
+
+    // Lấy lần chi gần nhất
+    const sorted = [...list].sort((a,b) => String(b.date).localeCompare(String(a.date)));
+    const last = sorted[0];
+    const lastDate = new Date(last.date);
+
+    // Ước tính chu kỳ (ngày): so sánh 2 lần gần nhất nếu có, không thì mặc định 30
+    let cycleDays = 30;
+    if (sorted.length >= 2) {
+      const prev = new Date(sorted[1].date);
+      const diff = Math.round((lastDate - prev) / 86400000);
+      if (diff >= 7 && diff <= 95) cycleDays = diff;
+    }
+    // Hóa đơn điện/nước/internet mặc định 30 ngày dù chỉ có 1 lần
+    if (RECURRING_CATS.has(sample.category) && sorted.length < 2) cycleDays = 30;
+
+    // Ngày đến hạn tiếp theo
+    const nextDue = new Date(lastDate);
+    nextDue.setDate(nextDue.getDate() + cycleDays);
+
+    const daysLeft = Math.round((nextDue - today) / 86400000);
+
+    // Chỉ hiển thị những khoản đến hạn trong vòng 30 ngày (hoặc đã quá hạn)
+    if (daysLeft > 30) return;
+
+    let urgency = 'ok';
+    if (daysLeft <= 3)      urgency = 'urgent';
+    else if (daysLeft <= 10) urgency = 'soon';
+
+    let dueBadge = daysLeft < 0
+      ? `Quá hạn ${Math.abs(daysLeft)} ngày`
+      : daysLeft === 0 ? 'Hôm nay!'
+      : daysLeft === 1 ? 'Ngày mai'
+      : `Còn ${daysLeft} ngày`;
+
+    items.push({
+      description: last.description,
+      category: last.category || 'other',
+      amount: Number(last.amount || 0),
+      nextDue,
+      daysLeft,
+      urgency,
+      dueBadge,
+      paid_by: last.paid_by || ''
+    });
+  });
+
+  // Sắp xếp: quá hạn/sắp nhất lên đầu
+  items.sort((a,b) => a.daysLeft - b.daysLeft);
+
+  if (!items.length) {
+    container.innerHTML = `<div class="empty" style="padding:20px;">
+      <i class="ti ti-calendar-check" style="font-size:28px;display:block;margin-bottom:8px;"></i>
+      <p>Không có khoản chi định kỳ nào sắp đến hạn trong 30 ngày tới</p>
+    </div>`;
+    return;
   }
+
+  const nextDueFmt = d => `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+
+  container.innerHTML = items.map(item => `
+    <div class="due-card ${item.urgency}">
+      <div class="due-ico" style="background:${catBg[item.category]};color:${catColor[item.category]};">${catIcon[item.category] || '📌'}</div>
+      <div class="due-info">
+        <div class="due-name">${item.description}</div>
+        <div class="due-meta">Đến hạn ${nextDueFmt(item.nextDue)} · ${item.paid_by || 'Chưa xác định'}</div>
+      </div>
+      <div class="due-right">
+        <div class="due-amt">${fmt(item.amount)}</div>
+        <div class="due-badge ${item.urgency}">${item.dueBadge}</div>
+      </div>
+    </div>`).join('');
 }
 
 function renderPersonalMembers() {
