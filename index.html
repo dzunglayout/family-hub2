@@ -195,9 +195,9 @@ body {
 .inv-actions { display: flex; gap: 5px; margin-top: 8px; justify-content: flex-end; }
 .inv-btn { padding: 3px 8px; font-size: 11px; font-weight: 700; border: 1px solid var(--border); background: var(--bg); border-radius: 6px; cursor: pointer; }
 
-.note-card{border-radius:14px;padding:14px;margin-bottom:9px;border-left:4px solid;overflow:hidden}
-.note-title{font-size:14px;font-weight:700;margin-bottom:4px;word-break:break-word;overflow-wrap:anywhere}
-.note-body{font-size:13px;line-height:1.55;opacity:.75;word-break:break-word;overflow-wrap:anywhere;white-space:pre-wrap}
+.note-card { border-radius: 14px; padding: 14px; margin-bottom: 9px; border-left: 4px solid; position: relative; }
+.note-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.note-body { font-size: 13px; line-height: 1.55; color: var(--text); }
 .note-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 9px; }
 .note-date { font-size: 10px; color: var(--muted); font-weight: 500; }
 
@@ -1096,28 +1096,34 @@ async function syncAll() {
   _isSyncing = true;
   setSyncStatus('loading', 'Đang kết nối Google Sheets...');
 
-  // Helper: gọi an toàn — lỗi trả về null thay vì throw
-  async function safeGet(action, fallback = null) {
-    try { return await api('GET', { action }); }
-    catch (e) { console.warn(`[sync] ${action} failed:`, e.message); return fallback; }
-  }
-
   try {
-    // Tuần tự từng request — GAS xử lý được ổn định hơn
-    const members = await safeGet('get_members', state.members);
-    if (members) { state.members = members; renderPersonalMembers(); }
+    // ── Chạy SONG SONG bằng Promise.allSettled ──────────────────────────
+    // Nhanh như Promise.all (tổng thời gian = request chậm nhất, không phải tổng cộng)
+    // nhưng KHÔNG fail-all: 1 request lỗi không kéo sập các request khác
+    const [membersR, dashR, sharedR, invR, notesR] = await Promise.allSettled([
+      api('GET', { action: 'get_members' }),
+      api('GET', { action: 'get_dashboard' }),
+      api('GET', { action: 'get_shared' }),
+      api('GET', { action: 'get_inventory' }),
+      api('GET', { action: 'get_notes_public' }),
+    ]);
 
-    const dash = await safeGet('get_dashboard', state.dashboard);
-    if (dash) { state.dashboard = dash; }
+    if (membersR.status === 'fulfilled') { state.members = membersR.value; renderPersonalMembers(); }
+    else console.warn('[sync] get_members failed:', membersR.reason?.message);
 
-    const shared = await safeGet('get_shared', state.sharedExpenses);
-    if (shared) { state.sharedExpenses = shared; }
+    if (dashR.status === 'fulfilled') { state.dashboard = dashR.value; }
+    else console.warn('[sync] get_dashboard failed:', dashR.reason?.message);
 
-    const inventory = await safeGet('get_inventory', state.inventory);
-    if (inventory) { state.inventory = inventory; }
+    if (sharedR.status === 'fulfilled') { state.sharedExpenses = sharedR.value; }
+    else console.warn('[sync] get_shared failed:', sharedR.reason?.message);
 
-    const notes = await safeGet('get_notes_public', state.notes);
-    if (notes) { state.notes = notes; }
+    if (invR.status === 'fulfilled') { state.inventory = invR.value; }
+    else console.warn('[sync] get_inventory failed:', invR.reason?.message);
+
+    if (notesR.status === 'fulfilled') { state.notes = notesR.value; }
+    else console.warn('[sync] get_notes_public failed:', notesR.reason?.message);
+
+    const dash = state.dashboard;
 
     // Render sau khi có data
     renderDashboard();
