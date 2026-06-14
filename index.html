@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Happy House 🏠</title>
+<title>Family Hub 🏠</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
@@ -195,8 +195,8 @@ body {
 .inv-actions { display: flex; gap: 5px; margin-top: 8px; justify-content: flex-end; }
 .inv-btn { padding: 3px 8px; font-size: 11px; font-weight: 700; border: 1px solid var(--border); background: var(--bg); border-radius: 6px; cursor: pointer; }
 
-.note-card{border-radius:14px;padding:14px;margin-bottom:9px;border-left:4px solid;overflow:hidden} 
-.note-title{font-size:14px;font-weight:700;margin-bottom:4px;word-break:break-word;overflow-wrap:anywhere} 
+.note-card{border-radius:14px;padding:14px;margin-bottom:9px;border-left:4px solid;overflow:hidden}
+.note-title{font-size:14px;font-weight:700;margin-bottom:4px;word-break:break-word;overflow-wrap:anywhere}
 .note-body{font-size:13px;line-height:1.55;opacity:.75;word-break:break-word;overflow-wrap:anywhere;white-space:pre-wrap}
 .note-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 9px; }
 .note-date { font-size: 10px; color: var(--muted); font-weight: 500; }
@@ -382,6 +382,44 @@ body {
 .edit-tx-header { display: flex; align-items: center; gap: 10px; background: var(--pri-light); border-radius: 12px; padding: 10px 13px; margin-bottom: 14px; }
 .edit-tx-badge { font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 99px; }
 
+/* ── Settings overlay ── */
+.settings-item { display: flex; align-items: center; gap: 12px; padding: 13px 14px; border: 1px solid var(--border); border-radius: 13px; margin-bottom: 9px; background: var(--card); }
+.settings-item-ico { width: 38px; height: 38px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.settings-item-info { flex: 1; min-width: 0; }
+.settings-item-title { font-size: 13px; font-weight: 700; }
+.settings-item-desc { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+
+/* ── Danger zone ── */
+.danger-zone {
+  border: 1.5px dashed var(--red);
+  border-radius: 16px;
+  padding: 15px;
+  margin-top: 22px;
+  background: var(--red-l);
+}
+.danger-zone-title {
+  display: flex; align-items: center; gap: 7px;
+  color: var(--red); font-weight: 800; font-size: 13px; margin-bottom: 7px;
+}
+.danger-zone-desc { font-size: 12px; color: var(--red-d); line-height: 1.55; margin-bottom: 13px; }
+.danger-confirm-lbl { font-size: 11px; font-weight: 700; color: var(--red-d); margin-bottom: 6px; display: block; }
+.danger-confirm-input {
+  width: 100%; padding: 11px 13px; border-radius: 11px;
+  border: 1.5px solid var(--red); background: var(--card);
+  font-size: 14px; font-weight: 700; text-align: center; letter-spacing: 1px;
+  color: var(--red-d); margin-bottom: 12px; font-family: var(--fh);
+}
+.danger-confirm-input::placeholder { color: rgba(255,107,107,.4); font-weight: 500; letter-spacing: normal; }
+.btn-danger {
+  width: 100%; padding: 13px; border-radius: 12px; border: none;
+  background: var(--red); color: #fff; font-family: var(--fh);
+  font-size: 14px; font-weight: 800; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  transition: opacity .2s, transform .1s;
+}
+.btn-danger:disabled { opacity: .35; cursor: not-allowed; }
+.btn-danger:active:not(:disabled) { transform: scale(.98); }
+
 /* ── Credit repay button in TX list ── */
 .tx-repay-btn { color: var(--green-d); background: var(--green-l); border: 1px solid rgba(0,200,150,.3); border-radius: 7px; padding: 3px 8px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 3px; }
 .tx-repay-btn:hover { background: var(--green); color: #fff; }
@@ -463,7 +501,7 @@ body {
     </div>
     <div class="topbar-right">
       <div class="icon-btn" onclick="syncAll()" title="Đồng bộ"><i class="ti ti-refresh"></i></div>
-      <div class="icon-btn" onclick="initDatabaseBackend()" title="Cài đặt cấu trúc Sheet"><i class="ti ti-database-gear"></i></div>
+      <div class="icon-btn" onclick="openSettingsOverlay()" title="Cài đặt"><i class="ti ti-settings"></i></div>
     </div>
   </div>
 
@@ -1148,18 +1186,65 @@ async function syncAll() {
   }
 }
 
+// ─── SETTINGS OVERLAY ─────────────────────────────────────────────────────
+function openSettingsOverlay() {
+  // Reset Danger Zone mỗi lần mở — luôn phải gõ lại từ đầu
+  const input = document.getElementById('danger-confirm-input');
+  const btn   = document.getElementById('danger-init-btn');
+  if (input) input.value = '';
+  if (btn)   btn.disabled = true;
+
+  // Hiển thị thông tin trạng thái
+  const syncInfo = document.getElementById('settings-sync-info');
+  if (syncInfo) {
+    syncInfo.textContent = state.lastSync
+      ? `Lần đồng bộ gần nhất: ${state.lastSync.toLocaleTimeString('vi-VN', {hour:'2-digit',minute:'2-digit'})} · ${state.lastSync.toLocaleDateString('vi-VN')}`
+      : 'Chưa đồng bộ';
+  }
+  const memInfo = document.getElementById('settings-members-info');
+  if (memInfo) {
+    memInfo.textContent = `${state.members.length} thành viên đang quản lý`;
+  }
+
+  openOverlay('settings');
+}
+
+// Chỉ mở khoá nút nguy hiểm khi gõ ĐÚNG "XÁC NHẬN" (không phân biệt hoa/thường)
+const DANGER_CONFIRM_PHRASE = 'XÁC NHẬN';
+function checkDangerConfirm() {
+  const input = document.getElementById('danger-confirm-input');
+  const btn   = document.getElementById('danger-init-btn');
+  if (!input || !btn) return;
+  const typed = input.value.trim().toUpperCase();
+  btn.disabled = (typed !== DANGER_CONFIRM_PHRASE);
+}
+
 async function initDatabaseBackend() {
-  const ok = await showConfirm({ icon:'⚙️', title:'Khởi tạo Database?', msg:'Hệ thống sẽ dọn dẹp và cấu trúc lại toàn bộ đầu bảng trên file Google Sheet hiện tại.', okLabel:'Xác nhận khởi tạo' });
-  if(!ok) return;
+  // Lớp bảo vệ thứ 2: dù đã gõ "XÁC NHẬN" để mở khoá nút, vẫn hỏi lại lần cuối
+  const ok = await showConfirm({
+    icon: '🔴',
+    title: 'Khởi tạo lại cấu trúc Sheet?',
+    msg: 'Đây là hành động KHÔNG THỂ HOÀN TÁC và có thể ảnh hưởng đến dữ liệu hiện có. Bạn chắc chắn muốn tiếp tục?',
+    okLabel: 'Tôi hiểu, tiếp tục'
+  });
+  if (!ok) return;
+
   showToast('Đang tạo các sheet chức năng...');
   try {
     const data = await api('GET', { action: 'init_database' });
-    if(data && data.initialized) {
+    if (data && data.initialized) {
       showToast('🎉 Thiết lập cấu trúc cơ sở dữ liệu thành công!');
+      closeOverlay('settings');
       syncAll();
     }
   } catch (e) {
     showToast('Lỗi cấu trúc: ' + e.message);
+  } finally {
+    // Luôn reset lại ô xác nhận + khoá nút sau khi dùng (dù thành công hay lỗi)
+    const input = document.getElementById('danger-confirm-input');
+    const btn   = document.getElementById('danger-init-btn');
+    if (input) input.value = '';
+    if (btn)   btn.disabled = true;
   }
 }
 
@@ -2557,5 +2642,45 @@ document.addEventListener('DOMContentLoaded', () => {
       <i class="ti ti-device-floppy"></i> Lưu thay đổi
     </button>
     <button class="cancel-btn" onclick="closeOverlay('edit-tx')">Huỷ</button>
+  </div>
+</div>
+
+<!-- ── SETTINGS OVERLAY ── -->
+<div class="overlay" id="overlay-settings">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-title">⚙️ Cài đặt hệ thống</div>
+
+    <div class="settings-item">
+      <div class="settings-item-ico" style="background:var(--pri-light);color:var(--pri);"><i class="ti ti-cloud-check"></i></div>
+      <div class="settings-item-info">
+        <div class="settings-item-title">Trạng thái đồng bộ</div>
+        <div class="settings-item-desc" id="settings-sync-info">—</div>
+      </div>
+    </div>
+
+    <div class="settings-item">
+      <div class="settings-item-ico" style="background:var(--green-l);color:var(--green-d);"><i class="ti ti-users"></i></div>
+      <div class="settings-item-info">
+        <div class="settings-item-title">Thành viên gia đình</div>
+        <div class="settings-item-desc" id="settings-members-info">—</div>
+      </div>
+    </div>
+
+    <!-- ── DANGER ZONE ── -->
+    <div class="danger-zone">
+      <div class="danger-zone-title"><i class="ti ti-alert-triangle"></i> Vùng nguy hiểm</div>
+      <div class="danger-zone-desc">
+        Hành động dưới đây sẽ <strong>dọn dẹp và cấu trúc lại toàn bộ đầu bảng (header)</strong> trên file Google Sheet hiện tại.
+        Chỉ thực hiện khi mới thiết lập hệ thống lần đầu hoặc theo hướng dẫn kỹ thuật — <strong>có thể gây mất/lệch dữ liệu</strong> nếu Sheet đang có dữ liệu sẵn.
+      </div>
+      <label class="danger-confirm-lbl">Gõ chính xác <strong>XÁC NHẬN</strong> để mở khoá nút bên dưới</label>
+      <input class="danger-confirm-input" id="danger-confirm-input" type="text" placeholder="Nhập XÁC NHẬN" autocomplete="off" autocapitalize="characters" oninput="checkDangerConfirm()">
+      <button class="btn-danger" id="danger-init-btn" disabled onclick="initDatabaseBackend()">
+        <i class="ti ti-database-gear"></i> Khởi tạo lại cấu trúc Sheet
+      </button>
+    </div>
+
+    <button class="cancel-btn" onclick="closeOverlay('settings')" style="margin-top:14px;">Đóng</button>
   </div>
 </div>
